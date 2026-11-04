@@ -1,0 +1,850 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#121212"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="MAMBA"><title>MAMBA · Listo</title>
+<link rel="manifest" href="../manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><link rel="stylesheet" href="fonts.css">
+<script>(function(){try{var t=localStorage.getItem("mamba.listo.theme")||"auto";var d=t==="day"||(t==="auto"&&matchMedia("(prefers-color-scheme: light)").matches);document.documentElement.classList.toggle("day",d);var m=document.querySelector('meta[name=theme-color]');if(m)m.content=d?"#ededed":"#121212"}catch(e){}})()</script>
+<style>
+:root{--line:#353535;--tx:#ececec;--mu:#8c8c8c;--grad-card:linear-gradient(180deg,#1c1c1c,#121212);--grad-hi:linear-gradient(180deg,#e2e2e2,#cfcfcf);--grad-mid:linear-gradient(180deg,#2c2c2c,#242424)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;border-radius:0}
+html.day,html.day body{background:#ededed;background-image:linear-gradient(180deg,#d9d9d9 0%,#e3e3e3 12%,#ededed 35%,#f2f2f2 60%,#f7f7f7 85%,#fff 100%)}html.day #app,html.day #intro{filter:invert(1) hue-rotate(180deg)}html.day nav{background:linear-gradient(180deg,#ecececd1,#f6f6f6e8)}html.day nav button{color:#959595}html.day nav button.on{color:#0d0d0d}html.day .hd{background:linear-gradient(180deg,#e9e9e9de,#f4f4f4ab)}html.day .hd svg{filter:invert(1) hue-rotate(180deg)}
+html,body{margin:0;min-height:100%;color:var(--tx);font:14px DINish,-apple-system,system-ui,sans-serif;overscroll-behavior:none;background:#000;background-image:linear-gradient(180deg,#262626 0%,#1c1c1c 12%,#121212 35%,#0d0d0d 60%,#080808 85%,#000 100%);background-attachment:fixed;background-repeat:no-repeat}
+button{all:unset;cursor:pointer;color:inherit;font:inherit;-webkit-tap-highlight-color:transparent}
+#intro{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,#262626 0%,#1c1c1c 12%,#121212 35%,#0d0d0d 60%,#080808 85%,#000 100%);opacity:0;animation:introIn .9s ease .1s forwards,introOut 1s ease 2.4s forwards}
+#intro .mark{width:min(14.5vw,56px);height:auto;display:block}
+#intro p{margin:14px 0 0;color:var(--mu);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+@keyframes introIn{to{opacity:1}}@keyframes introOut{from{opacity:1}to{opacity:0;visibility:hidden}}
+#app{max-width:560px;margin:0 auto;min-height:100vh;padding:calc(env(safe-area-inset-top) + 12px) 14px calc(env(safe-area-inset-bottom) + 122px);opacity:0;animation:appIn 1.1s ease 2.5s forwards}
+@keyframes appIn{to{opacity:1}}
+.hd{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:flex-start;justify-content:center;margin:0;padding:calc(env(safe-area-inset-top) + 6px) 0 30px;background:linear-gradient(180deg,#262626e0,#14141499);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 56px),transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 56px),transparent 100%)}.hdsp{height:140px}.twrap{position:relative;isolation:isolate}svg.wm{position:absolute;z-index:-1;top:-34px;left:-16px;width:180px;height:auto;opacity:.06;color:#7a7a7a;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%)}.hd .logo{display:block;padding:6px 16px}.hd .logo:focus-visible{outline:1px solid #666}.hlogo{width:31px;height:auto;display:block}
+h1{font-size:21px;margin:6px 2px 2px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+h2{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin:20px 2px 8px}
+.sub{color:var(--mu);font-size:12px;margin:0 2px 14px;min-height:15px}
+.bar{height:1px;background:#2a2a2a;margin:0 2px 12px;position:relative}.bar i{position:absolute;left:0;top:-1px;height:3px;background:var(--grad-hi);width:0;transition:width .5s ease}
+.card{background:var(--grad-card);border:1px solid var(--line);padding:0 14px;margin-bottom:12px}li.card{padding:8px 14px}
+ul{list-style:none;margin:0;padding:0}
+li.card{display:flex;align-items:center;gap:12px;min-height:52px;animation:fi .5s ease both}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.ck{width:30px;height:44px;flex:none;display:flex;align-items:center;justify-content:center}.ck.part{flex-direction:column;gap:2px}.ck.part:before{display:none}.ck .bx{position:relative;display:block;width:18px;height:18px;border:1px solid #5a5a5a}.ck .pf{position:absolute;left:0;right:0;bottom:0;display:block;background:linear-gradient(180deg,#e2e2e2,#cfcfcf);opacity:.55}.ck .pn{font-size:8px;line-height:1;color:var(--mu);font-weight:600;letter-spacing:.04em}
+.ck:before{content:"";width:18px;height:18px;border:1px solid #5a5a5a;display:block}
+.ck svg{display:none;width:12px;height:auto}
+li.done .ck:before{display:none}li.done .ck svg{display:block;animation:pop .35s ease}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+li .t{flex:1;min-width:24%;overflow-wrap:anywhere;line-height:1.5}li.done .t{color:var(--mu)}
+li .t input{width:100%}
+.ic{width:34px;height:44px;flex:none;color:#6a6a6a;display:flex;align-items:center;justify-content:center}.ic:active{color:#f2f2f2}.ic svg{width:18px;height:18px}.grip{touch-action:none;cursor:grab;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}li.drag{position:relative;z-index:5;border-color:#8c8c8c;opacity:.92}
+.add{display:flex;align-items:center;gap:6px;margin-top:12px}.add input{height:44px}
+input{width:100%;background:#141414;border:1px solid #333;color:var(--tx);padding:12px;font:inherit;outline:none;-webkit-appearance:none}input:focus{border-color:#8c8c8c}
+textarea{width:100%;background:#141414;border:1px solid #333;color:var(--tx);padding:12px;font:inherit;outline:none;-webkit-appearance:none;resize:vertical;min-height:64px;line-height:1.5;font-family:inherit}textarea:focus{border-color:#8c8c8c}
+.empty{text-align:center;color:var(--mu);padding:40px 20px}
+.row{display:flex;gap:8px}.row>*{flex:1}.chip{flex:1;text-align:center;background:var(--grad-mid);border:1px solid #3a3a3a;color:#d8d8d8;padding:11px 8px}.tag{flex:0 1 auto;min-width:0;max-width:32%;overflow-wrap:anywhere;text-align:right;line-height:1.8;font-size:9px;letter-spacing:.08em;color:var(--mu);text-transform:uppercase;font-weight:600}.chip.sm{font-size:10px;white-space:nowrap;padding:11px 2px}.row.add-kind{flex-wrap:wrap}.row.add-kind .chip{flex:1 1 30%}.add-kind .chip,.add-cadence .chip{display:flex;align-items:center;justify-content:center;font-size:10px;line-height:12px;letter-spacing:-.02em;text-transform:uppercase;white-space:normal;box-sizing:border-box;height:40px;min-height:40px;padding:2px 1px}.chip.on{background:var(--grad-hi);border-color:#d8d8d8;color:#111;font-weight:700}
+.lgrid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.lgrid .chip.sm{flex:0 1 auto;max-width:100%;display:flex;align-items:center;justify-content:flex-start;font-size:10px;line-height:12px;letter-spacing:-.02em;text-transform:uppercase;white-space:normal;text-align:left;box-sizing:border-box;min-height:40px;height:auto;padding:2px 10px;overflow-wrap:anywhere}
+.vh{margin:30px 0 45px}
+.vcard{display:block;padding-top:2px;padding-bottom:2px}
+.vt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0}
+.vt+.vt{border-top:1px solid #262626}
+.vt-r{display:flex;align-items:center;gap:12px;flex:none}
+.vt .mu{font-size:13px}
+.qed{display:flex;gap:6px;flex:none}.qed input{min-width:0;height:44px;min-height:44px;padding:6px 4px;font-size:14px}.qed .qn{width:56px;text-align:center}.qed .qu{width:82px;text-align:left}
+.vt .ck.on:before{display:none}
+.vt .ck.on svg{display:block}
+.vw-in input{background:#1a1a1a;border:1px solid #3a3a3a;color:var(--tx);padding:7px 8px;font:inherit;font-size:13px;width:108px;height:32px;min-height:32px;text-align:center;color-scheme:dark}
+.vf{padding:0 0 10px}.vf+.vt{border-top:1px solid #262626}.vf input{height:44px;min-height:44px;font-size:14px}.vf .macros{color:var(--mu);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;margin:8px 2px 0;min-height:14px}.vf .macros b{color:var(--tx);font-weight:600}
+.lnk{color:var(--mu);padding:12px 4px;display:inline-block;font-size:13px;letter-spacing:.02em}.lnk:active{color:var(--tx)}
+.btn{display:block;text-align:center;background:var(--grad-hi);color:#111;border:1px solid #d8d8d8;padding:13px 16px;font-weight:700;letter-spacing:.02em;margin-top:10px}
+.btn.sec{background:var(--grad-mid);color:#e6e6e6;border:1px solid #3a3a3a;font-weight:600}
+.card.p{display:block;padding:14px}.card.p .vt{padding:0 0 6px}.card.p .chip.sm{width:100%;white-space:normal;line-height:1.4}.mu{color:var(--mu);font-size:12px}.msg{color:var(--mu);font-size:12px;margin:8px 2px;min-height:15px}
+label.f{display:block;color:var(--mu);font-size:12px;margin:12px 0 5px;text-transform:uppercase;letter-spacing:.05em}
+.st3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}.stat{background:var(--grad-card);border:1px solid var(--line);padding:12px 10px;text-align:center}.stat b{display:block;font-size:22px;font-weight:600}.stat span{color:var(--mu);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.mn{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px}.mn .ic{width:44px}.mn div{text-transform:uppercase;letter-spacing:.06em;font-size:13px}
+.ch{display:block;width:100%;height:auto}.dn{display:flex;align-items:center;gap:18px;padding:14px}.dn svg{width:112px;height:112px;flex:none}.dn b{display:block;font-size:20px;font-weight:600}.dn span{color:var(--mu);font-size:12px}
+.an{padding:10px 14px}.an .r1{display:flex;justify-content:space-between;gap:10px}.an .r1 div:first-child{min-width:0;overflow-wrap:anywhere}.an .r1 div:last-child{flex:none;font-weight:600}.an .mu{margin-top:4px}.pbx{display:flex;align-items:center;gap:14px}
+.pbx .ac{flex:1;min-width:0}
+.pbx .a2{flex:none;min-width:34px;text-align:center;font-weight:600}
+.pb{height:3px;background:#2a2a2a;margin-top:8px}.pb i{display:block;height:3px;background:var(--grad-hi)}
+.dg{display:grid;gap:10px 6px;padding:14px}.dg div{text-align:center}.dg svg{width:100%;height:auto;display:block}.dg span{display:block;color:var(--mu);font-size:10px;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+nav{z-index:10;position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,#131313d1,#090909e8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;justify-content:space-around;padding:38px 0 calc(env(safe-area-inset-bottom) + 8px);-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 38px);mask-image:linear-gradient(180deg,transparent 0,#000 38px)}
+nav button{color:#6a6a6a;display:flex;align-items:center;justify-content:center;min-width:64px;min-height:44px}nav button.on{color:#f2f2f2}nav svg{width:22px;height:22px}
+:root{color-scheme:dark}
+.dt{display:flex;gap:8px}.dt-field{position:relative;display:block;flex:1;min-width:0}.dt-field input{display:block;flex:1;min-width:0;width:100%;height:44px;min-height:44px;padding:12px;font:inherit;font-size:14px;line-height:18px;-webkit-appearance:none;appearance:none}.dt-field input::-webkit-date-and-time-value{text-align:left;min-height:1.5em}.dt-field.is-empty input::-webkit-datetime-edit{color:transparent}.dt-field.is-empty input::-webkit-datetime-edit-fields-wrapper{color:transparent}.dt-field span{position:absolute;inset:0;display:flex;align-items:center;padding:0 12px;color:var(--mu);font-size:14px;line-height:18px;pointer-events:none}.dt-field:not(.is-empty) span{display:none}
+.tag.od{color:var(--tx)}
+@media (prefers-reduced-motion:reduce){#intro{animation:introOut .01s 1s forwards;opacity:1}#app{animation:appIn .01s 1s forwards}}
+/* Statement chips: halfway size, even aligned grid. */
+.st-controls .st-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:8px}
+.st-controls .st-options>.chip[data-st="cat:all"]{grid-column:1/-1}.st-controls .st-options.st-center{display:flex;flex-wrap:wrap;justify-content:center}.st-controls .st-options.st-center>.chip{flex:0 0 calc((100% - 24px)/4)}
+.st-controls .st-options>.chip{display:flex;align-items:center;justify-content:center;text-align:center;min-width:0;max-width:100%;height:auto;min-height:38px;box-sizing:border-box;padding:8px 4px;font-size:12px;line-height:16px;white-space:normal;overflow-wrap:anywhere}
+
+.src{color:var(--mu);font-size:9px;letter-spacing:.08em;text-transform:uppercase;line-height:1.8;margin-top:1px}.src.big{font-size:12px}
+/* Listo */
+#intro .mark{color:#f2f2f2;width:min(14.5vw,56px)}#intro .refl{transform:scaleY(-1);margin-top:2px;opacity:.14;-webkit-mask-image:linear-gradient(180deg,#000 0,transparent 70%);mask-image:linear-gradient(180deg,#000 0,transparent 70%)}
+.hlogo{color:#f2f2f2;width:31px}
+svg.wm{width:190px;top:-40px;left:-16px;opacity:.06}
+#pedit{scroll-margin-top:76px}
+.twrap .sumsh{position:absolute;right:0;top:2px}
+#sortb{z-index:10;position:fixed;left:16px;bottom:calc(env(safe-area-inset-bottom) + 110px);width:32px;height:32px;background:#1a1a1ccc;color:var(--mu);border:1px solid #ffffff1f;font-size:13px;font-weight:300;display:none;align-items:center;justify-content:center;padding:0}
+#sortb:active{color:var(--tx);border-color:#ffffff40}
+html.day #sortb{background:linear-gradient(180deg,#e2e2e2,#c9c9c9);color:#545454;border:0}
+#sortl{position:fixed;z-index:10;left:56px;bottom:calc(env(safe-area-inset-bottom) + 110px);height:32px;display:none;align-items:center;font-size:11px;letter-spacing:.04em;color:var(--mu);pointer-events:none}
+html.day #sortl{color:#737373}
+@media (min-width:700px){#sortb{left:calc(50% - 280px + 16px)}#sortl{left:calc(50% - 280px + 56px)}}
+</style></head><body>
+<div id="intro"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1113.6054499420054 1273.5991018999337" class="mark" role="img" aria-label="MAMBA logo"><path d="M1096,37.9L1094.6,36.3L1078.6,30.8L991.6,3.5L977.6,0L968.6,0.3L956.6,3.7L840.6,48.1L573.3,146.4L573.3,326.5L621.6,300.2L1002.6,93.3L1084.6,48.1L1095.7,38.9Z M1113.6,106.8L1112.6,105.7L1109.3,106.9L1013.6,155.8L828.6,252.9L660.6,338.8L589.6,376.7L580.2,382.9L605.6,405.2L760.8,525.9L769.8,531.9L774.6,533.1L778.6,532L789.5,523.9L837.6,480.8L1055.5,282.9L1064.3,267.9L1070.2,250.9L1113.6,106.9Z M573.3,1273.6L593.6,1257.6L627.5,1224.9L636.9,1213.9L642.5,1201.9L736.8,614.9L738.9,591.9L738.9,584.9L737.6,582.6L587.6,452.5L573.3,443.7Z M17.6,37.9L19,36.3L35,30.8L122,3.5L136,0L145,0.3L157,3.7L273,48.1L540.3,146.4L540.3,326.5L492,300.2L111,93.3L29,48.1L17.9,38.9Z M0,106.8L1,105.7L4.3,106.9L100,155.8L285,252.9L453,338.8L524,376.7L533.4,382.9L508,405.2L352.8,525.9L343.8,531.9L339,533.1L335,532L324.1,523.9L276,480.8L58.1,282.9L49.3,267.9L43.4,250.9L0,106.9Z M540.3,1273.6L520,1257.6L486.1,1224.9L476.7,1213.9L471.1,1201.9L376.8,614.9L374.7,591.9L374.7,584.9L376,582.6L526,452.5L540.3,443.7Z" fill="currentColor"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1113.6054499420054 1273.5991018999337" class="mark refl" role="img" aria-label="MAMBA logo"><path d="M1096,37.9L1094.6,36.3L1078.6,30.8L991.6,3.5L977.6,0L968.6,0.3L956.6,3.7L840.6,48.1L573.3,146.4L573.3,326.5L621.6,300.2L1002.6,93.3L1084.6,48.1L1095.7,38.9Z M1113.6,106.8L1112.6,105.7L1109.3,106.9L1013.6,155.8L828.6,252.9L660.6,338.8L589.6,376.7L580.2,382.9L605.6,405.2L760.8,525.9L769.8,531.9L774.6,533.1L778.6,532L789.5,523.9L837.6,480.8L1055.5,282.9L1064.3,267.9L1070.2,250.9L1113.6,106.9Z M573.3,1273.6L593.6,1257.6L627.5,1224.9L636.9,1213.9L642.5,1201.9L736.8,614.9L738.9,591.9L738.9,584.9L737.6,582.6L587.6,452.5L573.3,443.7Z M17.6,37.9L19,36.3L35,30.8L122,3.5L136,0L145,0.3L157,3.7L273,48.1L540.3,146.4L540.3,326.5L492,300.2L111,93.3L29,48.1L17.9,38.9Z M0,106.8L1,105.7L4.3,106.9L100,155.8L285,252.9L453,338.8L524,376.7L533.4,382.9L508,405.2L352.8,525.9L343.8,531.9L339,533.1L335,532L324.1,523.9L276,480.8L58.1,282.9L49.3,267.9L43.4,250.9L0,106.9Z M540.3,1273.6L520,1257.6L486.1,1224.9L476.7,1213.9L471.1,1201.9L376.8,614.9L374.7,591.9L374.7,584.9L376,582.6L526,452.5L540.3,443.7Z" fill="currentColor"/></svg><p>L I S T O</p></div>
+<div class="hd"><button class="logo" id="home" aria-label="Home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1113.6054499420054 1273.5991018999337" class="hlogo keep" role="img" aria-label="MAMBA logo"><path d="M1096,37.9L1094.6,36.3L1078.6,30.8L991.6,3.5L977.6,0L968.6,0.3L956.6,3.7L840.6,48.1L573.3,146.4L573.3,326.5L621.6,300.2L1002.6,93.3L1084.6,48.1L1095.7,38.9Z M1113.6,106.8L1112.6,105.7L1109.3,106.9L1013.6,155.8L828.6,252.9L660.6,338.8L589.6,376.7L580.2,382.9L605.6,405.2L760.8,525.9L769.8,531.9L774.6,533.1L778.6,532L789.5,523.9L837.6,480.8L1055.5,282.9L1064.3,267.9L1070.2,250.9L1113.6,106.9Z M573.3,1273.6L593.6,1257.6L627.5,1224.9L636.9,1213.9L642.5,1201.9L736.8,614.9L738.9,591.9L738.9,584.9L737.6,582.6L587.6,452.5L573.3,443.7Z M17.6,37.9L19,36.3L35,30.8L122,3.5L136,0L145,0.3L157,3.7L273,48.1L540.3,146.4L540.3,326.5L492,300.2L111,93.3L29,48.1L17.9,38.9Z M0,106.8L1,105.7L4.3,106.9L100,155.8L285,252.9L453,338.8L524,376.7L533.4,382.9L508,405.2L352.8,525.9L343.8,531.9L339,533.1L335,532L324.1,523.9L276,480.8L58.1,282.9L49.3,267.9L43.4,250.9L0,106.9Z M540.3,1273.6L520,1257.6L486.1,1224.9L476.7,1213.9L471.1,1201.9L376.8,614.9L374.7,591.9L374.7,584.9L376,582.6L526,452.5L540.3,443.7Z" fill="currentColor"/></svg></button></div><div id="app"><div class="hdsp"></div><div id="view"></div></div>
+<nav id="nav"><button data-go="sum" aria-label="The List"><svg viewBox="150 150 700 700" fill="none" stroke="currentColor" stroke-width="30" style="width:28px;height:28px"><circle cx="500" cy="500" r="320"/></svg></button><button data-go="components" aria-label="The Presets"><svg viewBox="150 150 700 700" fill="none" stroke="currentColor" stroke-width="30" style="width:28px;height:28px"><circle cx="500" cy="500" r="215"/></svg></button><button data-go="settings" aria-label="Settings"><svg viewBox="150 150 700 700" fill="none" stroke="currentColor" stroke-width="30" style="width:28px;height:28px"><circle cx="701.5" cy="701.5" r="115"/></svg></button></nav><button id="sortb" aria-label="Sort">&#9670;</button><span id="sortl"></span>
+<script src="../fb-config.js"></script><script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+import {getAI,getGenerativeModel,GoogleAIBackend} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-ai.js";
+import {initializeAppCheck,ReCaptchaEnterpriseProvider} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app-check.js";
+import {getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,sendEmailVerification,sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+import {getFirestore,doc,onSnapshot,runTransaction,setDoc,getDoc,getDocFromServer,waitForPendingWrites,deleteDoc} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+const fapp=initializeApp(window.MAMBA_FB||{}),auth=getAuth(fapp),db=getFirestore(fapp);
+if(window.MAMBA_APPCHECK_SITE_KEY)initializeAppCheck(fapp,{provider:new ReCaptchaEnterpriseProvider(window.MAMBA_APPCHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});
+const $=s=>document.querySelector(s),TK='mamba.listo.theme',DK='mamba.listo.data.v1';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const WM='<svg class="wm" viewBox="150 150 700 700" fill="none" stroke="currentColor" stroke-width="30"><circle cx="500" cy="500" r="320"/><circle cx="500" cy="500" r="215"/><circle cx="701.5" cy="701.5" r="115"/></svg>';
+const IC={
+ plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"><path d="M5 12h14M12 5v14"/></svg>',
+ x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+ pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20l4-1L19.5 7.5a2.1 2.1 0 0 0-3-3L5 16l-1 4z"/></svg>',
+ chk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+ grip:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="18" r="1.4"/></svg>',
+ share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"><path d="M12 4v11M7.5 8.5L12 4l4.5 4.5M5 13v6h14v-6"/></svg>'};
+let page='sum',comps=[],presets=[],sum=[],user=null,unsub=null,msg='',note='',syncAt=0,edP=null,imp=null,nsVal='',piVal='',piQ='',piU='',rstOpen=false,rchk=false,rtxt='',rnote='',clraOpen=false,clraTxt='',pcAsk=false,rpOpen=false,rpSel='',bkPend=null,bkNote='',cq='',shOpen=false,shareNote='',pxId='',pxTxt='',psId='',arId='',arTxt='';
+const theme=()=>localStorage.getItem(TK)||'auto';
+function applyTheme(){const t=theme(),d=t==='day'||(t==='auto'&&matchMedia('(prefers-color-scheme: light)').matches);document.documentElement.classList.toggle('day',d);const m=document.querySelector('meta[name=theme-color]');if(m)m.content=d?'#ededed':'#121212'}
+matchMedia('(prefers-color-scheme: light)').addEventListener&&matchMedia('(prefers-color-scheme: light)').addEventListener('change',applyTheme);
+/*SYNC*/
+const SK='mamba.listo.sync.v1',OWNP='mamba.listo.own.',ONK='mamba.listo.owner.v1',LK='mamba.listo.linked.v1',RSK='mamba.listo.resetAt.v1';
+const hsh=s=>{s=String(s);let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return s.length+':'+(h>>>0)};
+const jl=o=>{try{return JSON.parse(o)}catch(e){return null}};
+const canon=v=>Array.isArray(v)?'['+v.map(canon).join(',')+']':(v&&typeof v==='object')?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canon(v[k])).join(',')+'}':JSON.stringify(v===undefined?null:v);
+const freshSY=()=>({base:{},mt:{},del:{},ordH:'',ordAt:0,thH:'',thAt:0,init:0,synced:0});
+let SY=Object.assign(freshSY(),jl(localStorage.getItem(SK))||{}),OWNER=localStorage.getItem(ONK)||'';
+const saveSY=()=>localStorage.setItem(SK,JSON.stringify(SY));
+const saveData=()=>localStorage.setItem(DK,JSON.stringify({c:comps,p:presets,s:sum}));
+function unitsOf(){const u={};comps.forEach(x=>{if(x&&x.id)u['c:'+x.id]=x});presets.forEach(x=>{if(x&&x.id)u['p:'+x.id]=x});sum.forEach(x=>{if(x&&x.id)u['s:'+x.id]=x});return u}
+const ordOf=()=>({c:comps.map(x=>x.id),p:presets.map(x=>x.id),s:sum.map(x=>x.id)});
+function buildFrom(u,ord){const ks=Object.keys(u),order=(pre,arr)=>{const ids=(arr||[]).filter(id=>u[pre+':'+id]!==undefined);const seen=new Set(ids);ks.forEach(k=>{if(k.startsWith(pre+':')&&!seen.has(k.slice(2)))ids.push(k.slice(2))});return ids.map(id=>u[pre+':'+id])};return {c:order('c',ord&&ord.c),p:order('p',ord&&ord.p),s:order('s',ord&&ord.s)}}
+function stamp(ff){const u=unitsOf(),now=Date.now(),first=ff||!SY.init;
+ Object.keys(u).forEach(k=>{const h=hsh(JSON.stringify(u[k]));if(SY.base[k]!==h){SY.base[k]=h;SY.mt[k]=first?0:now;delete SY.del[k]}});
+ Object.keys(SY.base).forEach(k=>{if(!(k in u)){delete SY.base[k];delete SY.mt[k];SY.del[k]=now}});
+ const oh=hsh(JSON.stringify(ordOf()));if(oh!==SY.ordH){SY.ordH=oh;SY.ordAt=first?0:now}
+ const th=localStorage.getItem(TK)||'';if(th!==SY.thH){SY.thH=th;SY.thAt=first?0:now}
+ SY.init=1;saveSY()}
+const localState=()=>({u:unitsOf(),mt:Object.assign({},SY.mt),del:Object.assign({},SY.del),ord:ordOf(),ordAt:SY.ordAt,th:localStorage.getItem(TK)||'',thAt:SY.thAt});
+function decode(d){const m=jl(d.m);
+ if(d.ver===2&&m){const u={};(d.c||[]).forEach(x=>{if(x&&x.id)u['c:'+x.id]=x});(d.p||[]).forEach(x=>{if(x&&x.id)u['p:'+x.id]=x});(d.s||[]).forEach(x=>{if(x&&x.id)u['s:'+x.id]=x});return {u,mt:m.mt||{},del:m.del||{},ord:m.ord||{},ordAt:m.ordAt||0,th:d.theme||'',thAt:d.themeAt||0}}
+ return {u:{},mt:{},del:{},ord:{},ordAt:0,th:'',thAt:0}}
+function merge(L,R){const u={},mt={},del={},now=Date.now();
+ new Set([...Object.keys(L.u),...Object.keys(R.u),...Object.keys(L.del),...Object.keys(R.del)]).forEach(k=>{
+  const lm=k in L.u?(L.mt[k]||0):-1,rm=k in R.u?(R.mt[k]||0):-1,dl=Math.max(L.del[k]===undefined?-1:L.del[k],R.del[k]===undefined?-1:R.del[k]),best=Math.max(lm,rm);
+  if(dl>=0&&dl>=best){if(now-dl<60*864e5)del[k]=dl;return}
+  if(rm>=lm){u[k]=R.u[k];mt[k]=R.mt[k]||0}else{u[k]=L.u[k];mt[k]=L.mt[k]||0}});
+ return {u,mt,del,ord:L.ordAt>R.ordAt?L.ord:R.ord,ordAt:Math.max(L.ordAt,R.ordAt),th:L.thAt>R.thAt?L.th:R.th,thAt:Math.max(L.thAt,R.thAt)}}
+const sigOf=M=>hsh(canon([M.u,M.mt,M.del,M.ord,M.ordAt,M.th,M.thAt]));
+function applyM(M){const b=buildFrom(M.u,M.ord);comps=b.c;presets=b.p;sum=b.s;saveData();
+ SY.base={};Object.keys(M.u).forEach(k=>SY.base[k]=hsh(JSON.stringify(M.u[k])));SY.mt=M.mt;SY.del=M.del;SY.ordAt=M.ordAt;SY.ordH=hsh(JSON.stringify(ordOf()));SY.init=1;
+ if(M.th&&M.th!==(localStorage.getItem(TK)||'')){localStorage.setItem(TK,M.th);applyTheme()}
+ SY.thH=localStorage.getItem(TK)||'';SY.thAt=M.thAt;saveSY()}
+const encDoc=(M,ra)=>{const b=buildFrom(M.u,M.ord);return {ver:2,c:b.c,p:b.p,s:b.s,m:JSON.stringify({mt:M.mt,del:M.del,ord:M.ord,ordAt:M.ordAt}),theme:M.th||'',themeAt:M.thAt||0,updated:Date.now(),resetAt:ra}};
+let pushT=0,pushing=false,again=false,rev=0;
+function schedPush(d){if(user){clearTimeout(pushT);pushT=setTimeout(doSync,d===undefined?300:d)}}
+async function doSync(){if(!user)return;if(pushing){again=true;return}pushing=true;const me=user.uid,r0=rev;
+ try{stamp(!SY.synced);let out=null;const ref=doc(db,'mamba_listo_users',me);
+  await runTransaction(db,async tx=>{const s=await tx.get(ref),seen=+localStorage.getItem(RSK)||0,L=localState();
+   if(!s.exists()){out={M:L,ra:seen,write:true};return tx.set(ref,encDoc(L,seen),{merge:true})}
+   const d=s.data(),ra=d.resetAt||0,R=decode(d);
+   if(ra>seen){out={M:R,ra,write:false,adopt:true};return}
+   if(seen>ra){out={M:L,ra:seen,write:true};return tx.set(ref,encDoc(L,seen),{merge:true})}
+   const M=merge(L,R);out={M,ra,write:sigOf(M)!==sigOf(R)};if(out.write)tx.set(ref,encDoc(M,ra),{merge:true})});
+  if(user&&user.uid===me&&out&&rev!==r0)again=true;
+  else if(user&&user.uid===me&&out){if(out.adopt)localStorage.setItem(RSK,String(out.ra));
+   if(out.adopt||sigOf(out.M)!==sigOf(localState())){applyM(out.M);migrate();draw()}
+   SY.synced=1;saveSY();syncAt=Date.now();if(msg.indexOf('Sync')===0)msg='';if(page==='settings')draw()}
+ }catch(e){msg=(e&&(e.code==='unavailable'||e.code==='failed-precondition'||!navigator.onLine))?'Sync: offline. Changes are saved here and will sync when you are back online.':'Sync problem: '+((e&&e.code)||'unknown')+'. Your lists on this device are safe.';if(page==='settings')draw()}
+ pushing=false;if(again){again=false;schedPush(1500)}}
+function persist(){rev++;saveData();if(user){if(SY.synced)stamp();schedPush()}if(shCode)schedSharePush()}
+/*LIVE SHARE - owner shares Sum by link; anyone with the link sees and checks off the same list live.*/
+const SHK='mamba.listo.share.code.v1',SHSY='mamba.listo.share.sy.v1',JVK='mamba.listo.join.code.v1',JVC='mamba.listo.join.cache.v1';
+let shCode=localStorage.getItem(SHK)||'',jvCode=localStorage.getItem(JVK)||'';
+let shareBase={},shareMt={},shareDel={},shareOrdH='',shareOrdAt=0,shareDn={},shareDmt={},shareDordH='',shareDordAt=0,jvU={},jvOrd=[],jvMt={},jvDocDn={},jvDocDmt={},jvDn={},jvDmt={};
+let shUnsub=null,sharePrimed=false,jvPrimed=false,sharePushT=0,sharePushing=false,shareAgain=false,shareSeen=false,jvSeen=false;
+const _ssy=jl(localStorage.getItem(SHSY));if(_ssy){shareBase=_ssy.base||{};shareMt=_ssy.mt||{};shareDel=_ssy.del||{};shareOrdH=_ssy.ordH||'';shareOrdAt=_ssy.ordAt||0;shareDn=_ssy.dn||{};shareDmt=_ssy.dmt||{};shareDordH=_ssy.dordH||'';shareDordAt=_ssy.dordAt||0;sharePrimed=!!_ssy.p}
+function shareSySave(){try{localStorage.setItem(SHSY,JSON.stringify({base:shareBase,mt:shareMt,del:shareDel,ordH:shareOrdH,ordAt:shareOrdAt,dn:shareDn,dmt:shareDmt,dordH:shareDordH,dordAt:shareDordAt,p:sharePrimed?1:0}))}catch(e){}}
+function randCode(n){const a='abcdefghjkmnpqrstuvwxyz23456789',b=crypto.getRandomValues(new Uint8Array(n));let s='';for(let i=0;i<n;i++)s+=a[b[i]%a.length];return s}
+const encShare=(M,owner)=>({ver:1,owner:owner||'',u:M.u,mt:M.mt,del:M.del,ord:M.ord,ordAt:M.ordAt,dn:M.dn||{},dmt:M.dmt||{},dord:M.dord||[],dordAt:M.dordAt||0,updated:Date.now()});
+const decodeShare=d=>({u:d.u||{},mt:d.mt||{},del:d.del||{},ord:d.ord||[],ordAt:d.ordAt||0,dn:d.dn||{},dmt:d.dmt||{},dord:d.dord||[],dordAt:d.dordAt||0,th:'',thAt:0});
+/*Share-level merge: account merge handles items/order; check overrides (dn/dmt) merge per key by newer toggle time and are
+ pruned once the item's own version is newer (owner absorbed them) or the item is gone. dord is the owner's DISPLAYED order
+ (sort applied) so recipients mirror exactly what the owner sees; the owner keeps no recipient sorting controls.*/
+function mergeShare(L,R){const M=merge(L,R),dn={},dmt={};
+ new Set([...Object.keys(L.dn||{}),...Object.keys(R.dn||{})]).forEach(k=>{const lv=(L.dmt||{})[k],rv=(R.dmt||{})[k],la=chkTsOk(lv)?lv:0,ra=chkTsOk(rv)?rv:0,s=ra>=la?R:L;
+  if(s.dn&&s.dn[k]!==undefined&&(la||ra)){dn[k]=s.dn[k];dmt[k]=Math.max(la,ra)}});
+ Object.keys(dn).forEach(k=>{if(!chkTsOk(dmt[k])||!M.u['s:'+k]||(M.mt['s:'+k]||0)>=(dmt[k]||0)){delete dn[k];delete dmt[k]}});
+ M.dn=dn;M.dmt=dmt;M.dord=(L.dordAt||0)>(R.dordAt||0)?(L.dord||[]):(R.dord||[]);M.dordAt=Math.max(L.dordAt||0,R.dordAt||0);
+ return M}
+const sigShare=M=>hsh(canon([M.u,M.mt,M.del,M.ord,M.ordAt,M.dn||{},M.dmt||{},M.dord||[],M.dordAt||0]));
+/*Check-override timestamps must be real, positive, near-present numbers: rules can't range-check them, so every client
+ ignores malformed or far-future dmt and the owner's next push scrubs them from the doc - a crafted override can never
+ crash sync, stick forever, or override the owner's own checks.*/
+const chkTsOk=ts=>typeof ts==='number'&&isFinite(ts)&&ts>0&&ts<Date.now()+900000;
+/*Owner absorbs recipient check toggles into the authoritative items; the toggle override is then pruned by shareStamp.*/
+function absorbShareChecks(R){let ch=false;Object.keys(R.dn||{}).forEach(id=>{const it=sum.find(x=>x.id===id);if(!it)return;
+ if(chkTsOk(R.dmt[id])&&R.dmt[id]>(shareMt['s:'+id]||0)&&it.done!==!!R.dn[id]){it.done=!!R.dn[id];ch=true}});if(ch){saveData();if(page==='sum')draw()}return ch}
+function shareStamp(first){const u={},now=Date.now();sum.forEach(x=>{u['s:'+x.id]=x});
+ Object.keys(u).forEach(k=>{const h=hsh(JSON.stringify(u[k]));if(shareBase[k]!==h){shareBase[k]=h;shareMt[k]=first?0:now;delete shareDel[k]}});
+ Object.keys(shareBase).forEach(k=>{if(!(k in u)){delete shareBase[k];delete shareMt[k];shareDel[k]=now}});
+ const oh=hsh(JSON.stringify(sum.map(x=>x.id)));if(oh!==shareOrdH){shareOrdH=oh;shareOrdAt=first?0:now}
+ Object.keys(shareDn).forEach(id=>{if(!chkTsOk(shareDmt[id])||!u['s:'+id]||(shareMt['s:'+id]||0)>=(shareDmt[id]||0)){delete shareDn[id];delete shareDmt[id]}});
+ const dord=sortView(sum.slice(),sortS,x=>x.name).map(x=>x.id),dh=hsh(JSON.stringify(dord));if(dh!==shareDordH){shareDordH=dh;shareDordAt=first?0:now}
+ shareSySave()}
+function shareLocalState(){const u={};sum.forEach(x=>{u['s:'+x.id]=x});return {u,mt:Object.assign({},shareMt),del:Object.assign({},shareDel),ord:sum.map(x=>x.id),ordAt:shareOrdAt,dn:Object.assign({},shareDn),dmt:Object.assign({},shareDmt),dord:sortView(sum.slice(),sortS,x=>x.name).map(x=>x.id),dordAt:shareDordAt,th:'',thAt:0}}
+/*Recipients are check-only. They never write items: a check toggle is a pending local override (jvDn/jvDmt) pushed to the
+ doc's dn/dmt maps with a merge write, which the security rules restrict to exactly those fields - no add, remove, reorder,
+ or text edit is possible from a recipient, whatever the client does. The owner absorbs toggles into the real items.
+ Recipients mirror the owner's DISPLAYED order (dord, sort applied) without getting any sorting controls.*/
+function jvSave(){try{localStorage.setItem(JVC,JSON.stringify({u:jvU,ord:jvOrd,mt:jvMt,ddn:jvDocDn,ddmt:jvDocDmt,dn:jvDn,dmt:jvDmt}))}catch(e){}}
+function jvEffDone(id){const p=jvDn[id];if(p!==undefined&&(jvDmt[id]||0)>Math.max(chkTsOk(jvDocDmt[id])?jvDocDmt[id]:0,jvMt['s:'+id]||0))return p;
+ const d=jvDocDn[id];if(d!==undefined&&chkTsOk(jvDocDmt[id])&&jvDocDmt[id]>(jvMt['s:'+id]||0))return d;
+ return jvU['s:'+id]?!!jvU['s:'+id].done:false}
+function jvAdopt(M){jvU=M.u;jvMt=M.mt||{};jvDocDn=M.dn||{};jvDocDmt=M.dmt||{};
+ jvOrd=((M.dord&&M.dord.length)?M.dord:(M.ord||[])).filter(id=>M.u['s:'+id]);
+ Object.keys(M.u).forEach(k=>{if(k.indexOf('s:')===0&&jvOrd.indexOf(k.slice(2))<0)jvOrd.push(k.slice(2))});
+ Object.keys(jvDn).forEach(id=>{if(!M.u['s:'+id]){delete jvDn[id];delete jvDmt[id];return}
+  const docEff=(jvDocDn[id]!==undefined&&chkTsOk(jvDocDmt[id])&&jvDocDmt[id]>(jvMt['s:'+id]||0))?jvDocDn[id]:!!M.u['s:'+id].done;
+  if(docEff===jvDn[id]&&Math.max(jvDocDmt[id]||0,jvMt['s:'+id]||0)>=(jvDmt[id]||0)){delete jvDn[id];delete jvDmt[id]}});
+ jvSave()}
+function applyShareToSum(M){const ids=(M.ord||[]).filter(id=>M.u['s:'+id]);
+ Object.keys(M.u).forEach(k=>{if(k.indexOf('s:')===0&&ids.indexOf(k.slice(2))<0)ids.push(k.slice(2))});
+ sum=ids.map(id=>M.u['s:'+id]);
+ shareBase={};shareMt=M.mt;shareDel=M.del;shareOrdAt=M.ordAt;Object.keys(M.u).forEach(k=>shareBase[k]=hsh(JSON.stringify(M.u[k])));shareOrdH=hsh(JSON.stringify(sum.map(x=>x.id)));
+ shareSySave();saveData();if(user){if(SY.synced)stamp();schedPush()}}
+function schedSharePush(d){if(!shCode&&!jvCode)return;clearTimeout(sharePushT);sharePushT=setTimeout(sharePush,d===undefined?400:d)}
+async function sharePush(){const code=shCode||jvCode;if(!code)return;if(shCode&&!user)return;
+ if(sharePushing){shareAgain=true;return}sharePushing=true;
+ try{const ref=doc(db,'mamba_listo_shares',code);
+  if(shCode){shareStamp(!sharePrimed);const s=await getDocFromServer(ref);
+   if(!s.exists()){shareNote='That shared list is no longer live. Tap Share live to share a fresh link.';unlinkShare();if(page==='sum')draw();sharePushing=false;return}
+   else{const d=s.data();if(d.dead){shareNote='The shared list ended.';unlinkShare();draw();sharePushing=false;return}
+   if(d.owner&&d.owner!==user.uid){shareNote='That share belongs to another account. It was unlinked here.';unlinkShare();draw();sharePushing=false;return}
+    const R=decodeShare(d);absorbShareChecks(R);shareStamp(false);
+    const L=shareLocalState(),M=mergeShare(L,R);
+    if(sigShare(M)!==sigShare(R))await setDoc(ref,encShare(M,user.uid));
+    if(sigShare(M)!==sigShare(L)){applyShareToSum(M);if(page==='sum')draw()}}}
+  else{const s=await getDoc(ref);
+   if(!s.exists()){if(jvSeen&&!s.metadata.fromCache){shareNote='That shared list ended.';unlinkJoin();draw()}sharePushing=false;return}
+   if(s.data().dead){shareNote='That shared list ended.';unlinkJoin();draw();sharePushing=false;return}
+   const R=decodeShare(s.data());jvAdopt(R);
+   const upd={dn:{},dmt:{}};let any=false;
+   Object.keys(jvDn).forEach(id=>{if(!R.u['s:'+id])return;upd.dn[id]=jvDn[id];upd.dmt[id]=jvDmt[id]||Date.now();any=true});
+   if(any){upd.updated=Date.now();await setDoc(ref,upd,{merge:true})}
+   if(page==='sum')draw()}
+  if(shCode&&!sharePrimed){sharePrimed=true;shareSySave()}
+  shareNote=''
+ }catch(e){shareNote=(!navigator.onLine||(e&&e.code==='unavailable'))?'Share: offline. Changes here sync when you are back online.':'Share problem: '+((e&&e.code)||'unknown')+'.';if(jvCode&&Object.keys(jvDn).length)schedSharePush(3000)}
+ sharePushing=false;if(shareAgain){shareAgain=false;schedSharePush(1500)}}
+function startShare(){shCode=localStorage.getItem(SHK)||'';if(!shCode)return;
+ if(shUnsub)shUnsub();const ref=doc(db,'mamba_listo_shares',shCode);
+ shareSeen=true;
+ shUnsub=onSnapshot(ref,s=>{if(!shCode)return;
+  if(!s.exists()){if(shareSeen&&!s.metadata.fromCache){shareNote='That shared list is no longer live. Tap Share live to share a fresh link.';unlinkShare();if(page==='sum')draw()}return}
+  if(s.metadata.hasPendingWrites)return;
+  if(s.data().dead){shareNote='The shared list ended.';unlinkShare();if(page==='sum')draw();return}
+  const R=decodeShare(s.data());absorbShareChecks(R);shareStamp(!sharePrimed);sharePrimed=true;
+  const L=shareLocalState(),M=mergeShare(L,R);
+  if(sigShare(M)!==sigShare(L)){applyShareToSum(M);if(page==='sum')draw()}
+  if(sigShare(M)!==sigShare(R))schedSharePush(50);
+  recoverPending()},e=>{shareNote='Share sync unavailable: '+e.code;if(page==='sum')draw()})}
+function startJoin(){jvCode=localStorage.getItem(JVK)||'';if(!jvCode)return;
+ const c=jl(localStorage.getItem(JVC));if(c){jvU=c.u||{};jvOrd=c.ord||[];jvMt=c.mt||{};jvDocDn=c.ddn||{};jvDocDmt=c.ddmt||{};jvDn=c.dn||{};jvDmt=c.dmt||{}}jvSeen=!!c;
+ if(jvCode&&jvCode===shCode){recoverSelfJoin().catch(()=>{try{unlinkJoin()}catch(e){}}).then(()=>{startShare();if(page==='sum')draw()});return}
+ if(shUnsub)shUnsub();const ref=doc(db,'mamba_listo_shares',jvCode);
+ shUnsub=onSnapshot(ref,s=>{if(!jvCode)return;
+  if(!s.exists()){if(s.metadata.fromCache){if(!jvSeen){shareNote='Connecting to the shared list\u2026';if(page==='sum')draw()}return}
+   if(jvSeen){shareNote='That shared list ended.';unlinkJoin()}else{shareNote='This shared list is not available. Ask the owner to open Listo and share a fresh link.';unlinkJoin()}if(page==='sum')draw();return}
+  jvSeen=true;shareNote='';
+  if(s.metadata.hasPendingWrites)return;
+  if(s.data().dead){shareNote='That shared list ended.';unlinkJoin();if(page==='sum')draw();return}
+  const R=decodeShare(s.data());jvAdopt(R);
+  if(Object.keys(jvDn).length)schedSharePush(50);
+  if(page==='sum')draw()},e=>{shareNote='Share sync unavailable: '+e.code;if(page==='sum')draw()})}
+async function createShare(){if(shCode)return;const code=randCode(16),ref=doc(db,'mamba_listo_shares',code);
+ try{const s=await getDoc(ref);if(s.exists()){shareNote='Try that again.';draw();return}}catch(e){}
+ shCode=code;try{localStorage.setItem(SHK,code)}catch(e){}
+ shareBase={};shareMt={};shareDel={};shareOrdH='';shareOrdAt=0;sharePrimed=false;shareSeen=false;
+ try{shareStamp(true);
+  /*The write promise pends while offline instead of failing, so wait for the server ack with a timeout: if it is slow,
+   say so and finish setting up when the write lands; only a server-acknowledged share is treated as live.*/
+  let slow=false;
+  const w=setDoc(ref,encShare(shareLocalState(),user.uid)).then(()=>waitForPendingWrites(db));
+  try{await Promise.race([w,new Promise((_,rj)=>setTimeout(()=>rj(new Error('slow')),10000))])}
+  catch(e2){if(!(e2&&e2.message==='slow'))throw e2;slow=true}
+  if(slow){shareNote='Still connecting - the share goes live once you are online. Send the link when it says Shared live.';
+   w.then(()=>{if(shCode!==code)return;sharePrimed=true;shareSySave();startShare();if(shareNote.indexOf('Still connecting')===0||shareNote.indexOf('You seem to be offline')===0)shareNote='';if(page==='sum')draw()})
+    .catch(()=>{if(shCode!==code)return;shareNote='Could not create the shared list. Check your connection and try again.';unlinkShare();if(page==='sum')draw()});
+   draw();return}
+  sharePrimed=true;shareSySave()}
+ catch(e){shareNote='Could not create the shared list. Check your connection and try again.';unlinkShare();draw();return}
+ startShare()}
+async function endShare(){const code=shCode;if(!code)return false;
+ try{await setDoc(doc(db,'mamba_listo_shares',code),{dead:true,u:{},mt:{},del:{},ord:[],ordAt:0,updated:Date.now()},{merge:true});unlinkShare();return true}
+ catch(e){shareNote='Could not end the share'+(user?'':'. Sign in first.')+'.';draw();return false}}
+function unlinkShare(){shCode='';try{localStorage.removeItem(SHK)}catch(e){}try{localStorage.removeItem(SHSY)}catch(e){}
+ shareBase={};shareMt={};shareDel={};shareOrdH='';shareOrdAt=0;sharePrimed=false;shareSeen=false;
+ if(shUnsub){shUnsub();shUnsub=null}}
+function joinShare(code){code=String(code||'').toLowerCase().replace(/[^a-z0-9]/g,'');if(!code)return;
+ if(code===shCode)return;
+ unlinkJoin();jvCode=code;try{localStorage.setItem(JVK,code)}catch(e){}
+ try{localStorage.removeItem(JVC)}catch(e){}
+ startJoin()}
+function unlinkJoin(){jvCode='';jvU={};jvOrd=[];jvMt={};jvDocDn={};jvDocDmt={};jvDn={};jvDmt={};jvSeen=false;
+ try{localStorage.removeItem(JVK)}catch(e){}try{localStorage.removeItem(JVC)}catch(e){}
+ if(shUnsub){shUnsub();shUnsub=null}}
+/*SELF-JOIN RECOVERY: a device that joined its OWN share (own link tapped) heals here. Non-destructive: both copies
+ snapshotted first. Restores run ONLY against verified shared-doc deletion history; when the doc is unreachable nothing
+ is restored - the device leaves the stuck partner view and reconciliation is deferred (snapshot + pending marker) until a
+ later load can verify. Items older than the 60-day tombstone horizon are never auto-restored: their deletion history may
+ have expired, so they stay preserved in the recovery snapshot. Restored items keep their own creation time so the sync
+ merge still arbitrates; the versioned owner/shared copy wins every field conflict (no check-merging).*/
+const RPK='mamba.listo.recovery.pending.v1';
+function restoreFromJoinCache(su,so,docDel){const del=Object.assign({},SY.del,shareDel),ids=(so||[]).slice(),kept=[];
+ Object.keys(su||{}).forEach(k=>{const id=k.slice(2);if(ids.indexOf(id)<0)ids.push(id)});
+ ids.forEach(id=>{const it=su['s:'+id];if(!it||!it.id)return;
+  if(sum.some(x=>x.id===id))return;
+  if(del['s:'+id]!==undefined||(docDel&&docDel['s:'+id]!==undefined))return;
+  if(+it.at&&Date.now()-+it.at>60*864e5)return;
+  sum.push(it);kept.push({id:id,at:+it.at||Date.now(),h:hsh(JSON.stringify(it))})});
+ if(kept.length){persist();kept.forEach(k=>{SY.base['s:'+k.id]=k.h;SY.mt['s:'+k.id]=k.at;shareBase['s:'+k.id]=k.h;shareMt['s:'+k.id]=k.at});saveSY();shareSySave();
+  shareNote=kept.length===1?'Restored 1 item added while viewing the shared list.':'Restored '+kept.length+' items added while viewing the shared list.'}}
+async function fetchShareDel(){try{const s=await Promise.race([getDoc(doc(db,'mamba_listo_shares',shCode)),new Promise(r=>setTimeout(()=>r(null),10000))]);if(s&&s.exists())return s.data().dead?{}:(s.data().del||{})}catch(e){}return null}
+async function recoverSelfJoin(){const snapKey='mamba.listo.recovery.'+Date.now();
+ try{localStorage.setItem(snapKey,JSON.stringify({jv:jl(localStorage.getItem(JVC)),sy:jl(localStorage.getItem(SHSY))}))}catch(e){}
+ const su=jvU,so=jvOrd,docDel=await fetchShareDel();
+ unlinkJoin();
+ if(docDel===null){try{localStorage.setItem(RPK,JSON.stringify({code:shCode,snap:snapKey}))}catch(e){}return}
+ restoreFromJoinCache(su,so,docDel)}
+async function recoverPending(){const p=jl(localStorage.getItem(RPK));if(!p||!p.code||p.code!==shCode)return;
+ const snap=jl(localStorage.getItem(p.snap));if(!snap||!snap.jv){try{localStorage.removeItem(RPK)}catch(e){}return}
+ const docDel=await fetchShareDel();if(docDel===null)return;
+ try{localStorage.removeItem(RPK)}catch(e){}
+ restoreFromJoinCache(snap.jv.u||{},snap.jv.ord||[],docDel);if(page==='sum')draw()}
+let shMsg='';
+function shareUrl(code){return location.origin+location.pathname+'#share='+code}
+/*Server truth for a share code: live, dead, missing, or offline/unknown. getDocFromServer bypasses the local cache so
+ an offline cache-miss can never be mistaken for a deleted share. Used before handing a link to anyone and before a
+ fresh Share live tap decides whether the current code is still good.*/
+async function shareServerState(code){try{
+ const s=await Promise.race([getDocFromServer(doc(db,'mamba_listo_shares',code)),new Promise((_,rj)=>setTimeout(()=>rj(new Error('tmo')),8000))]);
+ if(!s.exists())return 'missing';
+ return s.data().dead?'dead':'live';
+}catch(e){return 'offline'}}
+async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){
+ try{const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(e2){return false}}}
+/*Never hand out a link the server cannot serve: the create write can pend offline while the code is already stored,
+ so sending checks the doc first. Ended stays ended; a stale/never-live code is explained, never silently republished.*/
+async function shareLink(){const code=shCode;if(!code)return;
+ shareNote='Checking the share link\u2026';draw();
+ const st=await shareServerState(code);
+ if(st==='live'){shareNote='';const u=shareUrl(code);
+  if(navigator.share){try{await navigator.share({title:'Listo shared list',text:'Join my live Listo list:',url:u});return}catch(e){if(e&&e.name==='AbortError')return}}
+  if(await copyText(u))shareNote='Link copied. Send it to the person you are shopping with.';else shareNote=u;draw();return}
+ if(st==='offline'){shareNote='You seem to be offline. Reconnect, then send the link.';draw();return}
+ if(st==='dead'){unlinkShare();shareNote='That share was ended. Tap Share live to start a fresh one.';draw();return}
+ if(!sharePrimed){shareNote='Still connecting - the share goes live once you are online. Send the link when it says Shared live.';draw();return}
+ shareNote='That share link is not live. Tap Share live to create a fresh one.';draw()}
+function stashOwner(o){localStorage.setItem(OWNP+(o||'anon'),JSON.stringify({c:comps,p:presets,s:sum,sy:SY}))}
+function loadOwner(o){const s=jl(localStorage.getItem(OWNP+(o||'anon')));if(s){comps=s.c||[];presets=s.p||[];sum=s.s||[];SY=Object.assign(freshSY(),s.sy||{})}else{comps=[];presets=[];sum=[];SY=freshSY()}
+ saveData();saveSY();migrate()}
+function switchOwner(n){if(n===OWNER)return;
+ const had=localStorage.getItem(OWNP+(n||'anon'));
+ const linked=localStorage.getItem(LK);
+ if(OWNER===''&&n!==''&&!had&&!linked){saveData();saveSY()}
+ else{stashOwner(OWNER);loadOwner(n)}
+ OWNER=n;localStorage.setItem(ONK,OWNER);if(n)localStorage.setItem(LK,'1')}
+['visibilitychange','focus','pageshow','online'].forEach(ev=>addEventListener(ev,()=>{if(!document.hidden){if(user)schedPush(400);if(shCode||jvCode)schedSharePush(400)}}));
+/*DATA*/
+/*CAP: saved capitalization formatting. Titles/names title case; notes/descriptions sentence case. *...* kept verbatim.*/
+const CAPKT=new Set('MNQ NQ ES MES YM MYM RTY CL GC SI HG ZB ZN SPX NDX DJI VIX DXY EUR USD GBP JPY AUD CAD NZD CHF GDP CPI PPI NFP FOMC ATR OTE RTH ETH ICT SMT FVG BOS USDA ON AM PM R'.split(' ')),CAPKS=new Set([...CAPKT].filter(x=>x!=='ON')),CAPSM=new Set('a an and as at but by for in nor of on or per so the to vs via with de la el'.split(' '));
+function capProt(w,sent){const c=String(w).replace(/^[^A-Za-z0-9]+|[^A-Za-z0-9]+$/g,'');if(!c)return w;
+ if(/\d/.test(c))return w;
+ const up=c.toUpperCase();if((sent?CAPKS:CAPKT).has(up))return w.replace(c,up);
+ if(/[a-z]/.test(c)&&/[A-Z]/.test(c.slice(1)))return w;
+ if(/^[A-Z][A-Z+]*\+$/.test(c))return w;
+ return null}
+const capStrip=s=>String(s==null?'':s).replace(/\*([^*]*)\*/g,'$1');
+function capTitle(s){const parts=String(s==null?'':s).split(/(\*[^*]*\*)/);
+ const total=parts.reduce((a,p,pi)=>a+(pi%2?0:p.split(/\s+/).filter(Boolean).length),0);let k=0;
+ return parts.map((p,pi)=>{if(pi%2)return p;
+ return p.split(/(\s+)/).map(t=>{if(!t||/^\s+$/.test(t))return t;k++;const pr=capProt(t,false);if(pr)return pr;
+  const lw=t.toLowerCase(),core=lw.replace(/^[^a-z0-9]+|[^a-z0-9]+$/g,'');
+  if(k>1&&k<total&&CAPSM.has(core))return lw;
+  return lw.replace(/[a-z]/,m=>m.toUpperCase())}).join('')}).join('')}
+function capSent(s){return String(s==null?'':s).split(/(\*[^*]*\*)/).map((p,pi)=>{if(pi%2)return p;
+ const t=p.split(/(\s+)/).map(w=>{if(!w||/^\s+$/.test(w))return w;const pr=capProt(w,true);return pr||w.toLowerCase()}).join('');
+ return t.replace(/(^|[.!?]|\n)(\s*)([a-z])/g,(m,a,b,c)=>a+b+c.toUpperCase()).replace(/\bi\b/g,'I')}).join('')}
+const normName=s=>String(s||'').trim();
+const pTitle=s=>capTitle(s);const pShow=s=>capStrip(pTitle(s));
+function presetItems(p){if(Array.isArray(p.items))return p.items;return (p.ids||[]).map(id=>{const c=comps.find(c=>c.id===id);return c?c.name:null}).filter(Boolean)}
+const fmtN=n=>{const r=Math.round(n*100)/100;return String(r)};
+const itName=it=>typeof it==='string'?it:String(it&&it.n||'');
+const normU=u=>String(u||'').trim().toLowerCase();
+const compatU=(a,b)=>{a=normU(a);b=normU(b);return a===b||a+'s'===b||a===b+'s'};
+const pType=p=>{const t=p?String(p.type||''):'';return(t==='recipe'||t==='instructions'||t==='grocery'||t==='grocery-instructions')?t:'list'};
+const pSection=p=>{const t=pType(p);return t==='recipe'?'recipes':(t==='grocery'||t==='grocery-instructions')?'groceries':'lists'};
+const pMult=p=>(typeof p.mult==='number'&&isFinite(p.mult)&&p.mult>0)?p.mult:1;
+const pServ=p=>(typeof p.serv==='number'&&isFinite(p.serv)&&p.serv>0)?p.serv:null;
+const pDserv=p=>(typeof p.dserv==='number'&&isFinite(p.dserv)&&p.dserv>0)?p.dserv:null;
+const pFactor=p=>{if(pType(p)!=='recipe')return pMult(p);const sv=pServ(p),dv=pDserv(p);return (sv&&dv)?dv/sv:pMult(p)};
+const TLBL={list:'List',instructions:'Instructed list',grocery:'Grocery','grocery-instructions':'Instructed grocery',recipe:'Recipe'};
+const pQty=(p,name)=>{const e=(p.qty||{})[String(name).toLowerCase()];return (e&&typeof e.q==='number'&&isFinite(e.q)&&e.q>0)?{q:e.q,u:String(e.u||'')}:null};
+const pQtyAny=(p,it)=>{const e=pQty(p,itName(it));if(e)return e;const o=(typeof it==='object'&&it)?it:null;return (o&&typeof o.q==='number'&&isFinite(o.q)&&o.q>0)?{q:o.q,u:String(o.u||'')}:null};
+const srcLbl=s=>{const p=presets.find(y=>normName(y.name).toLowerCase()===String(s).toLowerCase());return p?TLBL[pType(p)]+' \u2022 '+capStrip(p.name):capStrip(String(s))};
+const addLbl=p=>{const ct=pType(p),f=pFactor(p);if(ct==='recipe'){const sv=pServ(p),dv=pDserv(p);if(sv&&dv&&sv!==dv)return 'Add all to The List \u00b7 serves '+fmtN(dv)}return f!==1?'Add all to The List at '+fmtN(f)+'\u00d7':'Add all to The List'};
+function sumAmt(x){const cs=(x.qtys||[]).filter(c=>c&&typeof c.q==='number'&&isFinite(c.q));
+ if(cs.length>1&&!cs.every(c=>compatU(c.u,cs[0].u)))return cs.map(c=>fmtN(c.q)+(c.u?' '+c.u:'')).join(' + ');
+ if(cs.length){const tot=cs.reduce((a,c)=>a+c.q,0),uu=cs.map(c=>String(c.u||'')).sort((a,b)=>b.length-a.length)[0];return fmtN(tot)+(uu?' '+uu:'')}
+ return x.qty?String(x.qty):''}
+function sumSub(x){const cs=(x.qtys||[]).filter(c=>c&&typeof c.q==='number'&&isFinite(c.q));
+ const srcs=(x.src||[]).map(String),legacy=x.qty?String(x.qty):'';
+ if(cs.length>1&&!cs.every(c=>compatU(c.u,cs[0].u))){
+  const cov=new Set(cs.map(c=>String(c.s).toLowerCase())),others=srcs.filter(s=>!cov.has(s.toLowerCase()));
+  return cs.map(c=>esc(fmtN(c.q)+(c.u?' '+c.u:''))+' from '+esc(srcLbl(c.s))).join(' + ')+(others.length?' \u00b7 from '+others.map(s2=>esc(srcLbl(s2))).join(' \u00b7 '):'')+(legacy?' \u00b7 earlier: '+esc(legacy):'')}
+ let h='';
+ if(cs.length&&legacy)h='earlier: '+esc(legacy);
+ if(srcs.length)h=h?h+' \u00b7 from '+srcs.map(s2=>esc(srcLbl(s2))).join(' \u00b7 '):'from '+srcs.map(s2=>esc(srcLbl(s2))).join(' \u00b7 ');
+ return h}
+function migrate(){let ch=false;presets.forEach(p=>{
+ if(!Array.isArray(p.items)){p.items=presetItems(p);if(p.ids)delete p.ids;ch=true}
+ if(p.items.some(it=>typeof it==='object'&&it)){const q=Object.assign({},p.qty);
+  p.items=p.items.map(it=>{if(typeof it!=='object'||!it)return it;const nm=itName(it);
+   if(nm&&typeof it.q==='number'&&isFinite(it.q)&&it.q>0&&!q[nm.toLowerCase()])q[nm.toLowerCase()]={q:it.q,u:String(it.u||'')};
+   return nm}).filter(n2=>n2);
+  if(Object.keys(q).length)p.qty=q;ch=true}});if(comps.length){comps.forEach(c=>{const ex=presets.find(p=>p.id==='mig-'+c.id);if(ex){if(!ex.items.some(n=>n.toLowerCase()===c.name.toLowerCase()))ex.items.push(c.name)}else presets.push({id:'mig-'+c.id,name:c.name,items:[c.name],at:c.at||Date.now()})});comps=[];ch=true}if(ch)persist()}
+function addToSum(name,src,qc){name=capTitle(normName(name));if(!name)return;src=capTitle(normName(src));const ex=sum.find(x=>x.name.toLowerCase()===name.toLowerCase());
+ if(ex){if(src&&!(ex.src||[]).length&&!(ex.qtys||[]).length)ex.keepManual=true;
+  const was=ex.done;if(was)ex.done=false;let added=false;
+  if(src&&!(ex.src||[]).some(s=>String(s).toLowerCase()===src.toLowerCase())){ex.src=(ex.src||[]).concat([src]);added=true}
+  if(src&&qc){ex.qtys=(ex.qtys||[]).filter(c=>String(c.s).toLowerCase()!==src.toLowerCase());ex.qtys.push({s:src,q:qc.q,u:String(qc.u||'')});added=true}
+  note=was?'Back on the list.':(added?'':'Already in The List.')}
+ else{const it={id:uid(),name,done:false,at:Date.now()};if(src)it.src=[src];if(src&&qc)it.qtys=[{s:src,q:qc.q,u:String(qc.u||'')}];sum.push(it);note=''}
+ persist()}
+/*REMOVE PRESET FROM SUM*/
+function contribNames(){const m={},ord=[];sum.forEach(x=>{(x.src||[]).forEach(s=>{const k=String(s).toLowerCase();if(!m[k]){m[k]={key:k,name:String(s),total:0,only:0,shared:0};ord.push(k)}m[k].total++;if(x.src.length===1)m[k].only++;else m[k].shared++})});return ord.map(k=>m[k])}
+function dropSrc(k){let t=0;sum=sum.filter(x=>{const hasS=(x.src||[]).some(s2=>String(s2).toLowerCase()===k),hasC=(x.qtys||[]).some(c2=>String(c2.s).toLowerCase()===k);
+ if(!hasS&&!hasC)return true;t++;
+ x.src=(x.src||[]).filter(s2=>String(s2).toLowerCase()!==k);
+ x.qtys=(x.qtys||[]).filter(c2=>String(c2.s).toLowerCase()!==k);
+ if(!x.src.length&&!x.qtys.length&&!x.keepManual)return false;
+ return true});return t}
+function rpHtml(cn){if(!rpSel)return '<div class="card p" style="margin-top:14px"><div>Remove a preset from The List</div><div class="mu">Lines only that preset added are removed. Lines it shares with other presets stay, without its label. The saved preset stays in The Presets.</div>'+cn.map(c=>'<div class="row" style="margin-top:10px"><button class="btn sec" data-rp="'+esc(c.key)+'" style="flex:1;margin-top:0;text-align:left">'+esc(pShow(c.name))+' \u00b7 '+c.total+(c.total===1?' line':' lines')+'</button></div>').join('')+'<div class="row" style="margin-top:10px"><button class="btn sec" id="rpno" style="flex:1;margin-top:0">Cancel</button></div></div>';
+ const c=cn.find(x=>x.key===rpSel);if(!c){rpSel='';return ''}
+ return '<div class="card p" style="margin-top:14px"><div>Remove '+esc(pShow(c.name))+' from The List?</div><div class="mu">'+(c.only?'This removes the '+c.only+(c.only===1?' line':' lines')+' that only '+esc(pShow(c.name))+' added. ':'')+(c.shared?c.shared+' shared '+(c.shared===1?'line stays':'lines stay')+' for your other presets, without the '+esc(pShow(c.name))+' label. ':'')+'The saved preset stays in The Presets.</div><div class="row" style="margin-top:10px"><button class="btn" id="rpgo" style="flex:1;margin-top:0">Remove '+esc(pShow(c.name))+'</button><button class="btn sec" id="rpno" style="flex:1;margin-top:0">Cancel</button></div></div>'}
+/*IMPORT*/
+const AIM='gemini-3.5-flash';let _aiM=null;
+const aiModel=()=>{if(!_aiM)_aiM=getGenerativeModel(getAI(fapp,{backend:new GoogleAIBackend()}),{model:AIM,generationConfig:{responseMimeType:'application/json'}});return _aiM};
+const b64File=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=()=>rej(new Error('read'));r.readAsDataURL(f)});
+const imgPart=async f=>{const bmp=await createImageBitmap(f);const s=Math.min(1,1568/Math.max(bmp.width,bmp.height));
+ const cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(bmp.width*s));cv.height=Math.max(1,Math.round(bmp.height*s));
+ cv.getContext('2d').drawImage(bmp,0,0,cv.width,cv.height);
+ return {inlineData:{mimeType:'image/jpeg',data:cv.toDataURL('image/jpeg',0.85).split(',')[1]}}};
+const IMP_PROMPT='You are reading a photo, scan, PDF or text note that contains a shopping list, packing list, to-do list, or recipe. Return ONLY JSON of this exact shape:\n{"kind":"grocery"|"list"|"recipe","name":string,"description":string,"servings":number|null,"hasInstructions":boolean,"items":[{"name":string,"quantity":number|null,"unit":string|null}],"instructions":[string]}\nRules: kind is "recipe" for cooking or baking with ingredients and steps, "grocery" for items you buy at a store, otherwise "list". name is a short title; guess a fitting one if the source has none. quantity is a plain number (1/2 becomes 0.5); null when there is no quantity. unit is the measurement word (cup, lb, tsp); null when there is none. Keep instructions in order; use [] when there are none. description is one short sentence, or "". servings is the number of servings for a recipe, otherwise null. If you cannot find any list or recipe items, return {"kind":"list","name":"","description":"","servings":null,"hasInstructions":false,"items":[],"instructions":[]}.';
+async function detect(parts){const r=await aiModel().generateContent([{text:IMP_PROMPT},...parts]);
+ const t=r.response.text();const d=JSON.parse(String(t).replace(/^\s*```(?:json)?\s*/i,'').replace(/\s*```\s*$/,''));
+ return d&&typeof d==='object'?d:{}}
+function importErr(e){const m=String(e&&(e.code||e.message||e)||'');
+ if(/quota|429|rate|exhausted/i.test(m))return 'The free detection limit was reached for now. It resets daily - try again later.';
+ if(/unavailable|network|failed to fetch|offline/i.test(m))return 'Could not reach the detection service. Check your connection and try again.';
+ if(/permission|403|app check|appcheck|config not found/i.test(m))return 'Detection is not fully set up yet. Try again in a few minutes.';
+ return 'Detection did not work on that file. Try a clearer photo or another file.'}
+async function importFile(f){if(imp)return;imp={stage:'Reading '+(f.name||'photo')+'\u2026',sub:f.size>3000000?'Large file - this can take a little longer.':''};note='';draw();
+ try{let parts=[];const nm=String(f.name||'').toLowerCase();
+  if(/^image\//.test(f.type)||/\.(png|jpe?g|webp|gif|heic|heif)$/.test(nm))parts=[await imgPart(f)];
+  else if(f.type==='application/pdf'||/\.pdf$/.test(nm))parts=[{inlineData:{mimeType:'application/pdf',data:await b64File(f)}}];
+  else{const t=(await f.text()).slice(0,20000);if(!t.trim())throw new Error('empty');parts=[{text:'FILE CONTENTS:\n'+t}]}
+  imp={stage:'Detecting the list\u2026',sub:'Usually a few seconds.'};draw();
+  openImportDraft(await detect(parts));
+ }catch(e){console.warn('Listo import error:',e&&(e.code||''),e&&(e.message||e));imp=null;note=importErr(e);draw()}}
+function openImportDraft(d){const seen=new Set(),items=[],qty={};
+ (Array.isArray(d.items)?d.items:[]).forEach(it=>{const n=normName(it&&it.name);if(!n)return;const k=n.toLowerCase();if(seen.has(k))return;seen.add(k);items.push(n);
+  if(typeof it.quantity==='number'&&isFinite(it.quantity)&&it.quantity>0)qty[k]={q:Math.round(it.quantity*1000)/1000,u:normName(it.unit)}});
+ if(!items.length){imp=null;note='Could not find a list in that. Try a clearer photo or another file.';draw();return}
+ const kind=d.kind==='recipe'?'recipe':(d.kind==='grocery'?'grocery':'list');
+ const instr=(Array.isArray(d.instructions)?d.instructions:[]).map(s=>String(s||'').trim()).filter(Boolean).map(s=>s.replace(/^\s*\d+\s*[.)]\s*/,''));
+ const hasI=(d.hasInstructions&&instr.length>0)||(kind==='recipe'&&instr.length>0);
+ const type=kind==='recipe'?'recipe':(hasI?(kind==='grocery'?'grocery-instructions':'instructions'):kind);
+ const sv=(typeof d.servings==='number'&&isFinite(d.servings)&&d.servings>0)?Math.max(1,Math.min(48,Math.round(d.servings))):null;
+ edP={id:'',name:normName(d.name)||'Imported '+TLBL[type].toLowerCase(),items,type,desc:normName(d.description),instr:instr.map((s,i)=>(i+1)+'. '+s).join('\n'),mult:1,serv:sv||1,dserv:sv||1,servSet:type==='recipe'?!!sv:true,qty};
+ imp=null;piVal='';piQ='';piU='';pcAsk=false;
+ note='Found '+items.length+(items.length===1?' item':' items')+'. Check the draft, fix anything, then Save.';
+ page='components';draw();const pe=$('#pedit');if(pe)pe.scrollIntoView()}
+/*SORT + DRAG*/
+const SORTS=[['custom','Custom'],['custom','Custom',1],['name','Name'],['name','Name',1],['added','Date added'],['added','Date added',1]];
+const SORTS_C=[['custom','Custom'],['custom','Custom',1],['name','Name'],['name','Name',1],['added','Date Added'],['added','Date Added',1],['modified','Date Modified'],['modified','Date Modified',1],['gcustom','List Type'],['gcustom','List Type',1],['gxcustom','List Type + Custom'],['gxcustom','List Type + Custom',1],['gname','List Type + Name'],['gname','List Type + Name',1],['gadded','List Type + Date Added'],['gadded','List Type + Date Added',1],['gmodified','List Type + Date Modified'],['gmodified','List Type + Date Modified',1]];
+const TORD=['list','instructions','grocery','grocery-instructions','recipe'];
+let sortC=+localStorage.getItem('mamba.listo.sort.c')||0,sortS=+localStorage.getItem('mamba.listo.sort.s')||0;if(!(sortC>=0&&sortC<SORTS_C.length))sortC=0;if(!(sortS>=0&&sortS<SORTS.length))sortS=0;
+const sortView=(arr,si,nm,tp)=>{const S=tp?SORTS_C:SORTS,s=S[si]||S[0],k=s[0],rev=s[2]===1,a=arr.slice();
+ const byName=(x,y)=>String(nm(x)).toLowerCase().localeCompare(String(nm(y)).toLowerCase());
+ const byAdded=(x,y)=>(y.at||0)-(x.at||0);
+ const byMod=(x,y)=>((y.edited||y.at||0)-(x.edited||x.at||0));
+ if(k==='name')a.sort(byName);
+ else if(k==='added')a.sort(byAdded);
+ else if(k==='modified'&&tp)a.sort(byMod);
+ else if(tp&&k[0]==='g'){const crit=k==='gname'?byName:(k==='gadded'?byAdded:(k==='gmodified'?byMod:(x,y)=>0));
+  a.sort((x,y)=>{const d=TORD.indexOf(tp(x))-TORD.indexOf(tp(y));return d||crit(x,y)})}
+ if(rev)a.reverse();return a};
+function sortUI(){const b=$('#sortb'),l=$('#sortl');if(!b)return;
+ const on=page==='sum'?!jvCode&&sum.length>1:(page==='components'&&!capStrip(cq).replace(/\*/g,'').trim()&&presets.filter(p=>!p.arch).length>1);
+ b.style.display=on?'flex':'none';l.style.display=on?'flex':'none';if(!on)return;
+ const s=(page==='sum'?SORTS:SORTS_C)[page==='sum'?sortS:sortC]||SORTS[0];l.textContent=s[1]+(s[2]===1?' \u2191':' \u2193')}
+function dragReorder(e,li,ul,done){if(!li||!ul)return;e.preventDefault();const pid=e.pointerId,y0=e.clientY,off0=li.offsetTop;let moved=false;li.classList.add('drag');
+ const move=ev=>{if(ev.pointerId!==pid)return;moved=true;li.style.transform='translateY('+((ev.clientY-y0)+(off0-li.offsetTop))+'px)';const cy=ev.clientY;let pv=li.previousElementSibling;while(pv){const r=pv.getBoundingClientRect();if(cy<r.top+r.height/2){ul.insertBefore(li,pv);pv=li.previousElementSibling}else pv=null}let nx=li.nextElementSibling;while(nx){const r=nx.getBoundingClientRect();if(cy>r.top+r.height/2){ul.insertBefore(nx,li);nx=li.nextElementSibling}else nx=null}};
+ const up=ev=>{if(ev.pointerId!==undefined&&ev.pointerId!==pid)return;document.removeEventListener('pointermove',move,true);document.removeEventListener('pointerup',up,true);document.removeEventListener('pointercancel',up,true);li.classList.remove('drag');li.style.transform='';if(!moved)return;done([...ul.children].map(c=>c.dataset.iid).filter(Boolean))};
+ document.addEventListener('pointermove',move,true);document.addEventListener('pointerup',up,true);document.addEventListener('pointercancel',up,true)}
+const wireGrips=(ul,done)=>{if(!ul)return;ul.querySelectorAll('.grip').forEach(g=>{g.onclick=e=>e.preventDefault();g.addEventListener('pointerdown',e=>dragReorder(e,g.closest('li'),ul,done))})};
+/*DRAW*/
+const TITLES={sum:'The List',components:'The Presets',settings:'Settings'};
+function drawSum(v){let h='<div class="twrap">'+WM+'<h1>The List</h1>'+'</div>';
+ const shBanner=(shCode?'<div class="card p" style="margin-top:14px"><div class="vt"><div class="t"><b>'+(sharePrimed?'Shared live':'Share pending')+'</b></div><div class="vt-r"><button class="lnk" data-sh="link" style="padding:6px 4px">Send link</button><button class="lnk" data-sh="end" style="padding:6px 4px">End share</button></div></div><div class="mu">Anyone with the link sees this list and can check items off. Ending the share removes their access. Your list stays with you.</div>'+(shareNote?'<div class="msg" style="margin:6px 0 0">'+esc(shareNote)+'</div>':'')+'</div>':jvCode?'<div class="card p" style="margin-top:14px"><div class="vt"><div class="t"><b>Shared live</b></div><div class="vt-r"><button class="lnk" data-sh="leave" style="padding:6px 4px">Leave</button></div></div><div class="mu">Shared with you by link. Check items on or off - it syncs to everyone who has it. Only the list owner adds, removes, or sorts items.</div>'+(shareNote?'<div class="msg" style="margin:6px 0 0">'+esc(shareNote)+'</div>':'')+'</div>':'');
+ h+=jvCode?'':'<h2>Add</h2><div class="add"><input id="ns" autocapitalize="sentences" spellcheck="false" value="'+esc(nsVal)+'"><button class="ic" id="nsb" aria-label="Add">'+IC.plus+'</button></div><div class="msg">'+esc(note)+'</div>';
+ const viewItems=jvCode?jvOrd.map(id=>{const x=jvU['s:'+id];return x?Object.assign({},x,{done:jvEffDone(id)}):null}).filter(Boolean):sum;
+ if(!viewItems.length){clraOpen=false;clraTxt='';rpOpen=false;rpSel='';h+='<div class="empty">Nothing here yet.<br>'+(jvCode?'Items the owner adds appear here live.':'Add from The Presets.')+'</div>'+shBanner+((shareNote&&!shCode&&!jvCode)?'<div class="msg" style="margin:6px 0 0">'+esc(shareNote)+'</div>':'')}
+ else{const svw=jvCode?viewItems:sortView(viewItems,sortS,x=>x.name);h+='<ul id="sumlist">'+svw.map(x=>{const amt=sumAmt(x),sub=sumSub(x);return '<li class="card'+(x.done?' done':'')+'" data-iid="'+x.id+'"><button class="ck" data-t="'+x.id+'" aria-label="Check">'+IC.chk+'</button><div class="t">'+(amt?esc(amt)+' \u2022 ':'')+esc(capStrip(x.name))+(sub?'<div class="src">'+capStrip(sub)+'</div>':'')+'</div>'+(jvCode?'':'<button class="ic" data-x="'+x.id+'" aria-label="Remove">'+IC.x+'</button>'+(sortS===0?'<button class="ic grip" type="button" aria-label="Drag to reorder">'+IC.grip+'</button>':''))+'</li>'}).join('')+'</ul>';h+=shBanner;
+  if(!jvCode){if(shOpen)h+='<div class="card p" style="margin-top:14px"><div>Share The List</div><div class="mu">Send a picture of the list, or share it live so you can both check items off together.</div><div class="row" style="margin-top:10px"><button class="btn sec" data-sh="img" style="flex:1;margin-top:0">Image</button><button class="btn sec" data-sh="imgbox" style="flex:1;margin-top:0">Image with checkboxes</button></div><div class="row" style="margin-top:8px"><button class="btn sec" data-sh="live" style="flex:1;margin-top:0">'+(shCode?'Send the live link':'Share live')+'</button><button class="btn sec" data-sh="x" style="flex:1;margin-top:0">Cancel</button></div></div>';
+   else{const sm=shMsg||(!shCode?shareNote:'');
+   h+='<div class="msg" style="margin:10px 0 0;'+(sm?'':'visibility:hidden')+'">'+esc(sm||'\u00a0')+'</div>';
+   h+='<div class="row" style="margin-top:6px"><button class="btn sec" data-sh="open" style="flex:1;margin-top:0">Share</button></div>';}}
+  const cn=jvCode?[]:contribNames();if(rpSel&&!cn.some(c=>c.key===rpSel))rpSel='';if(!cn.length){rpOpen=false;rpSel=''}
+  if(rpOpen)h+=rpHtml(cn);
+  else if(!clraOpen)h+=(cn.length?'<div class="row" style="margin-top:14px"><button class="btn sec" id="rpo" style="flex:1;margin-top:0">Remove a preset</button></div>':'')+(jvCode?'':'<div class="row" style="margin-top:14px">'+(viewItems.some(x=>x.done)?'<button class="btn sec" id="clrd" style="margin-top:0">Clear checked</button>':'')+'<button class="btn sec" id="clra" style="margin-top:0">Clear all</button></div>');
+  else{const cok=clraTxt.trim().toUpperCase()==='CLEAR';
+   h+='<div class="card p" style="margin-top:14px"><div>This erases '+sum.length+' items in The List.</div><div class="mu">Your presets in The Presets are not touched. This cannot be undone.</div><label class="f">Type CLEAR to confirm</label><input id="clrat" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" value="'+esc(clraTxt)+'"><div class="row" style="margin-top:10px"><button class="btn'+(cok?'':' sec')+'" id="clrago" style="flex:1;margin-top:0;'+(cok?'':'opacity:.4')+'">Erase '+sum.length+' items</button><button class="btn sec" id="clrano" style="flex:1;margin-top:0">Cancel</button></div></div>'}}
+ v.innerHTML=h;
+ const ns=$('#ns');if(ns){ns.oninput=()=>{nsVal=ns.value};const go=()=>{addToSum(ns.value);ns.value='';nsVal='';draw()};$('#nsb').onclick=go;ns.onkeydown=e=>{if(e.key==='Enter')go()}}
+ v.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{if(jvCode){const id=b.dataset.t;if(!jvU['s:'+id])return;jvDn[id]=!jvEffDone(id);jvDmt[id]=Date.now();jvSave();schedSharePush();draw();return}const x=sum.find(y=>y.id===b.dataset.t);if(x){x.done=!x.done;persist()}draw()});
+ v.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{if(jvCode)return;sum=sum.filter(y=>y.id!==b.dataset.x);persist();draw()});
+ wireGrips($('#sumlist'),seq=>{if(jvCode)return;const byId={};sum.forEach(x=>byId[x.id]=x);sum=seq.map(id=>byId[id]).filter(Boolean);persist();draw()});
+ const cd=$('#clrd');if(cd)cd.onclick=()=>{if(jvCode)return;sum=sum.filter(x=>!x.done);persist();draw()};
+ v.querySelectorAll('[data-sh]').forEach(b=>b.onclick=async()=>{const a=b.dataset.sh;
+  if(a==='open'){shMsg='';shOpen=!shOpen;clraOpen=false;clraTxt='';rpOpen=false;rpSel='';draw()}
+  else if(a==='x'){shOpen=false;draw()}
+  else if(a==='img'||a==='imgbox'){shOpen=false;shMsg='Preparing the image\u2026';draw();shareSumImg(a==='imgbox')}
+  else if(a==='live'){shOpen=false;shMsg='';shareNote='';
+   if(shCode){shMsg='Checking the share\u2026';draw();const st=await shareServerState(shCode);shMsg='';
+    if(st==='live'){shareLink();return}
+    if(st==='offline'){shMsg='You seem to be offline. Reconnect, then tap Share live.';draw();return}
+    if(st==='missing'&&!sharePrimed){shareNote='Still connecting - the share goes live once you are online. Send the link when it says Shared live.';draw();return}
+    /*Ended or never-live code (it had its chance and is confirmed not live): drop it and create a fresh share below -
+     this tap is the explicit fresh-share action. A still-queued write for the old code may land later; that doc is
+     orphaned but harmless, and its link was never sent.*/
+    unlinkShare()}
+   if(!user){shMsg='Sign in on Settings first, then tap Share live again.';draw();return}
+   shMsg='Creating the shared list\u2026';draw();await createShare();shMsg='';draw()}
+  else if(a==='link'){shareLink()}
+  else if(a==='end'){shareNote='Ending the share\u2026';draw();const okE=await endShare();shareNote='';shareNote=okE?'Share ended. Your list is private again.':'';draw()}
+  else if(a==='leave'){unlinkJoin();shareNote='';note='Left the shared list.';draw()}});
+ const ca=$('#clra');if(ca)ca.onclick=()=>{clraOpen=true;clraTxt='';draw()};
+ const ct=$('#clrat');if(ct)ct.oninput=()=>{clraTxt=ct.value;const ok=clraTxt.trim().toUpperCase()==='CLEAR',b=$('#clrago');if(b){b.classList.toggle('sec',!ok);b.style.opacity=ok?'':'.4'}};
+ const cno=$('#clrano');if(cno)cno.onclick=()=>{clraOpen=false;clraTxt='';draw()};
+ const cg=$('#clrago');if(cg)cg.onclick=()=>{if(clraTxt.trim().toUpperCase()==='CLEAR'){sum=[];persist();clraOpen=false;clraTxt='';note='The List cleared.'}draw()}
+ const rpo=$('#rpo');if(rpo)rpo.onclick=()=>{rpOpen=true;rpSel='';clraOpen=false;clraTxt='';draw()};
+ v.querySelectorAll('[data-rp]').forEach(b=>b.onclick=()=>{rpSel=b.dataset.rp;draw()});
+ const rpno=$('#rpno');if(rpno)rpno.onclick=()=>{rpOpen=false;rpSel='';draw()};
+ const rpgo=$('#rpgo');if(rpgo)rpgo.onclick=()=>{const k=rpSel;const c=contribNames().find(x=>x.key===k),nm=c?c.name:k;
+  dropSrc(k);
+  rpOpen=false;rpSel='';note='Removed '+pShow(nm)+' from The List.';persist();draw()}}
+function drawComponents(v){let h='<div class="twrap">'+WM+'<h1>The Presets</h1></div><div class="msg">'+esc(note)+'</div>';
+ const cq2=edP?'':capStrip(cq).replace(/\*/g,'').trim().toLowerCase();
+ const pHit=p=>{if(!cq2)return true;return capStrip([p.name,p.desc||'',p.instr||''].concat(presetItems(p).map(itName)).join('\n')).replace(/\*/g,'').toLowerCase().indexOf(cq2)>=0};
+ if(!edP&&presets.length)h+='<div class="add" style="margin:2px 0 6px"><input id="cq" placeholder="Search presets" autocomplete="off" autocapitalize="off" spellcheck="false" value="'+esc(cq)+'">'+(cq?'<button class="ic" id="cqx" aria-label="Clear search">'+IC.x+'</button>':'')+'</div>';
+ if(!edP){h+='<h2>Import</h2>';
+  if(imp)h+='<div class="card p" style="margin-bottom:24px"><div>'+esc(imp.stage)+'</div>'+(imp.sub?'<div class="mu" style="margin-top:4px">'+esc(imp.sub)+'</div>':'')+'</div>';
+  else h+='<div style="margin:0 0 24px"><button class="btn sec" id="impb" style="margin-top:0">Import from photo or file</button><div class="mu" style="margin:8px 2px 0">Take a photo or choose a photo, PDF or text file. Listo reads it into a draft you check before saving.</div></div>'}
+ h+='<input type="file" id="impf" accept="image/*,.heic,.heif,application/pdf,.pdf,text/plain,text/markdown,text/csv,.txt,.md,.csv" style="display:none">';
+ const act=presets.filter(p=>!p.arch&&pHit(p)),arc=presets.filter(p=>p.arch&&pHit(p));
+ const arCard=p=>{const ok=arTxt.trim().toUpperCase()==='ARCHIVE';return '<li class="card p"><div>Archive <b>'+esc(pShow(p.name))+'</b>?</div><div class="mu">It moves out of your active presets into Archived. The List is not touched, and you can restore it any time.</div><label class="f">Type ARCHIVE to confirm</label><input id="art" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" value="'+esc(arTxt)+'"><div class="row" style="margin-top:10px"><button class="btn'+(ok?'':' sec')+'" id="argo" style="flex:1;margin-top:0;'+(ok?'':'opacity:.4')+'">Archive preset</button><button class="btn sec" id="arno" style="flex:1;margin-top:0">Cancel</button></div></li>'};
+ const psCard=p=>'<li class="card p"><div>Share <b>'+esc(pShow(p.name))+'</b></div><div class="mu">Pick a picture style. Checkboxes sit left of each item so you can print it and check things off.</div><div class="row" style="margin-top:10px"><button class="btn sec" data-psi="img" style="flex:1;margin-top:0">Image</button><button class="btn sec" data-psi="box" style="flex:1;margin-top:0">Image with checkboxes</button></div><div class="row" style="margin-top:8px"><button class="btn sec" data-psi="x" style="flex:1;margin-top:0">Cancel</button></div></li>';
+ const pxCard=p=>{const k=normName(p.name).toLowerCase(),inSum=k?sum.some(x=>(x.src||[]).some(s2=>String(s2).toLowerCase()===k)||(x.qtys||[]).some(c2=>String(c2.s).toLowerCase()===k)):false,ok=pxTxt.trim().toUpperCase()==='DELETE';
+  return '<li class="card p"><div>Delete <b>'+esc(pShow(p.name))+'</b>?</div><div class="mu">'+(inSum?'Its lines in The List are removed too; lines shared with other presets stay, without its label.':'The List is not touched.')+' This cannot be undone.</div><label class="f">Type DELETE to confirm</label><input id="pxt" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" value="'+esc(pxTxt)+'"><div class="row" style="margin-top:10px"><button class="btn'+(ok?'':' sec')+'" id="pxgo" style="flex:1;margin-top:0;'+(ok?'':'opacity:.4')+'">Delete preset</button><button class="btn sec" id="pxno" style="flex:1;margin-top:0">Cancel</button></div></li>'};
+ const pCard=p=>{if(p.id===pxId)return pxCard(p);if(p.id===arId)return arCard(p);if(p.id===psId)return psCard(p);const ct=pType(p),f=pFactor(p);
+  const names=presetItems(p).map(it=>{const e=pQtyAny(p,it);return (e?'('+fmtN(e.q*f)+(e.u?' '+esc(e.u):'')+') ':'')+esc(capStrip(itName(it)))}).join('<br>');
+  const meta=[];if(ct==='instructions'||ct==='grocery-instructions')meta.push(TLBL[ct]);
+  if(ct==='recipe'){const sv=pServ(p),dv=pDserv(p);
+   if(sv&&dv){if(sv!==dv)meta.push('Servings '+fmtN(sv)+' \u2192 '+fmtN(dv));else if(sv!==1)meta.push('Servings '+fmtN(sv))}
+   else if(f!==1)meta.push('Scaling \u00d7'+fmtN(f))}
+  else if(f!==1)meta.push('Multiplier '+fmtN(f)+'\u00d7');
+  let ch='<li class="card p" data-iid="'+p.id+'"><div class="vt"><div class="t"><b>'+esc(pShow(p.name))+'</b></div><div class="vt-r"><button class="ic" data-pe="'+p.id+'" aria-label="Edit">'+IC.pen+'</button><button class="ic" data-psh="'+p.id+'" aria-label="Save or share as image">'+IC.share+'</button><button class="ic" data-px="'+p.id+'" aria-label="Delete">'+IC.x+'</button>'+((sortC===0||sortC===10)&&!cq2?'<button class="ic grip" type="button" aria-label="Drag to reorder">'+IC.grip+'</button>':'')+'</div></div>';
+  if(meta.length)ch+='<div class="src">'+meta.map(esc).join(' \u00b7 ')+'</div>';
+  if(p.desc)ch+='<div class="src big" style="margin-top:8px">Description</div><div class="mu" style="margin:2px 0 0">'+esc(capStrip(p.desc)).replace(/\n/g,'<br>')+'</div>';
+  ch+='<div class="mu" style="margin:6px 0 10px">'+(names||'No items')+'</div>';
+  if(ct!=='list'&&ct!=='grocery'&&p.instr)ch+='<div class="src big">Instructions</div><div class="mu" style="margin:2px 0 10px">'+esc(capStrip(p.instr)).replace(/\n/g,'<br>')+'</div>';
+  ch+=(jvCode?'':'<button class="chip sm" data-pa="'+p.id+'">'+addLbl(p)+'</button>')+'<button class="lnk" data-par="'+p.id+'" style="padding:8px 4px 0">Archive</button></li>';return ch};
+ [['lists','Lists','list','New list'],['groceries','Groceries','grocery','New grocery'],['recipes','Recipes','recipe','New recipe']].forEach(sc=>{
+  const lst=sortView(act.filter(p=>pSection(p)===sc[0]),sortC,p=>pTitle(p.name),pType);
+  if(cq2&&!lst.length)return;
+  h+='<h2>'+sc[1]+'</h2>';
+  if(lst.length)h+='<ul data-sec="'+sc[0]+'">'+lst.map(pCard).join('')+'</ul>';
+  else h+='<div class="mu" style="margin:-4px 2px 14px">None yet.</div>';
+  if(!edP)h+='<div style="margin:0 0 24px"><button class="btn sec" data-np="'+sc[2]+'" style="margin-top:0">'+sc[3]+'</button></div>'});
+ if(cq2&&!act.length&&!arc.length)h+='<div class="empty">Nothing matches "'+esc(capStrip(cq).trim())+'".</div>';
+ if(arc.length&&!edP)h+='<h2>Archived</h2><ul>'+arc.map(p=>{if(p.id===pxId)return pxCard(p);if(p.id===arId)return arCard(p);if(p.id===psId)return psCard(p);const names=presetItems(p).map(it=>esc(capStrip(itName(it)))).join('<br>');
+  return '<li class="card p"><div class="vt"><div class="t"><b>'+esc(pShow(p.name))+'</b></div><div class="vt-r"><button class="ic" data-psh="'+p.id+'" aria-label="Save or share as image">'+IC.share+'</button><button class="ic" data-px="'+p.id+'" aria-label="Delete">'+IC.x+'</button></div></div><div class="src">'+esc(TLBL[pType(p)])+'</div><div class="mu" style="margin:6px 0 10px">'+(names||'No items')+'</div><button class="chip sm" data-pur="'+p.id+'">Restore</button></li>'}).join('')+'</ul>';
+ if(edP){const et=edP.type||'list',ef=et==='recipe'?(edP.dserv||1)/(edP.serv||1):(edP.mult||1);
+  h+='<div class="card p" id="pedit"><label class="f">Preset name</label><input id="pn" autocapitalize="sentences" spellcheck="false" value="'+esc(edP.name)+'">'
+  +'<label class="f">List type</label><div class="row add-kind">'+['list','instructions','grocery','grocery-instructions','recipe'].map(k=>'<button class="chip'+(et===k?' on':'')+'" data-pt="'+k+'">'+TLBL[k]+'</button>').join('')+'</div>'
+  +'<label class="f">Description</label><textarea id="pd" rows="2" autocapitalize="sentences">'+esc(edP.desc||'')+'</textarea>'
+  +(et!=='list'&&et!=='grocery'?'<label class="f">Instructions</label><textarea id="pin" rows="4" autocapitalize="sentences">'+esc(edP.instr||'')+'</textarea>':'')
+  +(et==='recipe'
+   ?'<label class="f">Original servings</label><div class="row" style="align-items:center"><button class="chip" id="osd" style="flex:0 0 72px">&minus;</button><div style="flex:1;text-align:center;font-weight:600">'+fmtN(edP.serv||1)+'</div><button class="chip" id="osu" style="flex:0 0 72px">+</button></div>'
+    +(edP.servSet?'':'<div class="mu" style="margin:6px 0 0">Original servings not set yet - 1 is a placeholder. Quantities stay as entered'+(ef!==1?'; the \u00d7'+fmtN(ef)+' scaling is preserved.':'.')+'</div>')
+    +'<label class="f">Desired servings</label><div class="row" style="align-items:center"><button class="chip" id="dsd" style="flex:0 0 72px">&minus;</button><div style="flex:1;text-align:center;font-weight:600">'+fmtN(edP.dserv||1)+'</div><button class="chip" id="dsu" style="flex:0 0 72px">+</button></div><div class="mu" style="margin-top:6px">'+(ef!==1?'Quantities are saved at the original servings, cooked at \u00d7'+fmtN(ef)+'.':'Quantities are saved at the original servings.')+'</div>'
+   :'<label class="f">Multiplier</label><div class="row" style="align-items:center"><button class="chip" id="mdn" style="flex:0 0 72px">&minus;</button><div style="flex:1;text-align:center;font-weight:600">'+fmtN(edP.mult||1)+'\u00d7</div><button class="chip" id="mup" style="flex:0 0 72px">+</button></div><div class="mu" style="margin-top:6px">Scales every quantity. Items are saved at 1\u00d7.</div>')
+  +'<label class="f">Items</label>'
+  +(edP.items.length?'<div class="mu" style="margin:-2px 0 2px">Amount'+(et==='recipe'?' at original servings':' at 1\u00d7')+' and unit, on each line.</div>'+edP.items.map((n,i)=>{const e=(edP.qty||{})[String(n).toLowerCase()];return '<div class="vt"><div class="t" style="flex:1;min-width:24%;overflow-wrap:anywhere;line-height:1.5">'+esc(n)+(ef!==1?'<div class="src" data-qh="'+i+'">'+(e?'= '+fmtN(e.q*ef)+(e.u?' '+esc(e.u):''):'')+'</div>':'')+'</div><div class="qed"><input class="qn" data-eq="'+i+'" inputmode="decimal" autocomplete="off" aria-label="Quantity for '+esc(n)+'" value="'+(e?esc(fmtN(e.q)):'')+'"><input class="qu" data-eu="'+i+'" autocapitalize="off" spellcheck="false" aria-label="Unit for '+esc(n)+'" value="'+(e?esc(e.u):'')+'"></div><div class="vt-r"><button class="ic" data-pr="'+i+'" aria-label="Remove">'+IC.x+'</button></div></div>'}).join(''):'<div class="mu">Nothing in this preset yet.</div>')
+  +'<div class="add"><input id="pi" autocapitalize="sentences" spellcheck="false" value="'+esc(piVal)+'"></div>'
+  +'<div class="row" style="margin-top:8px;align-items:flex-end"><div style="flex:1;min-width:0"><label class="f" style="margin-top:0">'+(et==='recipe'?'Qty at original servings':'Qty at 1\u00d7')+'</label><input id="pq" inputmode="decimal" autocomplete="off" style="height:44px;min-height:44px" value="'+esc(piQ)+'"></div><div style="flex:1.4;min-width:0"><label class="f" style="margin-top:0">Unit</label><input id="pu" autocapitalize="off" spellcheck="false" style="height:44px;min-height:44px" value="'+esc(piU)+'"></div><button class="ic" id="pib" aria-label="Add item">'+IC.plus+'</button></div>'
+  +(pcAsk?'<div style="margin-top:12px">Discard your unsaved changes?</div><div class="row" style="margin-top:10px"><button class="btn sec" id="pck" style="flex:1;margin-top:0">Keep editing</button><button class="btn sec" id="pcd" style="flex:1;margin-top:0">Discard changes</button></div>':'<div class="row" style="margin-top:12px"><button class="btn" id="ps" style="margin-top:0">Save</button><button class="btn sec" id="pc" style="margin-top:0">Cancel</button></div>')+'</div>'}
+ v.innerHTML=h;
+ const imf=$('#impf');if(imf)imf.onchange=()=>{const f=imf.files&&imf.files[0];imf.value='';if(f)importFile(f)};
+ const imb=$('#impb');if(imb)imb.onclick=()=>{const f2=$('#impf');if(f2)f2.click()};
+ const cqi=$('#cq');if(cqi){cqi.oninput=()=>{const pos=cqi.selectionStart||0;cq=cqi.value;draw();const n2=$('#cq');if(n2){n2.focus();try{n2.setSelectionRange(pos,pos)}catch(e){}}};
+  const cqx=$('#cqx');if(cqx)cqx.onclick=()=>{cq='';draw();const n3=$('#cq');if(n3)n3.focus()}}
+ v.querySelectorAll('[data-np]').forEach(b=>b.onclick=()=>{edP={id:'',name:'',items:[],type:b.dataset.np,desc:'',instr:'',mult:1,serv:1,dserv:1,servSet:true,qty:{}};piVal='';piQ='';piU='';note='';pcAsk=false;pxId='';pxTxt='';draw();const pe=$('#pedit');if(pe)pe.scrollIntoView()});
+ v.querySelectorAll('[data-pe]').forEach(b=>b.onclick=()=>{const p=presets.find(y=>y.id===b.dataset.pe);const svr=pServ(p);edP={id:p.id,name:pTitle(p.name),items:presetItems(p).map(itName),type:pType(p),desc:p.desc||'',instr:p.instr||'',mult:pMult(p),serv:svr||1,dserv:pDserv(p)||Math.max(1,Math.round(pMult(p)*(svr||1))),servSet:!!svr,qty:{}};
+  presetItems(p).forEach(it=>{const e=pQtyAny(p,it);if(e)edP.qty[itName(it).toLowerCase()]={q:e.q,u:e.u}});
+  piVal='';piQ='';piU='';note='';pcAsk=false;pxId='';pxTxt='';draw();const pe=$('#pedit');if(pe)pe.scrollIntoView()});
+ v.querySelectorAll('[data-px]').forEach(b=>b.onclick=()=>{if(!presets.some(y=>y.id===b.dataset.px))return;psId='';arId='';pxId=b.dataset.px;pxTxt='';note='';draw()});
+ const pxt=$('#pxt');if(pxt)pxt.oninput=()=>{pxTxt=pxt.value;const ok=pxTxt.trim().toUpperCase()==='DELETE',bb=$('#pxgo');if(bb){bb.classList.toggle('sec',!ok);bb.style.opacity=ok?'':'.4'}};
+ const pxno=$('#pxno');if(pxno)pxno.onclick=()=>{pxId='';pxTxt='';draw()};
+ const pxgo=$('#pxgo');if(pxgo)pxgo.onclick=()=>{if(pxTxt.trim().toUpperCase()!=='DELETE')return;const p=presets.find(y=>y.id===pxId);pxId='';pxTxt='';if(p){presets=presets.filter(y=>y.id!==p.id);const k=normName(p.name).toLowerCase(),t=k?dropSrc(k):0;note='Deleted '+pShow(p.name)+'.'+(t?' Removed it from The List too.':'');persist()}draw()};
+ v.querySelectorAll('[data-par]').forEach(b=>b.onclick=()=>{if(!presets.some(y=>y.id===b.dataset.par))return;psId='';pxId='';pxTxt='';arId=b.dataset.par;arTxt='';note='';draw()});
+ const art=$('#art');if(art)art.oninput=()=>{arTxt=art.value;const ok=arTxt.trim().toUpperCase()==='ARCHIVE',bb=$('#argo');if(bb){bb.classList.toggle('sec',!ok);bb.style.opacity=ok?'':'.4'}};
+ const arno=$('#arno');if(arno)arno.onclick=()=>{arId='';arTxt='';draw()};
+ const argo=$('#argo');if(argo)argo.onclick=()=>{if(arTxt.trim().toUpperCase()!=='ARCHIVE')return;const p=presets.find(y=>y.id===arId);arId='';arTxt='';if(p){p.arch=Date.now();note='Archived '+pShow(p.name)+'. Find it under Archived.';persist()}draw()};
+ v.querySelectorAll('[data-pur]').forEach(b=>b.onclick=()=>{const p=presets.find(y=>y.id===b.dataset.pur);if(p){delete p.arch;note='Restored '+pShow(p.name)+'.';persist()}draw()});
+ v.querySelectorAll('[data-pa]').forEach(b=>b.onclick=()=>{const p=presets.find(y=>y.id===b.dataset.pa);if(p){const f=pFactor(p),ct=pType(p);
+  const addFn=addToSum;
+  presetItems(p).forEach(it=>{const e=pQtyAny(p,it);addFn(itName(it),p.name,e?{q:e.q*f,u:e.u}:null)});
+  const sva=pServ(p),dva=pDserv(p);
+  note=f===1?'Added to The List.':(ct==='recipe'&&sva&&dva?'Added to The List \u00b7 serves '+fmtN(dva)+'.':'Added to The List at '+fmtN(f)+'\u00d7.')}draw()});
+ v.querySelectorAll('[data-psh]').forEach(b=>b.onclick=()=>{const p=presets.find(y=>y.id===b.dataset.psh);if(p){psId=p.id;pxId='';arId='';draw()}});
+ v.querySelectorAll('[data-psi]').forEach(b=>b.onclick=()=>{const p=presets.find(y=>y.id===psId),a=b.dataset.psi;psId='';if(p&&a!=='x')sharePreset(p,a==='box');else draw()});
+ v.querySelectorAll('ul[data-sec]').forEach(ul=>{const sec=ul.dataset.sec;wireGrips(ul,seq=>{const byId={};presets.forEach(p=>byId[p.id]=p);
+  if(sortC===10){const vIds=sortView(presets.filter(p=>pSection(p)===sec&&!p.arch),sortC,p=>pTitle(p.name),pType).map(p=>p.id);
+   if(seq.length!==vIds.length||seq.some((id,i)=>!byId[id]||!byId[vIds[i]]||pType(byId[id])!==pType(byId[vIds[i]]))){draw();return}}
+  let p2=0;presets=presets.map(p=>pSection(p)===sec&&!p.arch?(byId[seq[p2++]]||p):p);persist();draw()})});
+ v.querySelectorAll('[data-pt]').forEach(b=>b.onclick=()=>{edP.type=b.dataset.pt;draw()});
+ const pn=$('#pn');if(pn)pn.oninput=()=>{edP.name=pn.value};
+ const pdx=$('#pd');if(pdx)pdx.oninput=()=>{edP.desc=pdx.value};
+ const pix=$('#pin');if(pix)pix.oninput=()=>{edP.instr=pix.value};
+ const mdn=$('#mdn');if(mdn)mdn.onclick=()=>{edP.mult=Math.max(.5,Math.round(((edP.mult||1)-.5)*10)/10);draw()};
+ const mup=$('#mup');if(mup)mup.onclick=()=>{edP.mult=Math.min(10,Math.round(((edP.mult||1)+.5)*10)/10);draw()};
+ const osd=$('#osd');if(osd)osd.onclick=()=>{edP.serv=Math.max(1,(edP.serv||1)-1);edP.servSet=true;draw()};
+ const osu=$('#osu');if(osu)osu.onclick=()=>{edP.serv=Math.min(48,(edP.serv||1)+1);edP.servSet=true;draw()};
+ const dsd=$('#dsd');if(dsd)dsd.onclick=()=>{edP.dserv=Math.max(1,(edP.dserv||1)-1);edP.servSet=true;draw()};
+ const dsu=$('#dsu');if(dsu)dsu.onclick=()=>{edP.dserv=Math.min(48,(edP.dserv||1)+1);edP.servSet=true;draw()};
+ const pqx=$('#pq');if(pqx){pqx.oninput=()=>{piQ=pqx.value}};
+ const pux=$('#pu');if(pux){pux.oninput=()=>{piU=pux.value}};
+ const pi=$('#pi');if(pi){pi.oninput=()=>{piVal=pi.value};const addIt=()=>{const nm=normName(pi.value);if(!nm)return;
+  const qv=piQ.trim().replace(',','.'),un=normName(piU);let qn=null;
+  if(qv!==''){qn=Number(qv);if(!isFinite(qn)||qn<=0){note='Quantity needs to be a number.';draw();return}}
+  if(un&&qn===null){note='Add a quantity to use a unit.';draw();return}
+  if(edP.items.some(n2=>n2.toLowerCase()===nm.toLowerCase()))note='Already in this preset.';
+  else{edP.items.push(nm);if(qn!==null)edP.qty[nm.toLowerCase()]={q:qn,u:un};note=''}
+  piVal='';piQ='';piU='';pcAsk=false;draw()};
+  $('#pib').onclick=addIt;pi.onkeydown=e=>{if(e.key==='Enter')addIt()};
+  if(pqx)pqx.onkeydown=e=>{if(e.key==='Enter')addIt()};if(pux)pux.onkeydown=e=>{if(e.key==='Enter')addIt()}};
+ v.querySelectorAll('[data-pr]').forEach(b=>b.onclick=()=>{const nm2=edP.items[+b.dataset.pr];edP.items.splice(+b.dataset.pr,1);if(nm2&&edP.qty)delete edP.qty[String(nm2).toLowerCase()];pcAsk=false;draw()});
+ const commitQE=i=>{if(!edP)return;const n=edP.items[i];if(n===undefined)return;const k=String(n).toLowerCase();
+  const qEl=v.querySelector('[data-eq="'+i+'"]'),uEl=v.querySelector('[data-eu="'+i+'"]');if(!qEl||!uEl)return;
+  const qv=qEl.value.trim().replace(',','.'),un=normName(uEl.value),e=(edP.qty||{})[k];
+  if(qv===''){if(un){note='Add a quantity to use a unit.';draw();return}
+   if(e){delete edP.qty[k];pcAsk=false}}
+  else{const qn=Number(qv);
+   if(!isFinite(qn)||qn<=0){note='Quantity needs to be a number.';draw();return}
+   if(!e||e.q!==qn||e.u!==un){edP.qty[k]={q:qn,u:un};pcAsk=false}}
+  if(note){note='';const nm=v.querySelector('.msg');if(nm)nm.textContent=''}
+  const qh=v.querySelector('[data-qh="'+i+'"]');
+  if(qh){const e3=(edP.qty||{})[k],ef2=(edP.type||'list')==='recipe'?(edP.dserv||1)/(edP.serv||1):(edP.mult||1);
+   qh.innerHTML=e3?'= '+fmtN(e3.q*ef2)+(e3.u?' '+esc(e3.u):''):''}};
+ v.querySelectorAll('[data-eq]').forEach(inp=>{inp.onchange=()=>commitQE(+inp.dataset.eq)});
+ v.querySelectorAll('[data-eu]').forEach(inp=>{inp.onchange=()=>commitQE(+inp.dataset.eu)});
+ const ps=$('#ps');if(ps)ps.onclick=()=>{const nm=pTitle(normName(edP.name));if(!nm){note='Name the preset first.';draw();return}
+  const rec={name:nm,type:edP.type||'list',desc:capSent((edP.desc||'').trim()),instr:capSent((edP.instr||'').trim()),mult:edP.mult||1,items:edP.items.map(x=>typeof x==='string'?capTitle(normName(x)):x),qty:{}};
+  if(rec.type==='recipe'&&edP.servSet){rec.serv=edP.serv||1;rec.dserv=edP.dserv||1}
+  Object.keys(edP.qty||{}).forEach(k=>{if(rec.items.some(n2=>n2.toLowerCase()===k))rec.qty[k]=edP.qty[k]});
+  if(edP.id){const p=presets.find(y=>y.id===edP.id);if(p){p.name=rec.name;p.type=rec.type;p.desc=rec.desc;p.instr=rec.instr;p.mult=rec.mult;if('serv' in rec){p.serv=rec.serv;p.dserv=rec.dserv}p.items=rec.items;if(Object.keys(rec.qty).length)p.qty=rec.qty;else delete p.qty;p.edited=Date.now()}}
+  else{if(!Object.keys(rec.qty).length)delete rec.qty;presets.push(Object.assign({id:uid(),at:Date.now(),edited:Date.now()},rec))}
+  edP=null;piVal='';piQ='';piU='';note='';pcAsk=false;persist();draw()};
+ const pc=$('#pc');if(pc)pc.onclick=()=>{const o=edP.id?presets.find(y=>y.id===edP.id):null,onames=o?presetItems(o).map(itName):[],oq={};
+  if(o)presetItems(o).forEach(it=>{const e=pQtyAny(o,it);if(e)oq[itName(it).toLowerCase()]={q:e.q,u:e.u}});
+  const nq={};Object.keys(edP.qty||{}).forEach(k=>{if(edP.items.some(n2=>n2.toLowerCase()===k))nq[k]=edP.qty[k]});
+  const dirty=normName(edP.name)!==(o?pTitle(o.name):'')||(edP.type||'list')!==(o?pType(o):'list')||(edP.desc||'').trim()!==(o?(o.desc||'').trim():'')||(edP.instr||'').trim()!==(o?(o.instr||'').trim():'')||(edP.mult||1)!==(o?pMult(o):1)||(edP.servSet?(edP.serv||1):0)!==(o?(pServ(o)||0):0)||(edP.servSet?(edP.dserv||1):0)!==(o?(pDserv(o)||0):0)||edP.items.length!==onames.length||edP.items.some((n2,i)=>n2!==onames[i])||canon(nq)!==canon(oq);
+  if(dirty){pcAsk=true;draw()}else{edP=null;piVal='';piQ='';piU='';note='';pcAsk=false;draw()}};
+ const pk=$('#pck');if(pk)pk.onclick=()=>{pcAsk=false;draw()};
+ const pd=$('#pcd');if(pd)pd.onclick=()=>{edP=null;piVal='';piQ='';piU='';note='';pcAsk=false;draw()}}
+/*SHARE IMAGE*/
+async function shareCanvas(o){const W=1080,PAD=64,CW=W-PAD*2,cv=document.createElement('canvas'),cx=cv.getContext('2d');
+ const day=document.documentElement.classList.contains('day'),TX=day?'#131313':'#ececec',MU=day?'#737373':'#8c8c8c',G0=day?'#e3e3e3':'#1c1c1c',G1=day?'#ededed':'#121212',BD=day?'#cacaca':'#353535';
+ try{await document.fonts.ready}catch(e2){}
+ const FF='DINish,-apple-system,system-ui,sans-serif';
+ const IND=o.boxes?48:0;
+ const wrap=(text,font,firstPad)=>{cx.font=font;const out=[];let fp=firstPad||0;String(text).split('\n').forEach(par=>{const ws=par.split(/\s+/).filter(Boolean);if(!ws.length){out.push('');fp=0;return}let line='';ws.forEach(wd=>{const t=line?line+' '+wd:wd;if(cx.measureText(t).width<=CW-IND-fp)line=t;else{if(line){out.push(line);fp=0}line=wd}});if(line){out.push(line);fp=0}});return out};
+ const ops=[];let y=PAD+42;
+ const push=(text,font,color,lh,gap)=>{wrap(text,font).forEach(ln=>{ops.push({ln,font,color,y});y+=lh});y+=gap};
+ push(o.title,'700 46px '+FF,TX,56,12);
+ if(o.meta&&o.meta.length)push(o.meta.join(' \u00b7 ').toUpperCase(),'600 20px '+FF,MU,28,18);
+ if(o.desc)push(o.desc,'400 26px '+FF,MU,36,18);
+ o.items.forEach(it=>{const qf='400 30px '+FF;let qw=0;if(it.t){cx.font=qf;qw=cx.measureText(it.t+' ').width}const lines=wrap(it.n,qf,qw);lines.forEach((ln,i)=>{ops.push({ln,font:qf,color:TX,y,qty:i===0?it.t:'',qw:i===0?qw:0,box:i===0&&o.boxes});y+=44})});
+ if(o.items.length)y+=6;
+ if(o.instr){push('Instructions','600 20px '+FF,MU,28,6);push(o.instr,'400 26px '+FF,MU,38,10)}
+ y+=70;
+ cv.width=W;cv.height=y;
+ const g=cx.createLinearGradient(0,0,0,cv.height);g.addColorStop(0,G0);g.addColorStop(1,G1);cx.fillStyle=g;cx.fillRect(0,0,W,cv.height);
+ cx.strokeStyle=BD;cx.lineWidth=2;cx.strokeRect(1,1,W-2,cv.height-2);
+ ops.forEach(o=>{cx.font=o.font;if(o.box){cx.strokeStyle=MU;cx.lineWidth=3;cx.strokeRect(PAD+1.5,o.y-26,27,27)}if(o.qty){cx.fillStyle=MU;cx.fillText(o.qty,PAD+IND,o.y)}cx.fillStyle=o.color;cx.fillText(o.ln,PAD+IND+(o.qw||0),o.y)});
+ cx.font='600 22px '+FF;cx.fillStyle=MU;cx.textAlign='center';try{cx.letterSpacing='6px'}catch(e4){}
+ cx.fillText('L I S T O',W/2,y-26);
+ return new Promise(res=>cv.toBlob(res,'image/png'))}
+async function shareImgFile(b,fname){const file=new File([b],fname,{type:'image/png'});
+ if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file]})}catch(e3){}}
+ else{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=file.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}}
+async function sharePreset(p,bx){try{const ct=pType(p),f=pFactor(p);
+ const items=presetItems(p).map(it=>{const e=pQtyAny(p,it);return {n:capStrip(itName(it)),t:e?'('+fmtN(e.q*f)+(e.u?' '+e.u:'')+')':''}});
+ const meta=[];if(ct==='instructions'||ct==='grocery-instructions')meta.push(TLBL[ct]);
+ if(ct==='recipe'){const sv=pServ(p),dv=pDserv(p);if(sv&&dv){if(sv!==dv)meta.push('Servings '+fmtN(sv)+' \u2192 '+fmtN(dv));else if(sv!==1)meta.push('Servings '+fmtN(sv))}else if(f!==1)meta.push('Scaling \u00d7'+fmtN(f))}
+ else if(f!==1)meta.push('Multiplier '+fmtN(f)+'\u00d7');
+ const b=await shareCanvas({title:pShow(p.name),meta,desc:p.desc?capStrip(p.desc):'',items,instr:(ct!=='list'&&ct!=='grocery'&&p.instr)?capStrip(p.instr):'',boxes:!!bx});
+ if(!b)throw new Error('blob');
+ await shareImgFile(b,'listo-'+(pTitle(p.name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'list')+'.png')
+}catch(e){note='Could not create the image. Try again.';draw()}}
+async function shareSumImg(bx){try{const items=sum.map(x=>{const a=sumAmt(x);return {n:capStrip(x.name)+(x.done?' \u2713':''),t:a?'('+a+')':''}});
+ const b=await shareCanvas({title:'The List',meta:[sum.length+(sum.length===1?' item':' items')],desc:'',items,instr:'',boxes:!!bx});
+ if(!b)throw new Error('blob');
+ await shareImgFile(b,bx?'listo-the-list-checklist.png':'listo-the-list.png');shMsg='';draw()
+}catch(e){shMsg='Could not create the image. Try again.';draw()}}
+const dlFile=(name,text,type)=>{const b=new Blob([text],{type:type||'text/plain'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},500)};
+const backupFile=()=>JSON.stringify({app:'listo',format:'listo-backup',version:1,exported:new Date().toISOString(),components:comps,presets:presets,sum,settings:{theme:theme()}},null,2);
+const U8=s2=>new TextEncoder().encode(s2);
+const CRCT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t.push(c>>>0)}return t})();
+const crc32=u=>{let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRCT[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0};
+function mkZip(files){const now=new Date(),dt=((now.getFullYear()-1980)<<9|(now.getMonth()+1)<<5|now.getDate())&0xFFFF,tm=(now.getHours()<<11|now.getMinutes()<<5|(now.getSeconds()>>1))&0xFFFF;
+ const parts=[],cen=[];let off=0;
+ const u16=n=>[n&255,(n>>>8)&255],u32=n=>[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255];
+ files.forEach(f=>{const nm=U8(f[0]),d=typeof f[1]==="string"?U8(f[1]):f[1],c=crc32(d);
+  const lh=new Uint8Array([0x50,0x4b,3,4,...u16(20),...u16(0x0800),...u16(0),...u16(tm),...u16(dt),...u32(c),...u32(d.length),...u32(d.length),...u16(nm.length),...u16(0)]);
+  parts.push(lh,nm,d);
+  cen.push(new Uint8Array([0x50,0x4b,1,2,...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(tm),...u16(dt),...u32(c),...u32(d.length),...u32(d.length),...u16(nm.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off)]),nm);
+  off+=lh.length+nm.length+d.length});
+ let cl=0;cen.forEach(x=>cl+=x.length);
+ const end=new Uint8Array([0x50,0x4b,5,6,...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(cl),...u32(off),...u16(0)]);
+ const all=parts.concat(cen,[end]);let tot=0;all.forEach(x=>tot+=x.length);const out=new Uint8Array(tot);let p=0;all.forEach(x=>{out.set(x,p);p+=x.length});return out}
+/*READABLE COPIES*/
+const sumSubPlain=x=>{const cs=(x.qtys||[]).filter(c=>c&&typeof c.q==='number'&&isFinite(c.q));
+ const srcs=(x.src||[]).map(String),legacy=x.qty?String(x.qty):'';
+ if(cs.length>1&&!cs.every(c=>compatU(c.u,cs[0].u))){
+  const cov=new Set(cs.map(c=>String(c.s).toLowerCase())),others=srcs.filter(s2=>!cov.has(s2.toLowerCase()));
+  return cs.map(c=>fmtN(c.q)+(c.u?' '+c.u:'')+' from '+srcLbl(c.s)).join(' + ')+(others.length?' \u00b7 from '+others.map(s2=>srcLbl(s2)).join(' \u00b7 '):'')+(legacy?' \u00b7 earlier: '+legacy:'')}
+ let h='';if(cs.length&&legacy)h='earlier: '+legacy;
+ if(srcs.length)h=h?h+' \u00b7 from '+srcs.map(s2=>srcLbl(s2)).join(' \u00b7 '):'from '+srcs.map(s2=>srcLbl(s2)).join(' \u00b7 ');
+ return h};
+function presetMeta(p){const ct=pType(p),f=pFactor(p),meta=[TLBL[ct]];
+ if(ct==='recipe'){const sv=pServ(p),dv=pDserv(p);if(sv&&dv){if(sv!==dv)meta.push('Servings '+fmtN(sv)+' \u2192 '+fmtN(dv));else if(sv!==1)meta.push('Servings '+fmtN(sv))}else if(f!==1)meta.push('Scaling \u00d7'+fmtN(f))}
+ else if(f!==1)meta.push('Multiplier '+fmtN(f)+'\u00d7');
+ return meta.join(' \u00b7 ')}
+const presetLines=p=>presetItems(p).map(it=>{const e=pQtyAny(p,it),f=pFactor(p);return (e?'('+fmtN(e.q*f)+(e.u?' '+e.u:'')+') ':'')+itName(it)});
+function listBlocks(){const B=[];
+ if(sum.length)B.push({t:'The List',lines:sum.map(x=>{const a=sumAmt(x),sb=sumSubPlain(x);return capStrip((a?'('+a+') ':'')+x.name+(sb?' - '+sb:''))})});
+ const act=presets.filter(p=>!p.arch),arc=presets.filter(p=>p.arch);
+ const sec=(t,arr)=>{if(!arr.length)return;const lines=[];arr.forEach(p=>{lines.push(pShow(p.name)+' - '+presetMeta(p));if(p.desc)lines.push(capStrip(String(p.desc)));presetLines(p).forEach(l=>lines.push(capStrip(l)));if(pType(p)!=='list'&&pType(p)!=='grocery'&&p.instr)lines.push('Instructions: '+capStrip(String(p.instr)));lines.push('')});lines.pop();B.push({t,lines})};
+ sec('Presets',act);sec('Archived presets',arc);
+ return B}
+const expDate=()=>new Date().toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+function listsTxt(){const L=['MAMBA Listo','Exported '+expDate()+'. Readable copy for viewing or sharing; use the backup file to restore.',''];
+ listBlocks().forEach(b=>{L.push(b.t.toUpperCase());b.lines.forEach(l=>L.push(l));L.push('')});
+ return L.join('\n')}
+function listsCsv(){const q=v=>{v=String(v==null?'':v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+ const R=[['Section','List','Item','Quantity','Unit','Notes']];
+ sum.forEach(x=>{const a=sumAmt(x);let qq='',uu='';const m=/^([\d.]+)\s*(.*)$/.exec(a);if(m){qq=m[1];uu=m[2]}R.push(['The List','',capStrip(x.name),qq,uu,capStrip(sumSubPlain(x))])});
+ presets.forEach(p=>{const sec=p.arch?'Archived preset':'Preset';R.push([sec,pShow(p.name),'','','',capStrip(presetMeta(p)+(p.desc?' \u00b7 '+p.desc:''))]);
+  presetItems(p).forEach(it=>{const e=pQtyAny(p,it),f=pFactor(p);R.push([sec,pShow(p.name),capStrip(itName(it)),e?fmtN(e.q*f):'',e?String(e.u||''):'',''])});
+  if(pType(p)!=='list'&&pType(p)!=='grocery'&&p.instr)R.push([sec,pShow(p.name),'Instructions','','',capStrip(String(p.instr))])});
+ return R.map(r=>r.map(q).join(',')).join('\n')}
+function mkListsPdf(){const PW=612,PH=792,MX=48,MT=54,MB=60,AW=PW-2*MX;
+ const cx=document.createElement('canvas').getContext('2d');
+ const wd=(t,z,b)=>{cx.font=(b?'bold ':'')+z+'px Helvetica, Arial, sans-serif';return cx.measureText(t).width};
+ const L1=t=>String(t).replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d]/g,'"').replace(/[\u2013\u2014]/g,'-').replace(/\u2192/g,'->').replace(/\u2022/g,'\x95').replace(/[^\x20-\x7e\x95\xa0-\xff]/g,'?');
+ const pe=t=>L1(t).replace(/[\\()]/g,c=>'\\'+c);
+ const wrap=(t,w,z,b)=>{t=L1(t);if(!t)return [''];const out=[];let cur='';t.split(' ').forEach(word=>{let tt=cur?cur+' '+word:word;if(wd(tt,z,b)<=w){cur=tt;return}if(cur)out.push(cur);cur='';while(wd(word,z,b)>w&&word.length>1){let k=word.length-1;while(k>1&&wd(word.slice(0,k),z,b)>w)k--;out.push(word.slice(0,k));word=word.slice(k)}cur=word});out.push(cur);return out};
+ const pages=[[]];let y=MT;const cur=()=>pages[pages.length-1];
+ const line=(t,z,b,g,gap)=>{wrap(t,AW,z,b).forEach(ln=>{if(y+z+6>PH-MB){pages.push([]);y=MT}cur().push((g!==undefined?g+' g ':'0 g ')+'BT /'+(b?'F2':'F1')+' '+z+' Tf '+MX+' '+(PH-y).toFixed(2)+' Td ('+pe(ln)+') Tj ET');y+=z+5});y+=(gap||0)};
+ line('MAMBA Listo',20,true);line('Exported '+expDate()+'. Readable copy for viewing or sharing; use the backup file to restore.',9,false,0.35,10);
+ listBlocks().forEach(bl=>{if(y+60>PH-MB){pages.push([]);y=MT}y+=8;cur().push('0.6 G 0.5 w '+MX+' '+(PH-y).toFixed(2)+' m '+(MX+AW)+' '+(PH-y).toFixed(2)+' l S');y+=4;line(bl.t.toUpperCase(),12,true,undefined,4);
+  bl.lines.forEach(l=>{const hi=l.indexOf(' - '),hd=hi>0&&l.slice(0,hi)===l.slice(0,hi).toUpperCase()&&/ - (List|Instructed list|Grocery|Instructed grocery|Recipe)/.test(l);line(l,hd?10.5:10,hd,hd?undefined:0.15,1)})});
+ if(pages.length===1&&!pages[0].length)line('Nothing saved yet.',10,false,0.35);
+ const N=pages.length;pages.forEach((p,i)=>{p.push('0.4 g BT /F1 8 Tf '+MX+' '+(MB-26)+' Td ('+pe('MAMBA Listo lists   |   Page '+(i+1)+' of '+N)+') Tj ET')});
+ const objs=[];objs[1]='<</Type/Catalog/Pages 2 0 R>>';
+ const kids=pages.map((p,i)=>(5+i*2)+' 0 R').join(' ');objs[2]='<</Type/Pages/Kids ['+kids+']/Count '+N+'>>';
+ objs[3]='<</Type/Font/Subtype/Type1/BaseFont/Helvetica/Encoding/WinAnsiEncoding>>';objs[4]='<</Type/Font/Subtype/Type1/BaseFont/Helvetica-Bold/Encoding/WinAnsiEncoding>>';
+ pages.forEach((p,i)=>{const c=p.join('\n');objs[5+i*2]='<</Type/Page/Parent 2 0 R/MediaBox [0 0 '+PW+' '+PH+']/Resources<</Font<</F1 3 0 R/F2 4 0 R>>>>/Contents '+(6+i*2)+' 0 R>>';objs[6+i*2]='<</Length '+c.length+'>>\nstream\n'+c+'\nendstream'});
+ let out='%PDF-1.4\n';const offs=[];for(let i=1;i<objs.length;i++){offs[i]=out.length;out+=i+' 0 obj\n'+objs[i]+'\nendobj\n'}
+ const xr=out.length;out+='xref\n0 '+objs.length+'\n0000000000 65535 f \n';for(let i=1;i<objs.length;i++)out+=String(offs[i]).padStart(10,'0')+' 00000 n \n';
+ out+='trailer\n<</Size '+objs.length+'/Root 1 0 R>>\nstartxref\n'+xr+'\n%%EOF';
+ const u=new Uint8Array(out.length);for(let i=0;i<out.length;i++)u[i]=out.charCodeAt(i)&255;return u}
+function backupHtml(){let h='<h2>Backup</h2><div class="card p"><div class="mu">Export every part of Listo as one file (presets, archived presets, The List, theme and your custom order), or load a file back in. Works signed in or out, online or offline.</div><div class="row" style="margin-top:10px"><button class="btn sec" id="b-exp" style="flex:1;margin-top:0">Export</button><button class="btn sec" id="b-imp" style="flex:1;margin-top:0">Import</button></div><button class="btn sec" id="b-zip" style="margin-top:10px;width:100%;box-sizing:border-box">Download all files</button><div class="mu">One zip: the backup file plus readable copies of your lists in PDF, TXT and CSV. Keep the downloaded files outside the app, like in Files.</div><input type="file" id="b-file" accept="application/json,.json" hidden>';
+ if(bkPend){const p=bkPend;h+='<div style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px"><div>Replace everything with this file?</div><div class="mu">'+p.np+' preset'+(p.np===1?'':'s')+(p.na?' ('+p.na+' archived)':'')+', '+p.ns+' item'+(p.ns===1?'':'s')+' in The List. What is in the app now is overwritten. Export first if you want to keep it.</div><div class="row" style="margin-top:10px"><button class="btn" id="b-yes" style="flex:1;margin-top:0">Replace</button><button class="btn sec" id="b-no" style="flex:1;margin-top:0">Cancel</button></div></div>'}
+ return h+(bkNote?'<div class="msg" style="margin:10px 0 0">'+esc(bkNote)+'</div>':'')+'</div>'}
+function resetHtml(){const ok=rchk&&rtxt.trim().toUpperCase()==='RESET';
+ let h='<h2>Reset account</h2><div class="card p"><div class="mu">Start over with an empty Listo.</div>';
+ if(!rstOpen)h+='<button class="btn sec" id="r-open" style="width:100%;box-sizing:border-box">Reset account</button>';
+ else h+='<div style="margin-top:10px">This erases '+presets.length+' presets and '+sum.length+' items in The List.</div><div class="mu">'+(user?'It clears this device and your synced copy for '+esc(user.email)+'. Other devices signed in to this account clear the next time they open Listo.':'You are signed out, so this clears this device only.')+' Your sign-in, email and theme are not touched. This cannot be undone.</div><button class="lnk" id="r-bk" style="padding-left:0">Download a backup file first</button><div class="row" style="margin-top:4px"><button class="chip sm'+(rchk?' on':'')+'" id="r-chk">I saved a backup file</button></div><label class="f">Type RESET to confirm</label><input id="rtxt" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" value="'+esc(rtxt)+'"><div class="row" style="margin-top:10px"><button class="btn'+(ok?'':' sec')+'" id="rgo" style="flex:1;margin-top:0;'+(ok?'':'opacity:.4')+'">Erase everything</button><button class="btn sec" id="r-no" style="flex:1;margin-top:0">Cancel</button></div>';
+ return h+(rnote?'<div class="msg" style="margin:10px 0 0">'+esc(rnote)+'</div>':'')+'</div>'}
+function drawSettings(v){const th=theme();let acct;
+ if(user){acct='<div class="card p"><div>'+esc(user.email)+'</div><div class="mu" style="margin-top:4px">'+(user.emailVerified?'Email verified. Synced across your devices.':'Email not verified yet. Check your inbox. Synced across your devices.')+(syncAt?' Last synced '+new Date(syncAt).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'.':'')+'</div>'+(user.emailVerified?'':'<button class="lnk" id="resend">Resend verification email</button><br><button class="lnk" id="chk">I verified my email</button><br>')+'<div class="row" style="margin-top:10px"><button class="btn sec" id="syncnow" style="flex:1;margin-top:0">Sync now</button><button class="btn sec" id="out" style="flex:1;margin-top:0">Sign out</button></div></div>'}
+ else{acct='<div class="card p"><div class="mu" style="margin-bottom:4px">Signed out. Your lists are saved on this device only.</div><label class="f">Email</label><input id="em" type="email" autocomplete="email" autocapitalize="off" spellcheck="false"><label class="f">Password</label><input id="pw" type="password" autocomplete="current-password"><div class="row" style="margin-top:10px"><button class="btn go" data-a="in" style="margin-top:0">Sign in</button><button class="btn sec go" data-a="up" style="margin-top:0">Create account</button></div><div class="row" style="margin-top:10px"><button class="btn sec go" data-a="reset" style="margin-top:0">Forgot password</button></div></div>'}
+ v.innerHTML='<div class="twrap">'+WM+'<h1>Settings</h1></div><h2>Theme</h2><div class="row">'+['night','day','auto'].map(k=>'<button class="chip '+(th===k?'on':'')+'" data-th="'+k+'">'+k[0].toUpperCase()+k.slice(1)+'</button>').join('')+'</div><h2>Account</h2>'+acct+'<div class="msg" id="msg">'+esc(msg)+'</div>'+backupHtml()+resetHtml();
+ v.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{localStorage.setItem(TK,b.dataset.th);applyTheme();if(user){if(SY.synced)stamp();schedPush()}draw()});
+ v.querySelectorAll('.go').forEach(go=>go.onclick=async()=>{const a=go.dataset.a,em=$('#em').value.trim(),pw=$('#pw')?$('#pw').value:'';msg='';
+  try{if(a==='reset'){await sendPasswordResetEmail(auth,em);msg='Reset link sent if that email has an account.'}
+  else if(a==='up'){const c=await createUserWithEmailAndPassword(auth,em,pw);try{await sendEmailVerification(c.user);msg='Account created. Verification email sent.'}catch(e){}}
+  else await signInWithEmailAndPassword(auth,em,pw)}catch(e){msg=({'auth/invalid-credential':'Wrong email or password.','auth/email-already-in-use':'That email already has an account.','auth/weak-password':'Password needs at least 6 characters.','auth/invalid-email':'That email does not look right.','auth/missing-password':'Enter a password.'})[e.code]||('Could not complete: '+e.code)}draw()});
+ const out=$('#out');if(out)out.onclick=()=>signOut(auth);
+ const ck=$('#chk');if(ck)ck.onclick=async()=>{try{await user.reload();msg=auth.currentUser.emailVerified?'Email verified.':'Not verified yet.'}catch(e){msg='Try again in a minute.'}draw()};
+ const sn=$('#syncnow');if(sn)sn.onclick=()=>{msg='Syncing...';draw();schedPush(0)};
+ const rs=$('#resend');if(rs)rs.onclick=async()=>{try{await sendEmailVerification(user);msg='Verification email sent.'}catch(e){msg='Try again in a minute.'}draw()};
+ const be=$('#b-exp');if(be)be.onclick=()=>{bkPend=null;dlFile('mamba-listo-backup_'+new Date().toISOString().slice(0,10)+'.json',backupFile(),'application/json');bkNote='Backup file downloaded.';draw()};
+ const bi=$('#b-imp');if(bi)bi.onclick=()=>$('#b-file').click();
+ const bf=$('#b-file');if(bf)bf.onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;bkPend=null;try{const j=JSON.parse(await f.text());
+  if(j&&j.app==='listo'&&j.format==='listo-backup'&&Array.isArray(j.presets)&&Array.isArray(j.sum)){
+   const ps=j.presets.filter(x=>x&&typeof x.name==='string'),sm=j.sum.filter(x=>x&&typeof x.name==='string');
+   bkPend={c:Array.isArray(j.components)?j.components:[],p:ps,s:sm,th:j.settings&&j.settings.theme,np:ps.length,na:ps.filter(x=>x.arch).length,ns:sm.length};bkNote=''}
+  else bkNote='That file is not a Listo backup.'}catch(er){bkNote='That file could not be read.'}draw()};
+ const by=$('#b-yes');if(by)by.onclick=()=>{const q=bkPend;if(!q)return;comps=q.c;presets=q.p;sum=q.s;
+  presets.forEach(p=>{if(!p.id)p.id=uid();if(!Array.isArray(p.items))p.items=presetItems(p)});sum.forEach(x=>{if(!x.id)x.id=uid()});
+  if(q.th&&['night','day','auto'].includes(q.th)){localStorage.setItem(TK,q.th);applyTheme()}
+  bkPend=null;bkNote='Backup loaded.';persist();migrate();draw()};
+ const bn=$('#b-no');if(bn)bn.onclick=()=>{bkPend=null;bkNote='';draw()};
+ const bz=$('#b-zip');if(bz)bz.onclick=()=>{const d=new Date().toISOString().slice(0,10);
+  dlFile('mamba-listo-all-files_'+d+'.zip',mkZip([['mamba-listo-backup_'+d+'.json',backupFile()],['mamba-listo-lists_'+d+'.pdf',mkListsPdf()],['mamba-listo-lists_'+d+'.txt',listsTxt()],['mamba-listo-lists_'+d+'.csv',listsCsv()]]),'application/zip');
+  bkNote='All files downloaded as one zip.';draw()};
+ const ro=$('#r-open');if(ro)ro.onclick=()=>{rstOpen=true;rchk=false;rtxt='';rnote='';draw()};
+ const rn=$('#r-no');if(rn)rn.onclick=()=>{rstOpen=false;rchk=false;rtxt='';rnote='';draw()};
+ const rc=$('#r-chk');if(rc)rc.onclick=()=>{rchk=!rchk;draw()};
+ const rb=$('#r-bk');if(rb)rb.onclick=()=>{dlFile('mamba-listo-backup_'+new Date().toISOString().slice(0,10)+'.json',backupFile(),'application/json');rnote='Backup file downloaded.';draw()};
+ const rt=$('#rtxt');if(rt)rt.oninput=()=>{rtxt=rt.value;const ok=rchk&&rtxt.trim().toUpperCase()==='RESET',b=$('#rgo');if(b){b.classList.toggle('sec',!ok);b.style.opacity=ok?'':'.4'}};
+ const rg=$('#rgo');if(rg)rg.onclick=()=>{if(rchk&&rtxt.trim().toUpperCase()==='RESET'){comps=[];presets=[];sum=[];localStorage.setItem(RSK,String(Date.now()));persist();rstOpen=false;rchk=false;rtxt='';rnote='Account reset. Everything is empty.'}else rnote='Tick the box and type RESET first.';draw()}}
+function draw(top){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===page));
+ const v=$('#view'),y=top?0:scrollY;
+ if(page==='sum')drawSum(v);else if(page==='components')drawComponents(v);else drawSettings(v);
+ sortUI();scrollTo(0,y)}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{page=b.dataset.go;note='';pxId='';psId='';arId='';pxTxt='';clraOpen=false;clraTxt='';rpOpen=false;rpSel='';bkPend=null;bkNote='';shOpen=false;draw(true)});
+$('#sortb').onclick=()=>{if(page==='sum'){sortS=(sortS+1)%SORTS.length;try{localStorage.setItem('mamba.listo.sort.s',String(sortS))}catch(e){}if(shCode)schedSharePush()}else if(page==='components'){sortC=(sortC+1)%SORTS_C.length;try{localStorage.setItem('mamba.listo.sort.c',String(sortC))}catch(e){}}else return;draw()};
+$('#home').onclick=()=>{page='sum';note='';pxId='';psId='';arId='';pxTxt='';clraOpen=false;clraTxt='';rpOpen=false;rpSel='';bkPend=null;bkNote='';shOpen=false;draw(true)};
+(function boot(){const s=jl(localStorage.getItem(DK));if(s){comps=s.c||[];presets=s.p||[];sum=s.s||[]}migrate()})();
+(function capMig(){let ch=false;presets.forEach(p=>{if(!p)return;const n2=pTitle(p.name);if(n2!==p.name){p.name=n2;ch=true}if(p.desc){const d2=capSent(p.desc);if(d2!==p.desc){p.desc=d2;ch=true}}if(p.instr){const i2=capSent(p.instr);if(i2!==p.instr){p.instr=i2;ch=true}}if(Array.isArray(p.items))p.items=p.items.map(x=>{if(typeof x!=='string')return x;const t=capTitle(normName(x));if(t!==x)ch=true;return t})});sum.forEach(x=>{if(!x)return;const n2=capTitle(x.name);if(n2!==x.name){x.name=n2;ch=true}if(Array.isArray(x.src))x.src=x.src.map(s2=>{const t=pTitle(s2);if(t!==s2)ch=true;return t});if(Array.isArray(x.qtys))x.qtys.forEach(c=>{const t=pTitle(c.s);if(t!==c.s){c.s=t;ch=true}})});comps.forEach(c=>{if(c&&c.name){const n2=capTitle(c.name);if(n2!==c.name){c.name=n2;ch=true}}});if(ch)persist()})();
+onAuthStateChanged(auth,u=>{user=u;if(unsub){unsub();unsub=null}
+ if(u){switchOwner(u.uid);unsub=onSnapshot(doc(db,'mamba_listo_users',u.uid),s=>{if(!s.metadata.hasPendingWrites)schedPush(50)},e=>{msg='Sync unavailable: '+e.code;if(page==='settings')draw()});schedPush(50);startShare()}
+ else switchOwner('');
+ startShare();draw()});
+(function shareBoot(){const m=/^#share=([a-z0-9]+)/i.exec(location.hash||'');if(m){joinShare(m[1]);page='sum'}})();
+startShare();startJoin();recoverPending();
+applyTheme();draw();
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('../sw.js').catch(()=>{}))</script></body></html>

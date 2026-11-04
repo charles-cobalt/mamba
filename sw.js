@@ -1,0 +1,4 @@
+const C='mamba-mk1',F=['./','index.html','manifest.webmanifest','icon.svg','icon-512.png','apple-touch-icon.png','fonts.css','fb-config.js','mirror/','mirror/index.html','mirror/sync.js','mirror/ocr.js','mirror/fonts.css','jarvis/','jarvis/index.html','jarvis/fonts.css','listo/','listo/index.html','listo/fonts.css'];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(F)));self.skipWaiting()});
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('mamba-')&&x!==C).map(x=>caches.delete(x)))).then(()=>clients.claim())));
+self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).then(r=>{const c=r.clone();caches.open(C).then(x=>x.put(e.request,c));return r}).catch(()=>caches.match(e.request)))});
