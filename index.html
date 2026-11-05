@@ -15,13 +15,13 @@
 <style>
 html,body{background:#000;background-image:linear-gradient(180deg,#262626 0%,#1c1c1c 12%,#121212 35%,#0d0d0d 60%,#080808 85%,#000 100%);background-attachment:fixed;background-repeat:no-repeat;margin:0;color:#ececec;font:16px DINish,-apple-system,system-ui,sans-serif;overscroll-behavior:none;min-height:100vh}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-main{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+main{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;position:relative}
 .brand{position:relative;width:min(52vw,190px)}
 .brand svg.mark{width:100%;height:auto;display:block}
-.zone{position:fixed;display:block;z-index:1}
-.zone.mirror{top:0;left:0;right:0;height:calc(50vh - .10585*min(52vw,190px))}
-.zone.jarvis{top:calc(50vh - .10585*min(52vw,190px));left:0;width:50vw;bottom:0}
-.zone.listo{top:calc(50vh - .10585*min(52vw,190px));right:0;width:50vw;bottom:0}
+.zone{position:absolute;top:0;left:0;right:0;bottom:0;display:block}
+.zone.mirror{clip-path:polygon(0 0,100% 0,100% calc(50% - .4863*min(52vw,190px) - .5307*50vw),50% calc(50% - .4863*min(52vw,190px)),0 calc(50% - .4863*min(52vw,190px) - .5307*50vw))}
+.zone.jarvis{clip-path:polygon(0 calc(50% - .4863*min(52vw,190px) - .5307*50vw),50% calc(50% - .4863*min(52vw,190px)),50% 100%,0 100%)}
+.zone.listo{clip-path:polygon(50% calc(50% - .4863*min(52vw,190px)),100% calc(50% - .4863*min(52vw,190px) - .5307*50vw),100% 100%,50% 100%)}
 .lbl{position:absolute;font:600 11px DINish,-apple-system,sans-serif;letter-spacing:.32em;color:#aaaaaa;pointer-events:none;white-space:nowrap}
 .lbl.mirror{top:-30px;left:50%;transform:translateX(-50%)}
 .lbl.jarvis{top:56%;right:100%;margin-right:-14px;transform:translateY(-50%)}
