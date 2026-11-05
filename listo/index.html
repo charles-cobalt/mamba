@@ -810,7 +810,8 @@ function drawSettings(v){const th=theme();let acct;
  const ck=$('#chk');if(ck)ck.onclick=async()=>{try{await user.reload();msg=auth.currentUser.emailVerified?'Email verified.':'Not verified yet.'}catch(e){msg='Try again in a minute.'}draw()};
  const sn=$('#syncnow');if(sn)sn.onclick=()=>{msg='Syncing...';draw();schedPush(0)};
  const rs=$('#resend');if(rs)rs.onclick=async()=>{try{await sendEmailVerification(user);msg='Verification email sent.'}catch(e){msg='Try again in a minute.'}draw()};
- const be=$('#b-exp');if(be)be.onclick=()=>{bkPend=null;dlFile('mamba-listo-backup_'+new Date().toISOString().slice(0,10)+'.json',backupFile(),'application/json');bkNote='Backup file downloaded.';draw()};
+ const stampD=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+ const be=$('#b-exp');if(be)be.onclick=()=>{bkPend=null;dlFile('mamba-listo-backup_'+stampD()+'.json',backupFile(),'application/json');bkNote='Backup file downloaded.';draw()};
  const bi=$('#b-imp');if(bi)bi.onclick=()=>$('#b-file').click();
  const bf=$('#b-file');if(bf)bf.onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;bkPend=null;try{const j=JSON.parse(await f.text());
   if(j&&j.app==='listo'&&j.format==='listo-backup'&&Array.isArray(j.presets)&&Array.isArray(j.sum)){
@@ -822,13 +823,13 @@ function drawSettings(v){const th=theme();let acct;
   if(q.th&&['night','day','auto'].includes(q.th)){localStorage.setItem(TK,q.th);applyTheme()}
   bkPend=null;bkNote='Backup loaded.';persist();migrate();draw()};
  const bn=$('#b-no');if(bn)bn.onclick=()=>{bkPend=null;bkNote='';draw()};
- const bz=$('#b-zip');if(bz)bz.onclick=()=>{const d=new Date().toISOString().slice(0,10);
+ const bz=$('#b-zip');if(bz)bz.onclick=()=>{const d=stampD();
   dlFile('mamba-listo-all-files_'+d+'.zip',mkZip([['mamba-listo-backup_'+d+'.json',backupFile()],['mamba-listo-lists_'+d+'.pdf',mkListsPdf()],['mamba-listo-lists_'+d+'.txt',listsTxt()],['mamba-listo-lists_'+d+'.csv',listsCsv()]]),'application/zip');
   bkNote='All files downloaded as one zip.';draw()};
  const ro=$('#r-open');if(ro)ro.onclick=()=>{rstOpen=true;rchk=false;rtxt='';rnote='';draw()};
  const rn=$('#r-no');if(rn)rn.onclick=()=>{rstOpen=false;rchk=false;rtxt='';rnote='';draw()};
  const rc=$('#r-chk');if(rc)rc.onclick=()=>{rchk=!rchk;draw()};
- const rb=$('#r-bk');if(rb)rb.onclick=()=>{dlFile('mamba-listo-backup_'+new Date().toISOString().slice(0,10)+'.json',backupFile(),'application/json');rnote='Backup file downloaded.';draw()};
+ const rb=$('#r-bk');if(rb)rb.onclick=()=>{dlFile('mamba-listo-backup_'+stampD()+'.json',backupFile(),'application/json');rnote='Backup file downloaded.';draw()};
  const rt=$('#rtxt');if(rt)rt.oninput=()=>{rtxt=rt.value;const ok=rchk&&rtxt.trim().toUpperCase()==='RESET',b=$('#rgo');if(b){b.classList.toggle('sec',!ok);b.style.opacity=ok?'':'.4'}};
  const rg=$('#rgo');if(rg)rg.onclick=()=>{if(rchk&&rtxt.trim().toUpperCase()==='RESET'){comps=[];presets=[];sum=[];localStorage.setItem(RSK,String(Date.now()));persist();rstOpen=false;rchk=false;rtxt='';rnote='Account reset. Everything is empty.'}else rnote='Tick the box and type RESET first.';draw()}}
 function draw(top){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===page));

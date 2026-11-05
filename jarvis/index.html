@@ -745,7 +745,7 @@ function stResetHtml(){const c=cnt(),ok=ST.rchk&&ST.rtxt.trim().toUpperCase()===
 function stBind(v){
  v.querySelectorAll(".dt-field input").forEach(inp=>{const sync=()=>inp.closest(".dt-field").classList.toggle("is-empty",!inp.value);inp.addEventListener("input",sync);inp.addEventListener("change",sync);sync()});
  const rt=v.querySelector("#rtxt");if(rt)rt.addEventListener("input",()=>{ST.rtxt=rt.value;const ok=ST.rchk&&ST.rtxt.trim().toUpperCase()==="RESET",b=v.querySelector("#rgo");if(b){b.classList.toggle("sec",!ok);b.style.opacity=ok?"":".4"}});
- const stamp=()=>new Date().toISOString().slice(0,10);
+ const stamp=()=>iso(new Date());
  const doExport=()=>{dlFile("mamba-jarvis-backup_"+stamp()+".json",metaFile(),"application/json")};
  $("#exp").onclick=()=>{stSnap();doExport();ST.bnote="Backup file downloaded.";draw()};
  $("#imp").onclick=()=>$("#file").click();
