@@ -453,7 +453,7 @@ async function detect(parts){const r=await aiModel().generateContent([{text:IMP_
 function importErr(e){const m=(String(e&&e.message||'')+' '+String(e&&e.code||'')).trim()||String(e||'');
  if(/quota|429|rate limit|exhausted/i.test(m))return 'The free detection limit was reached for now. It resets daily - try again later.';
  if(/unavailable|network|failed to fetch|offline/i.test(m))return 'Could not reach the detection service. Check your connection and try again.';
- if(/permission|403|app check|appcheck|config not found/i.test(m))return 'Detection is not fully set up yet. Try again in a few minutes.';
+ if(/permission|403|app check|appcheck|config not found|401|unauthenticated/i.test(m))return 'Detection is unavailable right now. Try again in a few minutes.';
  return 'Detection did not work on that file. Try a clearer photo or another file.'}
 async function importFile(f){if(imp)return;imp={stage:'Reading '+(f.name||'photo')+'\u2026',sub:f.size>3000000?'Large file - this can take a little longer.':''};note='';draw();
  try{let parts=[];const nm=String(f.name||'').toLowerCase();
