@@ -845,7 +845,11 @@ onAuthStateChanged(auth,u=>{user=u;if(unsub){unsub();unsub=null}
  if(u){switchOwner(u.uid);unsub=onSnapshot(doc(db,'mamba_listo_users',u.uid),s=>{if(!s.metadata.hasPendingWrites)schedPush(50)},e=>{msg='Sync unavailable: '+e.code;if(page==='settings')draw()});schedPush(50);startShare()}
  else switchOwner('');
  startShare();draw()});
-(function shareBoot(){const m=/^#share=([a-z0-9]+)/i.exec(location.hash||'');if(m){joinShare(m[1]);page='sum'}})();
+function shareBoot(){const m=/^#share=([a-z0-9]+)/i.exec(location.hash||'');if(m&&m[1].toLowerCase()!==jvCode){joinShare(m[1]);page='sum';draw()}}
+shareBoot();addEventListener('hashchange',shareBoot);
+/*Share links are hash-only URLs: pasting or tapping one into a tab where Listo is already loaded changes only the
+ hash, which never reloads the page. Re-run the share boot on hashchange so the new link joins instead of silently
+ keeping the prior view; the jvCode guard skips redundant re-joins of the share already being viewed.*/
 startShare();startJoin();recoverPending();
 applyTheme();draw();
 </script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('../sw.js').catch(()=>{}))</script></body></html>
