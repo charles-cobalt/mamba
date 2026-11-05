@@ -722,7 +722,7 @@ async function shareSumImg(bx){try{const items=sum.map(x=>{const a=sumAmt(x);ret
  await shareImgFile(b,bx?'listo-the-list-checklist.png':'listo-the-list.png');shMsg='';draw()
 }catch(e){shMsg='Could not create the image. Try again.';draw()}}
 const dlFile=(name,text,type)=>{const b=new Blob([text],{type:type||'text/plain'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},500)};
-const backupFile=()=>JSON.stringify({app:'listo',format:'listo-backup',version:1,exported:new Date().toISOString(),components:comps,presets:presets,sum,settings:{theme:theme()}},null,2);
+const backupFile=()=>JSON.stringify({app:'listo',format:'listo-backup',version:1,name:'MAMBA \u00b7 Listo',exported:new Date().toISOString(),components:comps,presets:presets,sum,settings:{theme:theme()}},null,2);
 const U8=s2=>new TextEncoder().encode(s2);
 const CRCT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t.push(c>>>0)}return t})();
 const crc32=u=>{let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRCT[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0};
@@ -816,7 +816,7 @@ function drawSettings(v){const th=theme();let acct;
   if(j&&j.app==='listo'&&j.format==='listo-backup'&&Array.isArray(j.presets)&&Array.isArray(j.sum)){
    const ps=j.presets.filter(x=>x&&typeof x.name==='string'),sm=j.sum.filter(x=>x&&typeof x.name==='string');
    bkPend={c:Array.isArray(j.components)?j.components:[],p:ps,s:sm,th:j.settings&&j.settings.theme,np:ps.length,na:ps.filter(x=>x.arch).length,ns:sm.length};bkNote=''}
-  else bkNote='That file is not a Listo backup.'}catch(er){bkNote='That file could not be read.'}draw()};
+  else if(j&&typeof j.app==='string'&&j.app!=='listo')bkNote='That file is a '+(typeof j.name==='string'?j.name:'MAMBA \u00b7 '+j.app)+' backup. Import it in that section of MAMBA.';else bkNote='That file is not a MAMBA \u00b7 Listo backup.'}catch(er){bkNote='That file could not be read.'}draw()};
  const by=$('#b-yes');if(by)by.onclick=()=>{const q=bkPend;if(!q)return;comps=q.c;presets=q.p;sum=q.s;
   presets.forEach(p=>{if(!p.id)p.id=uid();if(!Array.isArray(p.items))p.items=presetItems(p)});sum.forEach(x=>{if(!x.id)x.id=uid()});
   if(q.th&&['night','day','auto'].includes(q.th)){localStorage.setItem(TK,q.th);applyTheme()}
