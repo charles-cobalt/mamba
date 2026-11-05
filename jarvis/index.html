@@ -168,17 +168,22 @@ let pushT=0,pushing=false,again=false,rev=0,mailSt={};
 function schedPush(d){if(user){clearTimeout(pushT);pushT=setTimeout(doSync,d===undefined?300:d)}}
 async function doSync(){if(!user)return;if(pushing){again=true;return}pushing=true;const me=user.uid,r0=rev;
  try{stamp(!SY.synced);let out=null;const ref=doc(db,'mamba_jarvis_users',me);
-  await runTransaction(db,async tx=>{const s=await tx.get(ref),seen=+localStorage.getItem(RSK)||0,L=localState();
+  /*A hung network call never settles; without a watchdog it would leave 'pushing' set and 'Syncing...' showing
+   forever, with every later sync just marking 'again' on a run that never finishes. Race the transaction: on
+   timeout the catch below reports it and the retry machinery runs again. The abandoned transaction may still
+   finish server-side; it writes a fully merged content-addressed snapshot, and the retry re-reads and re-merges,
+   so no stale local state is applied and nothing unsynced is marked synced (SY.synced/syncAt only on completion).*/
+  await Promise.race([runTransaction(db,async tx=>{const s=await tx.get(ref),seen=+localStorage.getItem(RSK)||0,L=localState();
    if(!s.exists()){out={M:L,ra:seen,write:true};return tx.set(ref,encDoc(L,seen),{merge:true})}
    const d=s.data(),ra=d.resetAt||0,R=decode(d);mailSt=jl(d.mailState)||{};
    if(ra>seen){out={M:R,ra,write:false,adopt:true};return}
    if(seen>ra){out={M:L,ra:seen,write:true};return tx.set(ref,encDoc(L,seen),{merge:true})}
-   const M=merge(L,R);out={M,ra,write:sigOf(M)!==sigOf(R)};if(out.write)tx.set(ref,encDoc(M,ra),{merge:true})});
+   const M=merge(L,R);out={M,ra,write:sigOf(M)!==sigOf(R)};if(out.write)tx.set(ref,encDoc(M,ra),{merge:true})}),new Promise((_,rj)=>setTimeout(()=>rj(Object.assign(new Error('sync timeout'),{code:'sync-timeout'})),45000))]);
   if(user&&user.uid===me&&out&&rev!==r0)again=true;
   else if(user&&user.uid===me&&out){if(out.adopt)localStorage.setItem(RSK,String(out.ra));
    if(out.adopt||sigOf(out.M)!==sigOf(localState())){applyM(out.M);if(editing<0)draw()}
    SY.synced=1;saveSY();syncAt=Date.now();if(msg.startsWith('Sync')){msg=''}if(page==='settings'&&editing<0)draw()}
- }catch(e){msg=(e&&(e.code==='unavailable'||e.code==='failed-precondition'||!navigator.onLine))?'Sync: offline. Changes are saved here and will sync when you are back online.':'Sync problem: '+((e&&e.code)||'unknown')+'. Your list on this phone is safe.';if(page==='settings'&&editing<0)draw()}
+ }catch(e){msg=(e&&e.code==='sync-timeout')?'Sync is taking longer than usual. Your list is safe on this phone; it will retry on its own.':(e&&(e.code==='unavailable'||e.code==='failed-precondition'||!navigator.onLine))?'Sync: offline. Changes are saved here and will sync when you are back online.':'Sync problem: '+((e&&e.code)||'unknown')+'. Your list on this phone is safe.';if(page==='settings'&&editing<0)draw()}
  pushing=false;if(again){again=false;schedPush(1500)}}
 function persist(){rev++;localStorage.setItem(K,JSON.stringify(items));if(user){if(SY.synced)stamp();schedPush()}}
 function persistV(){rev++;localStorage.setItem(VK,JSON.stringify(vitals));if(user){if(SY.synced)stamp();schedPush()}}

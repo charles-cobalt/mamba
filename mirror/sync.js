@@ -11,7 +11,7 @@ const esc2=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const rerender=()=>{try{if(typeof view!=='undefined'&&view.name==='set')render()}catch{}};
 const setMsg=(m,e)=>{S.msg=m||'';S.err=e?'1':'';rerender()};
 const saveSt=()=>kvset('sync',S.st);
-const nice=e=>{const c=(e&&e.code)||'';return({'auth/email-already-in-use':'That email already has an account. Use Sign in.','auth/invalid-credential':'Email or password is wrong.','auth/wrong-password':'Email or password is wrong.','auth/user-not-found':'Email or password is wrong.','auth/invalid-email':'That email address is not valid.','auth/weak-password':'Use a password of at least 6 characters.','auth/too-many-requests':'Too many tries. Wait a few minutes and try again.','auth/network-request-failed':'No connection. Try again when online.','permission-denied':'Not allowed yet. Verify your email first, then sync.','resource-exhausted':'The free daily limit was reached. Sync resumes when it resets.','unavailable':'No connection to the sync service. Your journal on this phone is safe.'})[c]||('Sync problem ('+(c||e&&e.message||'unknown')+'). Your journal on this phone is unchanged.')};
+const nice=e=>{const c=(e&&e.code)||'';return({'auth/email-already-in-use':'That email already has an account. Use Sign in.','auth/invalid-credential':'Email or password is wrong.','auth/wrong-password':'Email or password is wrong.','auth/user-not-found':'Email or password is wrong.','auth/invalid-email':'That email address is not valid.','auth/weak-password':'Use a password of at least 6 characters.','auth/too-many-requests':'Too many tries. Wait a few minutes and try again.','auth/network-request-failed':'No connection. Try again when online.','permission-denied':'Not allowed yet. Verify your email first, then sync.','resource-exhausted':'The free daily limit was reached. Sync resumes when it resets.','unavailable':'No connection to the sync service. Your journal on this phone is safe.','sync-timeout':'Sync took too long this time. It will keep trying on its own; your journal on this phone is safe.'})[c]||('Sync problem ('+(c||e&&e.message||'unknown')+'). Your journal on this phone is unchanged.')};
 async function sdk(){if(S.sdk)return S.sdk;const [a,au,fs]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);const app=a.initializeApp(CFG);S.sdk={app,a:au,f:fs,auth:au.getAuth(app),fdb:fs.getFirestore(app)};return S.sdk}
 async function start(){
  try{S.st=Object.assign(S.st,(await kvget('sync'))||{})}catch{}
@@ -46,7 +46,7 @@ async function pull(k){
   if(S.st.hashes[id]&&m.u<=(S.st.ut&&S.st.ut[id]||0))continue;
   const t=JSON.parse(m.d);t.img='';
   if(m.n){let s='';const r=await f.getDocs(f.query(col(k,'imgs'),f.where('t','==',id)));const ps=[];r.forEach(x=>ps[x.data().k]=x.data().d);if(ps.length<m.n||ps.slice(0,m.n).some(x=>x==null))throw Object.assign(new Error('missing image chunks'),{code:'incomplete'});const sp=ps.slice(0,m.n).join('').split('|');t.img=sp[0];if(sp[1])t.img2=sp[1]}
-  if(i>=0)trades[i]=t;else trades.push(t);
+  const j=trades.findIndex(x=>x.id===id);if(j>=0)trades[j]=t;else trades.push(t);
   S.st.hashes[id]=th(t);S.st.ut=S.st.ut||{};S.st.ut[id]=m.u;out.got++}
  S.st.lastPull=maxU;
  const cd=await f.getDoc(f.doc(k.fdb,'mamba_mirror_users',S.user.uid,'meta','cfg'));
@@ -71,7 +71,16 @@ async function push(k,all){
 async function sync(all){
  if(S.busy){S.again=1;return}
  if(!S.user||!S.ver||S.st.uid!==S.user.uid)return;S.busy=true;setMsg('Syncing...');
- try{const k=await sdk();await S.user.getIdToken(true);const a=await pull(k);await save();const b=await push(k,all);S.st.lastSync=Date.now();await saveSt();
+ try{
+  /*A hung network call (blackholed request) never settles, and without a watchdog it would leave S.busy set and
+   'Syncing...' showing forever - every later sync just marks S.again on a run that never finishes. Race the body
+   against a timeout: on timeout the user hears it and later nudges/intervals retry. The abandoned body can still
+   finish in the background; its local writes converge with the retry (pull re-checks each trade's index before
+   applying) and its server writes are content-hashed and idempotent, so nothing stale is marked synced here:
+   lastSync and the 'Synced' message only update on a run that actually completed.*/
+  const body=(async()=>{const k=await sdk();await S.user.getIdToken(true);const a=await pull(k);await save();const b=await push(k,all);return{a,b}})();
+  const {a,b}=await Promise.race([body,new Promise((_,rj)=>setTimeout(()=>rj(Object.assign(new Error('sync timeout'),{code:'sync-timeout'})),45000))]);
+  S.st.lastSync=Date.now();await saveSt();
   setMsg('Synced '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+(a.got?' · '+a.got+' updated from your account':'')+(b?' · '+b+' sent':''));}
  catch(e){setMsg(nice(e),1)}
  S.busy=false;if(S.again){S.again=0;setTimeout(()=>sync(false),200)}rerender();try{if(['list','stats'].includes(view.name))render()}catch{}}
