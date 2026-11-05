@@ -771,7 +771,7 @@ function listsCsv(){const q=v=>{v=String(v==null?'':v);return /[",\n]/.test(v)?'
 function mkListsPdf(){const PW=612,PH=792,MX=48,MT=54,MB=60,AW=PW-2*MX;
  const cx=document.createElement('canvas').getContext('2d');
  const wd=(t,z,b)=>{cx.font=(b?'bold ':'')+z+'px Helvetica, Arial, sans-serif';return cx.measureText(t).width};
- const L1=t=>String(t).replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d]/g,'"').replace(/[\u2013\u2014]/g,'-').replace(/\u2192/g,'->').replace(/\u2022/g,'\x95').replace(/[^\x20-\x7e\x95\xa0-\xff]/g,'?');
+ const CP1252={'€':'\x80','‚':'\x82','ƒ':'\x83','„':'\x84','…':'\x85','†':'\x86','‡':'\x87','ˆ':'\x88','‰':'\x89','Š':'\x8A','‹':'\x8B','Œ':'\x8C','Ž':'\x8E','˜':'\x98','™':'\x99','š':'\x9A','›':'\x9B','œ':'\x9C','ž':'\x9E','Ÿ':'\x9F'};const L1=t=>String(t).replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d]/g,'"').replace(/[\u2013\u2014]/g,'-').replace(/\u2192/g,'->').replace(/\u2022/g,'\x95').replace(/[\u20AC\u201A\u0192\u201E\u2026\u2020\u2021\u02C6\u2030\u0160\u2039\u0152\u017D\u02DC\u2122\u0161\u203A\u0153\u017E\u0178]/g,c=>CP1252[c]).replace(/[^\x20-\x7e\x80-\x9f\xa0-\xff]/g,'?');
  const pe=t=>L1(t).replace(/[\\()]/g,c=>'\\'+c);
  const wrap=(t,w,z,b)=>{t=L1(t);if(!t)return [''];const out=[];let cur='';t.split(' ').forEach(word=>{let tt=cur?cur+' '+word:word;if(wd(tt,z,b)<=w){cur=tt;return}if(cur)out.push(cur);cur='';while(wd(word,z,b)>w&&word.length>1){let k=word.length-1;while(k>1&&wd(word.slice(0,k),z,b)>w)k--;out.push(word.slice(0,k));word=word.slice(k)}cur=word});out.push(cur);return out};
  const pages=[[]];let y=MT;const cur=()=>pages[pages.length-1];
