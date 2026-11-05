@@ -18,10 +18,10 @@ html,body{background:#000;background-image:linear-gradient(180deg,#262626 0%,#1c
 main{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
 .brand{position:relative;width:min(52vw,190px)}
 .brand svg.mark{width:100%;height:auto;display:block}
-.zone{position:absolute;display:block}
-.zone.mirror{top:0;left:0;right:0;height:43.5%}
-.zone.jarvis{top:43.5%;left:0;width:50%;height:26.7%}
-.zone.listo{top:43.5%;right:0;width:50%;height:26.7%}
+.zone{position:fixed;display:block;z-index:1}
+.zone.mirror{top:0;left:0;right:0;height:calc(50vh - .10585*min(52vw,190px))}
+.zone.jarvis{top:calc(50vh - .10585*min(52vw,190px));left:0;width:50vw;bottom:0}
+.zone.listo{top:calc(50vh - .10585*min(52vw,190px));right:0;width:50vw;bottom:0}
 .lbl{position:absolute;font:600 11px DINish,-apple-system,sans-serif;letter-spacing:.32em;color:#aaaaaa;pointer-events:none;white-space:nowrap}
 .lbl.mirror{top:-30px;left:50%;transform:translateX(-50%)}
 .lbl.jarvis{top:56%;right:100%;margin-right:-14px;transform:translateY(-50%)}
