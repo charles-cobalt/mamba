@@ -32,11 +32,13 @@ async function linkAndSync(u){
  await sync(false)
 }
 const col=(k,n)=>k.f.collection(k.fdb,'mamba_mirror_users',S.user.uid,n);
-async function pull(k){
+async function pull(k,alive){
+ alive=alive||(()=>{});
  const f=k.f,out={got:0};
  const q=f.query(col(k,'trades'),f.where('u','>',Math.max(0,S.st.lastPull-120000)),f.orderBy('u'));
  const snap=await f.getDocs(q);let maxU=S.st.lastPull;
  for(const d of snap.docs){
+  alive();
   const m=d.data(),id=d.id;maxU=Math.max(maxU,m.u||0);
   const i=trades.findIndex(x=>x.id===id),loc=i>=0?trades[i]:null,known=S.st.hashes[id]||S.st.base[id];
   const changed=loc&&th(loc)!==known;
@@ -48,7 +50,7 @@ async function pull(k){
   if(m.n){let s='';const r=await f.getDocs(f.query(col(k,'imgs'),f.where('t','==',id)));const ps=[];r.forEach(x=>ps[x.data().k]=x.data().d);if(ps.length<m.n||ps.slice(0,m.n).some(x=>x==null))throw Object.assign(new Error('missing image chunks'),{code:'incomplete'});const sp=ps.slice(0,m.n).join('').split('|');t.img=sp[0];if(sp[1])t.img2=sp[1]}
   const j=trades.findIndex(x=>x.id===id);if(j>=0)trades[j]=t;else trades.push(t);
   S.st.hashes[id]=th(t);S.st.ut=S.st.ut||{};S.st.ut[id]=m.u;out.got++}
- S.st.lastPull=maxU;
+ S.st.lastPull=maxU;alive();
  const cd=await f.getDoc(f.doc(k.fdb,'mamba_mirror_users',S.user.uid,'meta','cfg'));
  if(cd.exists()){const m=cd.data();if(m.u>S.st.lastCfgU&&ch()===(S.st.cfgHash||S.st.cfgBase)){cfg=JSON.parse(m.d);S.st.cfgHash=ch();S.st.lastCfgU=m.u;out.got++}}
  return out}
@@ -58,28 +60,33 @@ async function pushTrade(k,t,force){
  for(let j=0;j<n;j++)await f.setDoc(f.doc(k.fdb,'mamba_mirror_users',S.user.uid,'imgs',id+'_'+j),{t:id,k:j,d:im.slice(j*CH,(j+1)*CH)});
  await f.setDoc(f.doc(k.fdb,'mamba_mirror_users',S.user.uid,'trades',id),{u,del:false,d:JSON.stringify(rest),n,ih:hs(im)});
  S.st.hashes[id]=h;S.st.ut=S.st.ut||{};S.st.ut[id]=u;S.st.n=S.st.n||{};S.st.n[id]=n;return 1}
-async function push(k,all){
+async function push(k,all,alive){
+ alive=alive||(()=>{});
  const f=k.f;let c=0;
- for(const t of trades)c+=await pushTrade(k,t,false)||(all&&!S.st.hashes[t.id]?await pushTrade(k,t,true):0);
+ for(const t of trades){alive();c+=await pushTrade(k,t,false)||(all&&!S.st.hashes[t.id]?await pushTrade(k,t,true):0)}
  const ids=new Set(trades.map(t=>t.id));
- for(const id of Object.keys(S.st.hashes)){if(ids.has(id))continue;
+ for(const id of Object.keys(S.st.hashes)){alive();if(ids.has(id))continue;
   const n=(S.st.n&&S.st.n[id])||0;for(let j=0;j<n+2;j++)try{await f.deleteDoc(f.doc(k.fdb,'mamba_mirror_users',S.user.uid,'imgs',id+'_'+j))}catch{}
   await f.setDoc(f.doc(k.fdb,'mamba_mirror_users',S.user.uid,'trades',id),{u:Date.now(),del:true,d:'',n:0,ih:''});
   delete S.st.hashes[id];c++}
- const chn=ch();if(chn!==S.st.cfgHash&&(chn!==S.st.cfgBase||all)){const u=Date.now();await f.setDoc(f.doc(k.fdb,'mamba_mirror_users',S.user.uid,'meta','cfg'),{u,d:JSON.stringify(cfg)});S.st.cfgHash=chn;S.st.lastCfgU=u;c++}
+ alive();const chn=ch();if(chn!==S.st.cfgHash&&(chn!==S.st.cfgBase||all)){const u=Date.now();await f.setDoc(f.doc(k.fdb,'mamba_mirror_users',S.user.uid,'meta','cfg'),{u,d:JSON.stringify(cfg)});S.st.cfgHash=chn;S.st.lastCfgU=u;c++}
  return c}
 async function sync(all){
  if(S.busy){S.again=1;return}
  if(!S.user||!S.ver||S.st.uid!==S.user.uid)return;S.busy=true;setMsg('Syncing...');
+ const g=(S.gen=(S.gen||0)+1);
+ const alive=()=>{if(g!==S.gen)throw Object.assign(new Error('superseded by a newer sync'),{code:'sync-stale'})};
  try{
   /*A hung network call (blackholed request) never settles, and without a watchdog it would leave S.busy set and
    'Syncing...' showing forever - every later sync just marks S.again on a run that never finishes. Race the body
-   against a timeout: on timeout the user hears it and later nudges/intervals retry. The abandoned body can still
-   finish in the background; its local writes converge with the retry (pull re-checks each trade's index before
-   applying) and its server writes are content-hashed and idempotent, so nothing stale is marked synced here:
-   lastSync and the 'Synced' message only update on a run that actually completed.*/
-  const body=(async()=>{const k=await sdk();await S.user.getIdToken(true);const a=await pull(k);await save();const b=await push(k,all);return{a,b}})();
-  const {a,b}=await Promise.race([body,new Promise((_,rj)=>setTimeout(()=>rj(Object.assign(new Error('sync timeout'),{code:'sync-timeout'})),45000))]);
+   against a timeout: on timeout the user hears it and the retry machinery runs again. The abandoned body keeps
+   running in the background, so pull and push check alive() before every local mutation and server write: once a
+   newer sync has started, the stale run stops itself instead of resurrecting deleted trades, regressing lastPull,
+   or overwriting newer state. A stale abort is swallowed; a real error still surfaces immediately.*/
+  const body=(async()=>{const k=await sdk();await S.user.getIdToken(true);const a=await pull(k,alive);alive();await save();const b=await push(k,all,alive);return{a,b}})().catch(e=>{if(e&&e.code==='sync-stale')return null;throw e});
+  const r=await Promise.race([body,new Promise((_,rj)=>setTimeout(()=>rj(Object.assign(new Error('sync timeout'),{code:'sync-timeout'})),45000))]);
+  if(!r){S.busy=false;return} // superseded body finished late; the newer sync owns the state
+  const {a,b}=r;
   S.st.lastSync=Date.now();await saveSt();
   setMsg('Synced '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+(a.got?' · '+a.got+' updated from your account':'')+(b?' · '+b+' sent':''));}
  catch(e){setMsg(nice(e),1)}
