@@ -791,8 +791,9 @@ else{acct=`<div class="card p"><div class="mu" style="margin-bottom:4px">Signed 
 v.innerHTML=`<div class="twrap">${wmSvg('settings')}<h1>Settings</h1></div><h2>Theme</h2><div class="row">${['night','day','auto'].map(k=>`<button class="chip ${th===k?'on':''}" data-th="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div><h2>Account</h2>${acct}<div class="msg" id="msg">${esc(msg)}</div>${stSettingsHtml()}${mailHtml()}<div id="dietbox">${dietHtml()}</div>${stResetHtml()}`;
 bindDiet(v);mailBind(v);v.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{localStorage.setItem('mamba.jarvis.theme',b.dataset.th);applyTheme();if(user){if(SY.synced)stamp();schedPush()}draw()});
 v.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{mode=b.dataset.m;msg='';draw()});
-v.querySelectorAll('.go').forEach(go=>go.onclick=async()=>{const a=go.dataset.a,em=$('#em').value.trim(),pw=$('#pw')?$('#pw').value:'';msg='';
-try{if(a==='reset'){await sendPasswordResetEmail(auth,em);msg='Reset link sent if that email has an account.'}
+v.querySelectorAll('.go').forEach(go=>go.onclick=async()=>{const a=go.dataset.a,em=$('#em').value.trim(),pw=$('#pw')?$('#pw').value:'';msg=a==='in'?'Signing in...':a==='up'?'Creating account...':'Sending reset link...';draw();
+try{if(a==='up'&&pw.length<6)msg='Password needs at least 6 characters.';
+else if(a==='reset'){await sendPasswordResetEmail(auth,em);msg='Reset link sent if that email has an account.'}
 else if(a==='up'){const c=await createUserWithEmailAndPassword(auth,em,pw);try{await sendEmailVerification(c.user);msg='Account created. Verification email sent.'}catch(e){}}
 else await signInWithEmailAndPassword(auth,em,pw)}catch(e){msg=({'auth/invalid-credential':'Wrong email or password.','auth/email-already-in-use':'That email already has an account.','auth/weak-password':'Password needs at least 6 characters.','auth/invalid-email':'That email does not look right.','auth/missing-password':'Enter a password.'})[e.code]||('Could not complete: '+e.code)}draw()});
 const out=$('#out');if(out)out.onclick=()=>signOut(auth);

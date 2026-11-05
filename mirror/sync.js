@@ -107,7 +107,7 @@ document.addEventListener('click',async e=>{
   if(a==='all'){if(confirm('Upload all trades on this phone to your private account?'))await sync(true);return}
   const k=await sdk();
   if(a==='in'){S.em=E;if(!S.em||!P)return setMsg('Enter your email and password.',1);setMsg('Signing in...');await k.a.signInWithEmailAndPassword(k.auth,S.em,P);setMsg('')}
-  else if(a==='new'){S.em=E;if(!S.em||!P)return setMsg('Enter an email and a password.',1);setMsg('Creating account...');const c=await k.a.createUserWithEmailAndPassword(k.auth,S.em,P);await k.a.sendEmailVerification(c.user);setMsg('Verification email sent to '+S.em+'.')}
+  else if(a==='new'){S.em=E;if(!S.em||!P)return setMsg('Enter an email and a password.',1);if(P.length<6)return setMsg('Use a password of at least 6 characters.',1);setMsg('Creating account...');const c=await k.a.createUserWithEmailAndPassword(k.auth,S.em,P);await k.a.sendEmailVerification(c.user);setMsg('Verification email sent to '+S.em+'.')}
   else if(a==='reset'){S.em=E;if(!S.em)return setMsg('Enter your email first.',1);await k.a.sendPasswordResetEmail(k.auth,S.em);setMsg('If that email has an account, a reset link was sent.')}
   else if(a==='resend'){await k.a.sendEmailVerification(k.auth.currentUser);setMsg('Verification email sent again.')}
   else if(a==='chk'){await k.auth.currentUser.reload();S.user=k.auth.currentUser;S.ver=!!S.user.emailVerified;if(S.ver){await S.user.getIdToken(true);await linkAndSync(S.user)}else setMsg('Not verified yet. Open the link in the email first.',1)}
