@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#121212"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="MAMBA"><title>MAMBA · Listo</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#121212"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Mamba • Listo"><title>Mamba • Listo</title>
 <link rel="manifest" href="../manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><link rel="stylesheet" href="fonts.css">
 <script>(function(){try{var t=localStorage.getItem("mamba.listo.theme")||"auto";var d=t==="day"||(t==="auto"&&matchMedia("(prefers-color-scheme: light)").matches);document.documentElement.classList.toggle("day",d);var m=document.querySelector('meta[name=theme-color]');if(m)m.content=d?"#ededed":"#121212"}catch(e){}})()</script>
 <style>
@@ -260,7 +260,7 @@ function startJoin(){jvCode=localStorage.getItem(JVK)||'';if(!jvCode)return;
  if(shUnsub)shUnsub();const ref=doc(db,'mamba_listo_shares',jvCode);
  shUnsub=onSnapshot(ref,s=>{if(!jvCode)return;
   if(!s.exists()){if(s.metadata.fromCache){if(!jvSeen){shareNote='Connecting to the shared list\u2026';if(page==='sum')draw()}return}
-   if(jvSeen){shareNote='That shared list ended.';unlinkJoin()}else{shareNote='This shared list is not available. Ask the owner to open MAMBA · Listo and share a fresh link.';unlinkJoin()}if(page==='sum')draw();return}
+   if(jvSeen){shareNote='That shared list ended.';unlinkJoin()}else{shareNote='This shared list is not available. Ask the owner to open Mamba • Listo and share a fresh link.';unlinkJoin()}if(page==='sum')draw();return}
   jvSeen=true;shareNote='';
   if(s.metadata.hasPendingWrites)return;
   if(s.data().dead){shareNote='That shared list ended.';unlinkJoin();if(page==='sum')draw();return}
@@ -345,7 +345,7 @@ async function shareLink(){const code=shCode;if(!code)return;
  shareNote='Checking the share link\u2026';draw();
  const st=await shareServerState(code);
  if(st==='live'){shareNote='';const u=shareUrl(code);
-  if(navigator.share){try{await navigator.share({title:'MAMBA · Listo shared list',text:'Join my live MAMBA · Listo list:',url:u});return}catch(e){if(e&&e.name==='AbortError')return}}
+  if(navigator.share){try{await navigator.share({title:'Mamba • Listo shared list',text:'Join my live Mamba • Listo list:',url:u});return}catch(e){if(e&&e.name==='AbortError')return}}
   if(await copyText(u))shareNote='Link copied. Send it to the person you are shopping with.';else shareNote=u;draw();return}
  if(st==='offline'){shareNote='You seem to be offline. Reconnect, then send the link.';draw();return}
  if(st==='dead'){unlinkShare();shareNote='That share was ended. Tap Share live to start a fresh one.';draw();return}
@@ -714,15 +714,15 @@ async function sharePreset(p,bx){try{const ct=pType(p),f=pFactor(p);
  else if(f!==1)meta.push('Multiplier '+fmtN(f)+'\u00d7');
  const b=await shareCanvas({title:pShow(p.name),meta,desc:p.desc?capStrip(p.desc):'',items,instr:(ct!=='list'&&ct!=='grocery'&&p.instr)?capStrip(p.instr):'',boxes:!!bx});
  if(!b)throw new Error('blob');
- await shareImgFile(b,'listo-'+(pTitle(p.name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'list')+'.png')
+ await shareImgFile(b,'Mamba • Listo '+(pTitle(p.name)||'List')+'.png')
 }catch(e){note='Could not create the image. Try again.';draw()}}
 async function shareSumImg(bx){try{const items=sum.map(x=>{const a=sumAmt(x);return {n:capStrip(x.name)+(x.done?' \u2713':''),t:a?'('+a+')':''}});
  const b=await shareCanvas({title:'The List',meta:[sum.length+(sum.length===1?' item':' items')],desc:'',items,instr:'',boxes:!!bx});
  if(!b)throw new Error('blob');
- await shareImgFile(b,bx?'listo-the-list-checklist.png':'listo-the-list.png');shMsg='';draw()
+ await shareImgFile(b,bx?'Mamba • Listo The List checklist.png':'Mamba • Listo The List.png');shMsg='';draw()
 }catch(e){shMsg='Could not create the image. Try again.';draw()}}
 const dlFile=(name,text,type)=>{const b=new Blob([text],{type:type||'text/plain'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},500)};
-const backupFile=()=>JSON.stringify({app:'listo',format:'listo-backup',version:1,name:'MAMBA \u00b7 Listo',exported:new Date().toISOString(),components:comps,presets:presets,sum,settings:{theme:theme()}},null,2);
+const backupFile=()=>JSON.stringify({app:'listo',format:'listo-backup',version:1,name:'Mamba \u2022 Listo',exported:new Date().toISOString(),components:comps,presets:presets,sum,settings:{theme:theme()}},null,2);
 const U8=s2=>new TextEncoder().encode(s2);
 const CRCT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t.push(c>>>0)}return t})();
 const crc32=u=>{let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRCT[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0};
@@ -758,7 +758,7 @@ function listBlocks(){const B=[];
  sec('Presets',act);sec('Archived presets',arc);
  return B}
 const expDate=()=>new Date().toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
-function listsTxt(){const L=['MAMBA Listo','Exported '+expDate()+'. Readable copy for viewing or sharing; use the backup file to restore.',''];
+function listsTxt(){const L=['Mamba • Listo','Exported '+expDate()+'. Readable copy for viewing or sharing; use the backup file to restore.',''];
  listBlocks().forEach(b=>{L.push(b.t.toUpperCase());b.lines.forEach(l=>L.push(l));L.push('')});
  return L.join('\n')}
 function listsCsv(){const q=v=>{v=String(v==null?'':v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
@@ -776,11 +776,11 @@ function mkListsPdf(){const PW=612,PH=792,MX=48,MT=54,MB=60,AW=PW-2*MX;
  const wrap=(t,w,z,b)=>{t=L1(t);if(!t)return [''];const out=[];let cur='';t.split(' ').forEach(word=>{let tt=cur?cur+' '+word:word;if(wd(tt,z,b)<=w){cur=tt;return}if(cur)out.push(cur);cur='';while(wd(word,z,b)>w&&word.length>1){let k=word.length-1;while(k>1&&wd(word.slice(0,k),z,b)>w)k--;out.push(word.slice(0,k));word=word.slice(k)}cur=word});out.push(cur);return out};
  const pages=[[]];let y=MT;const cur=()=>pages[pages.length-1];
  const line=(t,z,b,g,gap)=>{wrap(t,AW,z,b).forEach(ln=>{if(y+z+6>PH-MB){pages.push([]);y=MT}cur().push((g!==undefined?g+' g ':'0 g ')+'BT /'+(b?'F2':'F1')+' '+z+' Tf '+MX+' '+(PH-y).toFixed(2)+' Td ('+pe(ln)+') Tj ET');y+=z+5});y+=(gap||0)};
- line('MAMBA Listo',20,true);line('Exported '+expDate()+'. Readable copy for viewing or sharing; use the backup file to restore.',9,false,0.35,10);
+ line('Mamba • Listo',20,true);line('Exported '+expDate()+'. Readable copy for viewing or sharing; use the backup file to restore.',9,false,0.35,10);
  listBlocks().forEach(bl=>{if(y+60>PH-MB){pages.push([]);y=MT}y+=8;cur().push('0.6 G 0.5 w '+MX+' '+(PH-y).toFixed(2)+' m '+(MX+AW)+' '+(PH-y).toFixed(2)+' l S');y+=4;line(bl.t.toUpperCase(),12,true,undefined,4);
   bl.lines.forEach(l=>{const hi=l.indexOf(' - '),hd=hi>0&&l.slice(0,hi)===l.slice(0,hi).toUpperCase()&&/ - (List|Instructed list|Grocery|Instructed grocery|Recipe)/.test(l);line(l,hd?10.5:10,hd,hd?undefined:0.15,1)})});
  if(pages.length===1&&!pages[0].length)line('Nothing saved yet.',10,false,0.35);
- const N=pages.length;pages.forEach((p,i)=>{p.push('0.4 g BT /F1 8 Tf '+MX+' '+(MB-26)+' Td ('+pe('MAMBA Listo lists   |   Page '+(i+1)+' of '+N)+') Tj ET')});
+ const N=pages.length;pages.forEach((p,i)=>{p.push('0.4 g BT /F1 8 Tf '+MX+' '+(MB-26)+' Td ('+pe('Mamba • Listo lists   |   Page '+(i+1)+' of '+N)+') Tj ET')});
  const objs=[];objs[1]='<</Type/Catalog/Pages 2 0 R>>';
  const kids=pages.map((p,i)=>(5+i*2)+' 0 R').join(' ');objs[2]='<</Type/Pages/Kids ['+kids+']/Count '+N+'>>';
  objs[3]='<</Type/Font/Subtype/Type1/BaseFont/Helvetica/Encoding/WinAnsiEncoding>>';objs[4]='<</Type/Font/Subtype/Type1/BaseFont/Helvetica-Bold/Encoding/WinAnsiEncoding>>';
@@ -789,13 +789,13 @@ function mkListsPdf(){const PW=612,PH=792,MX=48,MT=54,MB=60,AW=PW-2*MX;
  const xr=out.length;out+='xref\n0 '+objs.length+'\n0000000000 65535 f \n';for(let i=1;i<objs.length;i++)out+=String(offs[i]).padStart(10,'0')+' 00000 n \n';
  out+='trailer\n<</Size '+objs.length+'/Root 1 0 R>>\nstartxref\n'+xr+'\n%%EOF';
  const u=new Uint8Array(out.length);for(let i=0;i<out.length;i++)u[i]=out.charCodeAt(i)&255;return u}
-function backupHtml(){let h='<h2>Backup</h2><div class="card p"><div class="mu">Export every part of MAMBA · Listo as one file (presets, archived presets, The List, theme and your custom order), or load a file back in. Works signed in or out, online or offline.</div><div class="row" style="margin-top:10px"><button class="btn sec" id="b-exp" style="flex:1;margin-top:0">Export</button><button class="btn sec" id="b-imp" style="flex:1;margin-top:0">Import</button></div><button class="btn sec" id="b-zip" style="margin-top:10px;width:100%;box-sizing:border-box">Download all files</button><div class="mu">One zip: the backup file plus readable copies of your lists in PDF, TXT and CSV. Keep the downloaded files outside the app, like in Files.</div><input type="file" id="b-file" accept="application/json,.json" hidden>';
+function backupHtml(){let h='<h2>Backup</h2><div class="card p"><div class="mu">Export every part of Mamba • Listo as one file (presets, archived presets, The List, theme and your custom order), or load a file back in. Works signed in or out, online or offline.</div><div class="row" style="margin-top:10px"><button class="btn sec" id="b-exp" style="flex:1;margin-top:0">Export</button><button class="btn sec" id="b-imp" style="flex:1;margin-top:0">Import</button></div><button class="btn sec" id="b-zip" style="margin-top:10px;width:100%;box-sizing:border-box">Download all files</button><div class="mu">One zip: the backup file plus readable copies of your lists in PDF, TXT and CSV. Keep the downloaded files outside the app, like in Files.</div><input type="file" id="b-file" accept="application/json,.json" hidden>';
  if(bkPend){const p=bkPend;h+='<div style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px"><div>Replace everything with this file?</div><div class="mu">'+p.np+' preset'+(p.np===1?'':'s')+(p.na?' ('+p.na+' archived)':'')+', '+p.ns+' item'+(p.ns===1?'':'s')+' in The List. What is in the app now is overwritten. Export first if you want to keep it.</div><div class="row" style="margin-top:10px"><button class="btn" id="b-yes" style="flex:1;margin-top:0">Replace</button><button class="btn sec" id="b-no" style="flex:1;margin-top:0">Cancel</button></div></div>'}
  return h+(bkNote?'<div class="msg" style="margin:10px 0 0">'+esc(bkNote)+'</div>':'')+'</div>'}
 function resetHtml(){const ok=rchk&&rtxt.trim().toUpperCase()==='RESET';
  let h='<h2>Reset account</h2><div class="card p"><div class="mu">Start over with an empty Listo.</div>';
  if(!rstOpen)h+='<button class="btn sec" id="r-open" style="width:100%;box-sizing:border-box">Reset account</button>';
- else h+='<div style="margin-top:10px">This erases '+presets.length+' presets and '+sum.length+' items in The List.</div><div class="mu">'+(user?'It clears this device and your synced copy for '+esc(user.email)+'. Other devices signed in to this account clear the next time they open MAMBA · Listo.':'You are signed out, so this clears this device only.')+' Your sign-in, email and theme are not touched. This cannot be undone.</div><button class="lnk" id="r-bk" style="padding-left:0">Download a backup file first</button><div class="row" style="margin-top:4px"><button class="chip sm'+(rchk?' on':'')+'" id="r-chk">I saved a backup file</button></div><label class="f">Type RESET to confirm</label><input id="rtxt" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" value="'+esc(rtxt)+'"><div class="row" style="margin-top:10px"><button class="btn'+(ok?'':' sec')+'" id="rgo" style="flex:1;margin-top:0;'+(ok?'':'opacity:.4')+'">Erase everything</button><button class="btn sec" id="r-no" style="flex:1;margin-top:0">Cancel</button></div>';
+ else h+='<div style="margin-top:10px">This erases '+presets.length+' presets and '+sum.length+' items in The List.</div><div class="mu">'+(user?'It clears this device and your synced copy for '+esc(user.email)+'. Other devices signed in to this account clear the next time they open Mamba • Listo.':'You are signed out, so this clears this device only.')+' Your sign-in, email and theme are not touched. This cannot be undone.</div><button class="lnk" id="r-bk" style="padding-left:0">Download a backup file first</button><div class="row" style="margin-top:4px"><button class="chip sm'+(rchk?' on':'')+'" id="r-chk">I saved a backup file</button></div><label class="f">Type RESET to confirm</label><input id="rtxt" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" value="'+esc(rtxt)+'"><div class="row" style="margin-top:10px"><button class="btn'+(ok?'':' sec')+'" id="rgo" style="flex:1;margin-top:0;'+(ok?'':'opacity:.4')+'">Erase everything</button><button class="btn sec" id="r-no" style="flex:1;margin-top:0">Cancel</button></div>';
  return h+(rnote?'<div class="msg" style="margin:10px 0 0">'+esc(rnote)+'</div>':'')+'</div>'}
 function drawSettings(v){const th=theme();let acct;
  if(user){acct='<div class="card p"><div>'+esc(user.email)+'</div><div class="mu" style="margin-top:4px">'+(user.emailVerified?'Email verified. Synced across your devices.':'Email not verified yet. Check your inbox. Synced across your devices.')+(syncAt?' Last synced '+new Date(syncAt).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'.':'')+'</div>'+(user.emailVerified?'':'<button class="lnk" id="resend">Resend verification email</button><br><button class="lnk" id="chk">I verified my email</button><br>')+'<div class="row" style="margin-top:10px"><button class="btn sec" id="syncnow" style="flex:1;margin-top:0">Sync now</button><button class="btn sec" id="out" style="flex:1;margin-top:0">Sign out</button></div></div>'}
@@ -812,25 +812,25 @@ function drawSettings(v){const th=theme();let acct;
  const sn=$('#syncnow');if(sn)sn.onclick=()=>{msg='Syncing...';draw();schedPush(0)};
  const rs=$('#resend');if(rs)rs.onclick=async()=>{try{await sendEmailVerification(user);msg='Verification email sent.'}catch(e){msg='Try again in a minute.'}draw()};
  const stampD=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
- const be=$('#b-exp');if(be)be.onclick=()=>{bkPend=null;dlFile('mamba-listo-backup_'+stampD()+'.json',backupFile(),'application/json');bkNote='Backup file downloaded.';draw()};
+ const be=$('#b-exp');if(be)be.onclick=()=>{bkPend=null;dlFile('Mamba • Listo backup '+stampD()+'.json',backupFile(),'application/json');bkNote='Backup file downloaded.';draw()};
  const bi=$('#b-imp');if(bi)bi.onclick=()=>$('#b-file').click();
  const bf=$('#b-file');if(bf)bf.onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;bkPend=null;try{const j=JSON.parse(await f.text());
   if(j&&j.app==='listo'&&j.format==='listo-backup'&&Array.isArray(j.presets)&&Array.isArray(j.sum)){
    const ps=j.presets.filter(x=>x&&typeof x.name==='string'),sm=j.sum.filter(x=>x&&typeof x.name==='string');
    bkPend={c:Array.isArray(j.components)?j.components:[],p:ps,s:sm,th:j.settings&&j.settings.theme,np:ps.length,na:ps.filter(x=>x.arch).length,ns:sm.length};bkNote=''}
-  else if(j&&typeof j.app==='string'&&j.app!=='listo')bkNote='That file is a '+(typeof j.name==='string'?j.name:'MAMBA \u00b7 '+j.app)+' backup. Import it in that section of MAMBA.';else bkNote='That file is not a MAMBA \u00b7 Listo backup.'}catch(er){bkNote='That file could not be read.'}draw()};
+  else if(j&&typeof j.app==='string'&&j.app!=='listo')bkNote='That file is a '+(typeof j.name==='string'?j.name:'Mamba \u2022 '+j.app)+' backup. Import it in that section of MAMBA.';else bkNote='That file is not a Mamba \u2022 Listo backup.'}catch(er){bkNote='That file could not be read.'}draw()};
  const by=$('#b-yes');if(by)by.onclick=()=>{const q=bkPend;if(!q)return;comps=q.c;presets=q.p;sum=q.s;
   presets.forEach(p=>{if(!p.id)p.id=uid();if(!Array.isArray(p.items))p.items=presetItems(p)});sum.forEach(x=>{if(!x.id)x.id=uid()});
   if(q.th&&['night','day','auto'].includes(q.th)){localStorage.setItem(TK,q.th);applyTheme()}
   bkPend=null;bkNote='Backup loaded.';persist();migrate();draw()};
  const bn=$('#b-no');if(bn)bn.onclick=()=>{bkPend=null;bkNote='';draw()};
  const bz=$('#b-zip');if(bz)bz.onclick=()=>{const d=stampD();
-  dlFile('mamba-listo-all-files_'+d+'.zip',mkZip([['mamba-listo-backup_'+d+'.json',backupFile()],['mamba-listo-lists_'+d+'.pdf',mkListsPdf()],['mamba-listo-lists_'+d+'.txt',listsTxt()],['mamba-listo-lists_'+d+'.csv',listsCsv()]]),'application/zip');
+  dlFile('Mamba • Listo all files '+d+'.zip',mkZip([['Mamba • Listo backup '+d+'.json',backupFile()],['Mamba • Listo lists '+d+'.pdf',mkListsPdf()],['Mamba • Listo lists '+d+'.txt',listsTxt()],['Mamba • Listo lists '+d+'.csv',listsCsv()]]),'application/zip');
   bkNote='All files downloaded as one zip.';draw()};
  const ro=$('#r-open');if(ro)ro.onclick=()=>{rstOpen=true;rchk=false;rtxt='';rnote='';draw()};
  const rn=$('#r-no');if(rn)rn.onclick=()=>{rstOpen=false;rchk=false;rtxt='';rnote='';draw()};
  const rc=$('#r-chk');if(rc)rc.onclick=()=>{rchk=!rchk;draw()};
- const rb=$('#r-bk');if(rb)rb.onclick=()=>{dlFile('mamba-listo-backup_'+stampD()+'.json',backupFile(),'application/json');rnote='Backup file downloaded.';draw()};
+ const rb=$('#r-bk');if(rb)rb.onclick=()=>{dlFile('Mamba • Listo backup '+stampD()+'.json',backupFile(),'application/json');rnote='Backup file downloaded.';draw()};
  const rt=$('#rtxt');if(rt)rt.oninput=()=>{rtxt=rt.value;const ok=rchk&&rtxt.trim().toUpperCase()==='RESET',b=$('#rgo');if(b){b.classList.toggle('sec',!ok);b.style.opacity=ok?'':'.4'}};
  const rg=$('#rgo');if(rg)rg.onclick=()=>{if(rchk&&rtxt.trim().toUpperCase()==='RESET'){comps=[];presets=[];sum=[];localStorage.setItem(RSK,String(Date.now()));persist();rstOpen=false;rchk=false;rtxt='';rnote='Account reset. Everything is empty.'}else rnote='Tick the box and type RESET first.';draw()}}
 function draw(top){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===page));
