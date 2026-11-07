@@ -849,7 +849,7 @@ $('#home').onclick=()=>{page='sum';note='';pxId='';psId='';arId='';pxTxt='';clra
 (function boot(){const s=jl(localStorage.getItem(DK));if(s){comps=s.c||[];presets=s.p||[];sum=s.s||[]}migrate()})();
 (function capMig(){let ch=false;presets.forEach(p=>{if(!p)return;const n2=pTitle(p.name);if(n2!==p.name){p.name=n2;ch=true}if(p.desc){const d2=capSent(p.desc);if(d2!==p.desc){p.desc=d2;ch=true}}if(p.instr){const i2=capSent(p.instr);if(i2!==p.instr){p.instr=i2;ch=true}}if(Array.isArray(p.items))p.items=p.items.map(x=>{if(typeof x!=='string')return x;const t=capTitle(normName(x));if(t!==x)ch=true;return t})});sum.forEach(x=>{if(!x)return;const n2=capTitle(x.name);if(n2!==x.name){x.name=n2;ch=true}if(Array.isArray(x.src))x.src=x.src.map(s2=>{const t=pTitle(s2);if(t!==s2)ch=true;return t});if(Array.isArray(x.qtys))x.qtys.forEach(c=>{const t=pTitle(c.s);if(t!==c.s){c.s=t;ch=true}})});comps.forEach(c=>{if(c&&c.name){const n2=capTitle(c.name);if(n2!==c.name){c.name=n2;ch=true}}});if(ch)persist()})();
 onAuthStateChanged(auth,u=>{user=u;if(unsub){unsub();unsub=null}
- if(u){switchOwner(u.uid);unsub=onSnapshot(doc(db,'mamba_listo_users',u.uid),s=>{if(!s.metadata.hasPendingWrites)schedPush(50)},e=>{msg='Sync unavailable: '+e.code;if(page==='settings')draw()});schedPush(50);startShare()}
+ if(u){switchOwner(u.uid);unsub=onSnapshot(doc(db,'mamba_listo_users',u.uid),s=>{if(!s.metadata.hasPendingWrites)schedPush(50)},e=>{msg='Sync unavailable: '+e.code;if(page==='settings')drawKeep()});schedPush(50);startShare()}
  else switchOwner('');
  startShare();draw()});
 function shareBoot(){const m=/^#share=([a-z0-9]+)/i.exec(location.hash||'');if(m&&m[1].toLowerCase()!==jvCode){joinShare(m[1]);page='sum';draw()}}
