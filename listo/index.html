@@ -158,9 +158,9 @@ async function doSync(){if(!user)return;if(pushing){again=true;return}pushing=tr
    const M=merge(L,R);out={M,ra,write:sigOf(M)!==sigOf(R)};if(out.write)tx.set(ref,encDoc(M,ra),{merge:true})});
   if(user&&user.uid===me&&out&&rev!==r0)again=true;
   else if(user&&user.uid===me&&out){if(out.adopt)localStorage.setItem(RSK,String(out.ra));
-   if(out.adopt||sigOf(out.M)!==sigOf(localState())){applyM(out.M);migrate();draw()}
-   SY.synced=1;saveSY();syncAt=Date.now();if(msg.indexOf('Sync')===0)msg='';if(page==='settings')draw()}
- }catch(e){msg=(e&&(e.code==='unavailable'||e.code==='failed-precondition'||!navigator.onLine))?'Sync: offline. Changes are saved here and will sync when you are back online.':'Sync problem: '+((e&&e.code)||'unknown')+'. Your lists on this device are safe.';if(page==='settings')draw()}
+   if(out.adopt||sigOf(out.M)!==sigOf(localState())){applyM(out.M);migrate();drawKeep()}
+   SY.synced=1;saveSY();syncAt=Date.now();if(msg.indexOf('Sync')===0)msg='';if(page==='settings')drawKeep()}
+ }catch(e){msg=(e&&(e.code==='unavailable'||e.code==='failed-precondition'||!navigator.onLine))?'Sync: offline. Changes are saved here and will sync when you are back online.':'Sync problem: '+((e&&e.code)||'unknown')+'. Your lists on this device are safe.';if(page==='settings')drawKeep()}
  pushing=false;if(again){again=false;schedPush(1500)}}
 function persist(){rev++;saveData();if(user){if(SY.synced)stamp();schedPush()}if(shCode)schedSharePush()}
 /*LIVE SHARE - owner shares Sum by link; anyone with the link sees and checks off the same list live.*/
@@ -833,6 +833,12 @@ function drawSettings(v){const th=theme();let acct;
  const rb=$('#r-bk');if(rb)rb.onclick=()=>{dlFile('Mamba • Listo backup '+stampD()+'.json',backupFile(),'application/json');rnote='Backup file downloaded.';draw()};
  const rt=$('#rtxt');if(rt)rt.oninput=()=>{rtxt=rt.value;const ok=rchk&&rtxt.trim().toUpperCase()==='RESET',b=$('#rgo');if(b){b.classList.toggle('sec',!ok);b.style.opacity=ok?'':'.4'}};
  const rg=$('#rgo');if(rg)rg.onclick=()=>{if(rchk&&rtxt.trim().toUpperCase()==='RESET'){comps=[];presets=[];sum=[];localStorage.setItem(RSK,String(Date.now()));persist();rstOpen=false;rchk=false;rtxt='';rnote='Account reset. Everything is empty.'}else rnote='Tick the box and type RESET first.';draw()}}
+const drawKeep=()=>{const a=document.activeElement;
+ if(!a||!((a.tagName==='INPUT'||a.tagName==='TEXTAREA')&&a.closest('#view'))){draw();return}
+ const sel=a.id?'#'+CSS.escape(a.id):null;
+ if(!sel){draw();return}
+ const s0=a.selectionStart,e0=a.selectionEnd;draw();
+ const n=document.querySelector(sel);if(n){n.focus();try{n.setSelectionRange(s0,e0)}catch(e){}}};
 function draw(top){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===page));
  const v=$('#view'),y=top?0:scrollY;
  if(page==='sum')drawSum(v);else if(page==='components')drawComponents(v);else drawSettings(v);
