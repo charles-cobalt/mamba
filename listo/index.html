@@ -584,7 +584,7 @@ function drawComponents(v){let h='<div class="twrap">'+WM+'<h1>The Presets</h1><
   if(p.desc)ch+='<div class="src big" style="margin-top:8px">Description</div><div class="mu" style="margin:2px 0 0">'+esc(capStrip(p.desc)).replace(/\n/g,'<br>')+'</div>';
   ch+='<div class="mu" style="margin:6px 0 10px">'+(names||'No items')+'</div>';
   if(ct!=='list'&&ct!=='grocery'&&p.instr)ch+='<div class="src big">Instructions</div><div class="mu" style="margin:2px 0 10px">'+esc(capStrip(p.instr)).replace(/\n/g,'<br>')+'</div>';
-  ch+=(jvCode?'':'<button class="chip sm" data-pa="'+p.id+'">'+addLbl(p)+'</button>')+'<button class="chip sm" data-par="'+p.id+'">Archive</button></li>';return ch};
+  ch+=(jvCode?'':'<button class="chip sm" data-pa="'+p.id+'">'+addLbl(p)+'</button>')+'<button class="chip sm" style="margin-top:6px" data-par="'+p.id+'">Archive</button></li>';return ch};
  [['lists','Lists','list','New list'],['groceries','Groceries','grocery','New grocery'],['recipes','Recipes','recipe','New recipe']].forEach(sc=>{
   const lst=sortView(act.filter(p=>pSection(p)===sc[0]),sortC,p=>pTitle(p.name),pType);
   if(cq2&&!lst.length)return;
