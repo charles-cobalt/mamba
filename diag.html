@@ -20,6 +20,7 @@ ol{padding-left:20px}
 <div id=dvh style="position:absolute;visibility:hidden;height:100dvh;width:1px;top:0;left:0"></div>
 <div id=sa style="position:absolute;visibility:hidden;height:env(safe-area-inset-bottom);width:1px;top:0;left:0"></div>
 <h2>MAMBA layout diagnostic</h2>
+<p id=ctx style="display:none;background:#5a2020;border:1px solid #a05050;padding:10px 12px;font-size:15px">This opened in a browser, so the offset test is OFF and the button stays at its normal spot. The test only runs inside the MAMBA home-screen app: fully close MAMBA, reopen it from its home-screen icon, then tap the small "diag" link at the bottom-right of the MAMBA home page.</p>
 <p>Temporary page. Send a screenshot of this whole screen.</p>
 <ol>
 <li>At the very bottom edge: is the dark bar with the red button flush against the bottom of the screen, or is there a light strip under it?</li>
@@ -30,7 +31,15 @@ ol{padding-left:20px}
 <div id=mock><button id=tap type=button>TAP ME</button></div>
 <script>
 var extra=0,n=0;
-function gap(){return Math.round(screen.height-window.innerHeight)}
+function rawgap(){return Math.round(screen.height-window.innerHeight)}
+function standalone(){return navigator.standalone===true||matchMedia('(display-mode: standalone)').matches}
+function gap(){
+ if(!standalone())return 0;
+ if(screen.height<screen.width)return 0; // portrait test only
+ var g=rawgap();
+ if(g<30||g>90)return 0; // only a status-bar-sized delta qualifies
+ return g;
+}
 function render(){
  var rows={
  'navigator.standalone':String(navigator.standalone),
@@ -39,14 +48,18 @@ function render(){
  'window.innerHeight':String(window.innerHeight),
  'visualViewport.height':window.visualViewport?String(Math.round(visualViewport.height)):'n/a',
  'visualViewport.offsetTop':window.visualViewport?String(visualViewport.offsetTop):'n/a',
- 'gap (screen - innerHeight)':String(gap()),
+ 'home-screen context':String(standalone()),
+ 'orientation':screen.height<screen.width?'landscape':'portrait',
+ 'raw screen - innerHeight':String(rawgap()),
+ 'offset applied':String(gap()),
  '100vh probe height':String(document.getElementById('vh').clientHeight),
  '100dvh probe height':String(document.getElementById('dvh').clientHeight),
  'safe-area-inset-bottom probe':getComputedStyle(document.getElementById('sa')).height
  };
  var h='';for(var k in rows)h+='<tr><td>'+k+'</td><td>'+rows[k]+'</td></tr>';
  document.getElementById('t').innerHTML=h;
- var g=gap()+extra;
+ document.getElementById('ctx').style.display=standalone()?'none':'block';
+ var g=gap()+(standalone()?extra:0);
  document.getElementById('mock').style.bottom=(-g)+'px';
  document.getElementById('off').textContent=String(g);
 }
