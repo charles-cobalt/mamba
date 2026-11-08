@@ -67,11 +67,12 @@ function render(){
  document.getElementById('mock').style.bottom=(-g)+'px';
  document.getElementById('off').textContent=String(g);
  document.getElementById('adj').textContent=String(extra);
+ var dis=!standalone();['m10','p10','rst'].forEach(function(i){document.getElementById(i).style.opacity=dis?'.35':'1'});
 }
 document.getElementById('tap').onclick=function(e){n++;e.target.textContent='TAP ME ('+n+')';e.target.className='hit'};
-document.getElementById('m10').onclick=function(){extra-=10;save();render()};
-document.getElementById('p10').onclick=function(){extra+=10;save();render()};
-document.getElementById('rst').onclick=function(){extra=0;save();render()};
+document.getElementById('m10').onclick=function(){if(!standalone())return;extra-=10;save();render()};
+document.getElementById('p10').onclick=function(){if(!standalone())return;extra+=10;save();render()};
+document.getElementById('rst').onclick=function(){if(!standalone())return;extra=0;save();render()};
 addEventListener('resize',render);
 if(window.visualViewport)visualViewport.addEventListener('resize',render);
 render();
