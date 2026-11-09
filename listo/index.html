@@ -445,7 +445,7 @@ async function detect(parts){const r=await aiModel().generateContent([{text:IMP_
  return d&&typeof d==='object'?d:{}}
 function importErr(e){const m=[[e&&e.code,e&&e.message,e&&e.cause&&e.cause.code,e&&e.cause&&e.cause.message].filter(Boolean).join(' '),(()=>{try{return JSON.stringify(e&&e.customDetails||'')}catch(_){return ''}})()].join(' ')||String(e||'');
  if(/quota|429|rate.?limit|exhausted/i.test(m))return 'The free detection limit was reached for now. It resets daily - try again later.';
- if(/permission|403|app.?check|config not found|401|unauthenticated/i.test(m))return 'Detection is unavailable right now. Try again in a few minutes.';
+ if(/permission|403|app.?check|config not found|401|unauthenticated/i.test(m))return 'Detection is not fully set up yet.';
  if(/timeout|timed out|deadline/i.test(m))return 'Detection took too long. Check your connection and try again.';
  if(/unavailable|network|failed to fetch|offline|fetch-error|abort/i.test(m))return 'Could not reach the detection service. Check your connection and try again.';
  return 'Detection did not work on that file. Try a clearer photo or another file.'}
