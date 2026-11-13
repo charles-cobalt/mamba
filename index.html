@@ -22,7 +22,7 @@ main{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;touch-action:n
 .lbl.mirror{top:-30px;left:50%;transform:translateX(-50%)}
 .lbl.jarvis{top:56%;right:100%;margin-right:-14px;transform:translateY(-50%)}
 .lbl.listo{top:56%;left:100%;margin-left:-14px;transform:translateY(-50%)}
-.quote{position:relative;z-index:1;margin:26px 0 0;max-width:76%;text-align:center;color:#8c8c8c;font-size:10px;letter-spacing:.09em;line-height:1.8;text-transform:uppercase;font-weight:600;opacity:0;animation:quoteIn .6s ease .5s forwards}@keyframes quoteIn{to{opacity:1}}
+.quote{position:relative;z-index:1;margin:26px 0 0;max-width:76%;text-align:center;color:#8c8c8c;font-size:10px;letter-spacing:.09em;line-height:1.8;text-transform:uppercase;font-weight:600;opacity:0;animation:quoteIn .6s ease .5s forwards}@keyframes quoteIn{to{opacity:1}}@keyframes quoteOut{to{opacity:0;visibility:hidden}}
 </style></head>
 <body><main>
 <div class="brand">
@@ -46,6 +46,8 @@ try{last=parseInt(localStorage.getItem(k),10)}catch(e){}
 do{i=Math.floor(Math.random()*Q.length)}while(Q.length>1&&i===last);
 try{localStorage.setItem(k,String(i))}catch(e){}
 p.textContent=Q[i];
+var hold=2.4+Q[i].length*.045,fade=1+Q[i].length*.005;
+p.style.animation='quoteIn .6s ease .5s forwards,quoteOut '+fade+'s ease '+hold+'s forwards';
 })();
 </script>
 </body></html>
