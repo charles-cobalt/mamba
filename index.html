@@ -23,9 +23,26 @@ main{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;touch-action:n
 .lbl.jarvis{top:56%;right:100%;margin-right:-14px;transform:translateY(-50%)}
 .lbl.listo{top:56%;left:100%;margin-left:-14px;transform:translateY(-50%)}
 .quote{position:relative;z-index:1;margin:26px 0 0;max-width:76%;text-align:center;color:#8c8c8c;font-size:10px;letter-spacing:.09em;line-height:1.8;text-transform:uppercase;font-weight:600;opacity:0;animation:quoteIn .6s ease .5s forwards}@keyframes quoteIn{to{opacity:1}}@keyframes quoteOut{to{opacity:0;visibility:hidden}}
+
+/* Hidden intro triangle follows the logo viewBox, not viewport coordinates. */
+.anecdote-trigger{position:absolute;z-index:2;left:32.956%;top:10.48%;width:34.124%;height:19.526%;clip-path:polygon(50% 0,100% 100%,0 100%);border:0;padding:0;margin:0;background:transparent;color:transparent;cursor:default;-webkit-appearance:none;appearance:none;touch-action:manipulation}
+.anecdote-trigger:focus-visible{background:rgba(255,255,255,.06);outline:none}
+.anecdote-overlay{position:fixed;inset:0;z-index:100;background:#000;color:#ececec;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .6s ease,visibility 0s linear .6s;overscroll-behavior:none;touch-action:pan-y;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.anecdote-overlay.is-open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .6s ease}
+.anecdote-overlay.is-closing{opacity:0;visibility:visible;pointer-events:auto;transition:opacity 1.5s ease}
+.anecdote-stage{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(65px + env(safe-area-inset-top)) 40px calc(60px + env(safe-area-inset-bottom));overflow:hidden}
+.anecdote-content{position:relative;width:100%;max-width:560px;font-family:DINish,-apple-system,system-ui,sans-serif}
+.anecdote-title-wrap{position:relative;isolation:isolate;margin:0 0 28px}
+.anecdote-logo{position:absolute;z-index:-1;top:calc(50% - 62.1px);left:50%;transform:translateX(-50%);width:180px;height:auto;opacity:.24;color:#7a7a7a;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%)}
+.anecdote-title{font-size:12px;line-height:1.35;font-weight:600;letter-spacing:.24em;color:#aaa;text-align:center;text-transform:uppercase;margin:0;position:relative}
+.anecdote-text p{font-size:15.5px;line-height:1.5;font-weight:400;text-align:center;margin:0 0 23px;white-space:pre-line;letter-spacing:normal;text-transform:none}
+.anecdote-text p:last-child{margin-bottom:0}
+.anecdote-overlay:focus{outline:none}
+@media(prefers-reduced-motion:reduce){.anecdote-overlay,.anecdote-overlay.is-open,.anecdote-overlay.is-closing{transition:none}}
 </style></head>
 <body><main>
 <div class="brand">
+<button type="button" class="anecdote-trigger" id="anecdoteTrigger" aria-label="Read a MAMBA anecdote"></button>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1113.6054499420054 1813" class="mark" role="img" aria-label="MAMBA logo"><defs><linearGradient id="fd" gradientUnits="userSpaceOnUse" x1="0" y1="1273.5991018999337" x2="0" y2="0"><stop offset="0" stop-color="#f2f2f2" stop-opacity="0.1"/><stop offset="1" stop-color="#f2f2f2" stop-opacity="0"/></linearGradient><linearGradient id="hf" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1113.6054499420054" y2="0"><stop offset="0" stop-color="#000"/><stop offset="0.3" stop-color="#aaa"/><stop offset="0.5" stop-color="#fff"/><stop offset="0.7" stop-color="#aaa"/><stop offset="1" stop-color="#000"/></linearGradient><mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="1113.6054499420054" height="1813"><rect width="1113.6054499420054" height="1813" fill="url(#hf)"/></mask></defs><path d="M1096,37.9L1094.6,36.3L1078.6,30.8L991.6,3.5L977.6,0L968.6,0.3L956.6,3.7L840.6,48.1L573.3,146.4L573.3,326.5L621.6,300.2L1002.6,93.3L1084.6,48.1L1095.7,38.9Z M1113.6,106.8L1112.6,105.7L1109.3,106.9L1013.6,155.8L828.6,252.9L660.6,338.8L589.6,376.7L580.2,382.9L605.6,405.2L760.8,525.9L769.8,531.9L774.6,533.1L778.6,532L789.5,523.9L837.6,480.8L1055.5,282.9L1064.3,267.9L1070.2,250.9L1113.6,106.9Z M573.3,1273.6L593.6,1257.6L627.5,1224.9L636.9,1213.9L642.5,1201.9L736.8,614.9L738.9,591.9L738.9,584.9L737.6,582.6L587.6,452.5L573.3,443.7Z M17.6,37.9L19,36.3L35,30.8L122,3.5L136,0L145,0.3L157,3.7L273,48.1L540.3,146.4L540.3,326.5L492,300.2L111,93.3L29,48.1L17.9,38.9Z M0,106.8L1,105.7L4.3,106.9L100,155.8L285,252.9L453,338.8L524,376.7L533.4,382.9L508,405.2L352.8,525.9L343.8,531.9L339,533.1L335,532L324.1,523.9L276,480.8L58.1,282.9L49.3,267.9L43.4,250.9L0,106.9Z M540.3,1273.6L520,1257.6L486.1,1224.9L476.7,1213.9L471.1,1201.9L376.8,614.9L374.7,591.9L374.7,584.9L376,582.6L526,452.5L540.3,443.7Z" fill="#f2f2f2"/><g mask="url(#m)"><g transform="translate(0,1813) scale(1,-0.4)"><path d="M1096,37.9L1094.6,36.3L1078.6,30.8L991.6,3.5L977.6,0L968.6,0.3L956.6,3.7L840.6,48.1L573.3,146.4L573.3,326.5L621.6,300.2L1002.6,93.3L1084.6,48.1L1095.7,38.9Z M1113.6,106.8L1112.6,105.7L1109.3,106.9L1013.6,155.8L828.6,252.9L660.6,338.8L589.6,376.7L580.2,382.9L605.6,405.2L760.8,525.9L769.8,531.9L774.6,533.1L778.6,532L789.5,523.9L837.6,480.8L1055.5,282.9L1064.3,267.9L1070.2,250.9L1113.6,106.9Z M573.3,1273.6L593.6,1257.6L627.5,1224.9L636.9,1213.9L642.5,1201.9L736.8,614.9L738.9,591.9L738.9,584.9L737.6,582.6L587.6,452.5L573.3,443.7Z M17.6,37.9L19,36.3L35,30.8L122,3.5L136,0L145,0.3L157,3.7L273,48.1L540.3,146.4L540.3,326.5L492,300.2L111,93.3L29,48.1L17.9,38.9Z M0,106.8L1,105.7L4.3,106.9L100,155.8L285,252.9L453,338.8L524,376.7L533.4,382.9L508,405.2L352.8,525.9L343.8,531.9L339,533.1L335,532L324.1,523.9L276,480.8L58.1,282.9L49.3,267.9L43.4,250.9L0,106.9Z M540.3,1273.6L520,1257.6L486.1,1224.9L476.7,1213.9L471.1,1201.9L376.8,614.9L374.7,591.9L374.7,584.9L376,582.6L526,452.5L540.3,443.7Z" fill="url(#fd)"/></g></g></svg>
 <div class="lbl mirror">MIND</div>
 <div class="lbl jarvis">BODY</div>
@@ -59,5 +76,59 @@ p.textContent=Q[i];
 var hold=2.4+Q[i].length*.045,fade=1+Q[i].length*.005;
 p.style.animation='quoteIn .6s ease .5s forwards,quoteOut '+fade+'s ease '+hold+'s forwards';
 })();
+</script>
+<section class="anecdote-overlay" id="anecdoteOverlay" role="dialog" aria-modal="true" aria-labelledby="anecdoteTitle" aria-hidden="true" tabindex="-1" hidden><div class="anecdote-stage"><div class="anecdote-content"><div class="anecdote-title-wrap"><svg class="anecdote-logo" viewBox="0 0 1113.6054499420054 1273.5991018999337" fill="currentColor" aria-hidden="true"><path d="M1096,37.9L1094.6,36.3L1078.6,30.8L991.6,3.5L977.6,0L968.6,0.3L956.6,3.7L840.6,48.1L573.3,146.4L573.3,326.5L621.6,300.2L1002.6,93.3L1084.6,48.1L1095.7,38.9Z M1113.6,106.8L1112.6,105.7L1109.3,106.9L1013.6,155.8L828.6,252.9L660.6,338.8L589.6,376.7L580.2,382.9L605.6,405.2L760.8,525.9L769.8,531.9L774.6,533.1L778.6,532L789.5,523.9L837.6,480.8L1055.5,282.9L1064.3,267.9L1070.2,250.9L1113.6,106.9Z M573.3,1273.6L593.6,1257.6L627.5,1224.9L636.9,1213.9L642.5,1201.9L736.8,614.9L738.9,591.9L738.9,584.9L737.6,582.6L587.6,452.5L573.3,443.7Z M17.6,37.9L19,36.3L35,30.8L122,3.5L136,0L145,0.3L157,3.7L273,48.1L540.3,146.4L540.3,326.5L492,300.2L111,93.3L29,48.1L17.9,38.9Z M0,106.8L1,105.7L4.3,106.9L100,155.8L285,252.9L453,338.8L524,376.7L533.4,382.9L508,405.2L352.8,525.9L343.8,531.9L339,533.1L335,532L324.1,523.9L276,480.8L58.1,282.9L49.3,267.9L43.4,250.9L0,106.9Z M540.3,1273.6L520,1257.6L486.1,1224.9L476.7,1213.9L471.1,1201.9L376.8,614.9L374.7,591.9L374.7,584.9L376,582.6L526,452.5L540.3,443.7Z"/></svg><h1 class="anecdote-title" id="anecdoteTitle"></h1></div><div class="anecdote-text" id="anecdoteText"></div></div></div></section>
+<script>
+(function(){
+'use strict';
+var A=[{"title": "Movement Before Clarity", "paragraphs": ["You're not stuck because you're unprepared.\nYou're stuck because you're addicted to feeling ready.", "You call it planning, researching, or studying.\nBut it's fear with good branding.", "The perfect plan is the lie you tell yourself to avoid the first rep.\nThe first rep is the only thing that teaches you anything real.", "Imperfect action isn't sloppy.\nIt's violent clarity.", "Thinking doesn't give you confidence.\nMovement does.", "You don't feel ready and then act:\nYou act,\nyou survive it,\nand then confidence shows up.", "That's why one ugly post\nbeats 40 drafts.", "One awkward call\nbeats another week of \"fine-tuning.\"", "One bad workout\nbeats the perfect workout plan collecting dust.", "Momentum forgives mistakes.\nHesitation compounds with interest.", "If it's worth doing, it's worth doing badly at first.\nStart now.", "If you're waiting for the 'right time',\nyou'll wait long enough to realize\nthere isn't one."]}, {"title": "The Man in the Arena", "paragraphs": ["It is not the critic who counts; not the man who points out how the strong man stumbles, or where the doer of deeds could have done them better.", "The credit belongs to the man who is actually in the arena, whose face is marred by dust and sweat and blood; who strives valiantly; who errs, who comes short again and again, because there is no effort without error and shortcoming; but who does actually strive to do the deeds; who knows great enthusiasms, the great devotions; who spends himself in a worthy cause;", "who at the best knows in the end the triumph of high achievement, and who at the worst, if he fails, at least fails while daring greatly, so that his place shall never be with those cold and timid souls who neither know victory nor defeat."]}, {"title": "The Important Things in Life", "paragraphs": ["The most important thing in life is time.\nYou will never get time back.\nIt's all you have in this world.\nDon't waste it.", "The second most important thing in life is good health.\nWithout it, it's all you'll wish for.\nHealth is what buys you time.\nYou can't live a life you won't be around for.", "The third most important thing in life is having people to share memories with.\nMemories are all we have,\nand life is worth living and creating memories for,\nbut only with people to share them with."]}, {"title": "Samwise Gamgee", "paragraphs": ["It's like in the great stories, Mr. Frodo. The ones that really mattered. Full of darkness, and danger, they were. And sometimes you didn't want to know the end, because how could the end be happy? How could the world go back to the way it was when so much bad had happened? But in the end, it's only a passing thing, this shadow. Even darkness must pass. A new day will come. And when the sun shines, it'll shine out the clearer. Those were the stories that stayed with you. That meant something. Even if you were too small to understand why. But I think, Mr. Frodo, I do understand. I know now. Folk in those stories had lots of chances of turning back, only they didn't. They kept going. Because they were holding on to something. (What are we holding on to, Sam?) That there's some good in this world, Mr. Frodo... and it's worth fighting for."]}],trigger=document.getElementById('anecdoteTrigger'),overlay=document.getElementById('anecdoteOverlay'),title=document.getElementById('anecdoteTitle'),text=document.getElementById('anecdoteText');
+if(!trigger||!overlay||!title||!text||!A.length)return;
+var key='mamba.anecdotes.deck.v1',signature=JSON.stringify(A),memory=null,active=false,closing=false,lastFocus=null,frame=0,previous=0,elapsed=0,endElapsed=0,lastActivity=-Infinity,hold=0;
+function next(){
+ var deck=memory;
+ if(!deck)try{deck=JSON.parse(localStorage.getItem(key))}catch(e){}
+ if(!deck||deck.signature!==signature||!Array.isArray(deck.remaining)||deck.remaining.length>A.length||new Set(deck.remaining).size!==deck.remaining.length||!deck.remaining.every(function(n){return Number.isInteger(n)&&n>=0&&n<A.length})||!Number.isInteger(deck.last)||deck.last<0||deck.last>=A.length||deck.remaining.indexOf(deck.last)!==-1)deck={signature:signature,remaining:[],last:-1};
+ if(!deck.remaining.length){
+  for(var n=0;n<A.length;n++)deck.remaining.push(n);
+  for(var n=deck.remaining.length-1;n>0;n--){var r=Math.floor(Math.random()*(n+1)),v=deck.remaining[n];deck.remaining[n]=deck.remaining[r];deck.remaining[r]=v}
+  if(A.length>1&&deck.remaining[0]===deck.last){var r=1+Math.floor(Math.random()*(A.length-1)),v=deck.remaining[0];deck.remaining[0]=deck.remaining[r];deck.remaining[r]=v}
+ }
+ var index=deck.remaining.shift();deck.last=index;memory=deck;
+ try{localStorage.setItem(key,JSON.stringify(deck))}catch(e){}
+ return A[index];
+}
+function finish(){active=false;closing=false;overlay.classList.remove('is-open','is-closing');overlay.hidden=true;overlay.setAttribute('aria-hidden','true');document.querySelector('main').removeAttribute('inert');if(lastFocus&&lastFocus.isConnected)lastFocus.focus({preventScroll:true})}
+function close(){
+ if(!active||closing)return;closing=true;cancelAnimationFrame(frame);overlay.classList.remove('is-open');overlay.classList.add('is-closing');
+ if(matchMedia('(prefers-reduced-motion:reduce)').matches){finish();return}
+ setTimeout(finish,1500);
+}
+function tick(now){
+ if(!active||closing)return;
+ var dt=previous?Math.min((now-previous)/1000,.1):0;previous=now;
+ if(!document.hidden&&now-lastActivity>700){
+  elapsed+=dt;
+  var bottom=overlay.scrollHeight-overlay.clientHeight-overlay.scrollTop<=3,overflow=overlay.scrollHeight>overlay.clientHeight+3;
+  if(bottom)endElapsed+=dt;else endElapsed=0;
+  if(elapsed>=hold&&(!overflow||endElapsed>=12)){close();return}
+ }
+ frame=requestAnimationFrame(tick);
+}
+function open(e){
+ e.preventDefault();e.stopPropagation();if(active)return;
+ var a=next();title.textContent=a.title;text.replaceChildren();
+ a.paragraphs.forEach(function(s){var p=document.createElement('p');p.textContent=s;text.appendChild(p)});
+ hold=6+a.paragraphs.join(' ').trim().split(/\s+/).length/160*60;
+ lastFocus=document.activeElement;active=true;closing=false;previous=0;elapsed=0;endElapsed=0;lastActivity=-Infinity;
+ document.querySelector('main').setAttribute('inert','');overlay.hidden=false;overlay.setAttribute('aria-hidden','false');overlay.scrollTop=0;
+ overlay.getBoundingClientRect();overlay.classList.add('is-open');overlay.focus({preventScroll:true});frame=requestAnimationFrame(tick);
+}
+trigger.addEventListener('click',open);
+overlay.addEventListener('scroll',function(){lastActivity=performance.now()},{passive:true});
+overlay.addEventListener('touchmove',function(){lastActivity=performance.now()},{passive:true});
+overlay.addEventListener('keydown',function(e){if(e.key==='Escape'){e.preventDefault();close()}if(e.key==='Tab'){e.preventDefault();overlay.focus({preventScroll:true})}});
+document.addEventListener('visibilitychange',function(){previous=0});
+})();
+
 </script>
 </body></html>
